@@ -10,8 +10,11 @@ export default {
       url: 'http://localhost:3000/posts?'+ query,
     };
     return axios(options)
-    // .then(response =>{
-    //   console.log(response)
-    // });
-  }
+  },
+  refreshPosts (page) {
+    this.sendRequest('userId='+store.state.loginId+'&_page='+(Math.ceil(store.state.totalPosts / store.state.perPage)-page+1)+'&_limit='+store.state.perPage)
+    .then(response=>{
+      store.commit("changePosts",response.data.reverse() || "create ur first post");
+    });
+  },
 }

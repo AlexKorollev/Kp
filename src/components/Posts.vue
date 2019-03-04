@@ -115,10 +115,11 @@ export default {
     //   this.totalPosts = response.data.length;
     //   this.refreshPosts(this.currentPage);
     // });
-    api.sendRequest('userId='+this.getLoginId)
+    api.sendRequest('userId='+this.getLoginId+'&_page=1&_limit=5&_sort=id&_order=desc')
       .then(response =>{
         this.totalPosts = response.data.length;
-        this.refreshPosts(this.currentPage);
+        this.posts = response.data
+        // this.refreshPosts(this.currentPage);
       });
   }
 }

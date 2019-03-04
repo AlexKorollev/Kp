@@ -1,19 +1,21 @@
 <template>
   <div>
-    <h1>Hello dear - {{ name.firstName }} - {{ getLoginName }}</h1>
-    <!-- <div class="about-login">
-       <p v-for="(v, k, i) in name" :key="i">{{i}} - {{k}} - {{v}}</p>
-    </div> -->
-  <Posts />
+    <h1 class="about-login">Hello dear - {{ name.firstName }} - {{ getLoginName }}</h1>
+  <Pagination />
+  <NewPosts />
   </div>
 </template>
 
 <script>
-import Posts from ".././components/Posts"
+import Posts from ".././components/Posts";
 import axios from 'axios';
+import NewPosts from ".././components/posts/NewPosts";
+import Pagination from ".././components/posts/Pagination"
 export default {
   components:{
-    Posts
+    Posts,
+    NewPosts,
+    Pagination
   },
   data () {
     return {
