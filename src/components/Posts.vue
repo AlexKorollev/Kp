@@ -11,7 +11,7 @@
         <button class="btn btn-page" @click="prevPage()">PREV</button>
         <button class="btn btn-page" @click="nextPage()">NEXT</button>
       </div>
-      <p>Page: {{ currentPage }} totalPosts:  {{ totalPosts }}</p>
+      <p>Page: {{ currentPage }} totalPosts: {{ totalPosts }}</p>
     </div>
     <div v-for="(userPost, i) in posts" :key="i" class="all-posts">
       <div class="post-title">{{ userPost.title }}</div>
