@@ -1,0 +1,107 @@
+<template>
+  <div class="autocomplite">
+    <input type="search" placeholder="Search" v-model="search" @input="searchUsers()">
+    <div class="search-result" v-if="this.$store.state.autocomplite">
+      <ul class="list-of-names">
+        <router-link class="autocomplite-users" tag="li" v-for="(name, i) in names" :key="i" :to="'/user/'+ name.id"><a>{{ name.firstName }}  {{ name.lastName }}</a></router-link>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+import _debounce from 'lodash.debounce';
+import _split from 'lodash.split';
+export default {
+  name: 'Autocomplite',
+  data() {
+    return {
+      search: '',
+      names: {}
+    }
+  },
+  methods: {
+    searchUsers () {
+      this.$store.commit("changeAutocomplite", true);
+      const options = {
+        method: 'GET',
+        headers: {
+          'Authorization': "bearer " + this.$store.state.access_token
+          },
+        url: 'http://localhost:3000/users?firstName_like='+this.search,
+      };
+      axios(options)
+      .then(response =>{
+        this.names = response.data;
+        console.log(response)
+      });
+    //   axios.get('http://localhost:3000/users?firstName&q='+this.search)
+    //   .then(response =>{
+    //     console.log(response);
+    // })
+    },
+  },
+  created () {
+    
+  },
+  // watch: {
+  //   search: function () {
+  //     _debounce(this.searchUsers(), 1000);
+  //   }
+  // }
+
+}
+</script>
+<style scoped>
+.autocomplite{
+  position: relative;
+}
+.autocomplite input{
+  width:100%;
+  border: none;
+  background: none;
+  text-align: left;
+  border-bottom: 2px solid #3498db;
+  outline: none;
+  color:#6b6b6b;
+  transition: 0.25s;
+  font-size: 20px;
+  padding-left: 20px;
+}
+
+.autocomplite input:focus{
+  border-color: #2ecc71;
+}
+.search-result{
+  width:100%;
+  position: absolute;
+  word-break: normal;
+}
+.list-of-names{
+  background: #efeeee;
+  border:none;
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  max-height: 250px;
+  overflow: auto;
+}
+.list-of-names li{
+  list-style-type: none;
+  padding: 10px 20px;
+  border-bottom:1px solid #ccc;
+}
+.list-of-names li a{
+  text-decoration: none;
+  outline:none;
+  color: #6b6b6b;
+}
+.list-of-names li a:hover{
+  color: #3498db;
+}
+@media only screen and (max-width: 425px){
+  .autocomplite input{
+    font-size: 15px;
+  }
+}
+</style>
