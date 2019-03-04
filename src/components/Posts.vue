@@ -23,6 +23,8 @@
 
 <script>
 import axios from 'axios'
+import api from '../helpers/api'
+console.log(api.sendRequest)
 export default {
   name: 'Posts',
   data() {
@@ -101,18 +103,23 @@ export default {
     //   this.totalPosts = response.data.length;
     //   this.refreshPosts(this.currentPage);
     // })
-    const options = {
-      method: 'GET',
-      headers: {
-        'Authorization': "bearer " + this.$store.state.access_token
-        },
-      url: 'http://localhost:3000/posts?userId='+this.getLoginId,
-    };
-    axios(options)
-    .then(response =>{
-      this.totalPosts = response.data.length;
-      this.refreshPosts(this.currentPage);
-    });
+    // const options = {
+    //   method: 'GET',
+    //   headers: {
+    //     'Authorization': "bearer " + this.$store.state.access_token
+    //     },
+    //   url: 'http://localhost:3000/posts?userId='+this.getLoginId,
+    // };
+    // axios(options)
+    // .then(response =>{
+    //   this.totalPosts = response.data.length;
+    //   this.refreshPosts(this.currentPage);
+    // });
+    api.sendRequest('userId='+this.getLoginId)
+      .then(response =>{
+        this.totalPosts = response.data.length;
+        this.refreshPosts(this.currentPage);
+      });
   }
 }
 </script>
