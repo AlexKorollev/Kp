@@ -1,8 +1,8 @@
 <template>
   <div class="about-user">
     <div v-for="(userPost, i) in this.$store.state.posts" :key="i" class="all-posts">
-      <div class="post-title">{{ userPost.title }}</div>
-      <div>{{ userPost.post }}</div>
+      <div class="post-title">{{ userPost.title || "no title" }}</div>
+      <div>{{ userPost.post || "no post"}}</div>
     </div>
   </div>
 </template>
@@ -12,20 +12,13 @@ import api from '../../helpers/api'
 import store from '../../store';
 export default {
   name: 'NewPosts',
-  data() {
-    return {
-      
-      title: '',
-      post: '',
-    }
-  },
-  computed: {
-    getLoginId () {
-      return this.$store.state.loginId;
-    }
+  props: {
+    query: String
   },
   created () {
-    api.sendRequest('userId='+this.getLoginId)
+    this.$store.commit("establishCurrentPage", 1);
+    this.$store.commit("establishQuery", this.query);
+    api.sendRequest(this.$store.state.query)
       .then(response =>{
         this.$store.commit("changeTotalPosts",response.data.length);
         this.$store.commit("changePosts", response.data || "create ur first post");

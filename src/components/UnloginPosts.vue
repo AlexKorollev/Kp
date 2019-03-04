@@ -24,7 +24,7 @@ export default {
   created () {
     axios.get('http://localhost:3000/posts?public=true&_page=1&_limit=5&_sort=id&_order=desc')
     .then(response =>{
-        this.posts = response.data || "create ur first post";
+        this.posts = response.data;
       })
   }
 }

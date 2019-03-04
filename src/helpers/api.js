@@ -7,14 +7,22 @@ export default {
       headers: {
         'Authorization': "bearer " + store.state.access_token
         },
-      url: 'http://localhost:3000/posts?'+ query,
+      url: 'http://localhost:3000/posts'+ query,
     };
     return axios(options)
   },
   refreshPosts (page) {
-    this.sendRequest('userId='+store.state.loginId+'&_page='+(Math.ceil(store.state.totalPosts / store.state.perPage)-page+1)+'&_limit='+store.state.perPage)
-    .then(response=>{
-      store.commit("changePosts",response.data.reverse() || "create ur first post");
-    });
+    if(store.state.loginId){
+      this.sendRequest(store.state.query+'&_page='+(Math.ceil(store.state.totalPosts / store.state.perPage)-page+1)+'&_limit='+store.state.perPage)
+      .then(response=>{
+        store.commit("changePosts",response.data.reverse() || "create ur first post");
+      });
+    }
+    else{
+      this.sendRequest(store.state.query)
+      .then(response=>{
+        store.commit("changePosts",response.data || "create ur first post");
+      });
+    }
   },
 }

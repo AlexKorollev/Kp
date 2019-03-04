@@ -133,7 +133,6 @@ export default {
   grid-template-columns: 1fr;
   width: 100%;
   justify-items: center;
-  
 }
 .posts,.all-posts{
   width:301px;

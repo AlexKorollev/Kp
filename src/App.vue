@@ -52,7 +52,6 @@ export default {
     }
   },
   mounted: function () {
-    console.log(this.$route.query.login)
     if(this.$route.query.login === "false"){
       this.openModal();
     }
