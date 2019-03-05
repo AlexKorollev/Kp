@@ -148,9 +148,8 @@ h1{
 .submit:hover{
   border-bottom: 2px solid #2ecc71;
   width: 100px;
+  color: #6b6b6b;
 }
-
-
 .invalid-feedback{
   justify-self: center;
   font-size: 12px;

@@ -21,7 +21,7 @@ export default {
     else{
       this.sendRequest(store.state.query)
       .then(response=>{
-        store.commit("changePosts",response.data || "create ur first post");
+        store.commit("changePosts", response.data || "create ur first post");
       });
     }
   },

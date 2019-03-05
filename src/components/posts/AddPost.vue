@@ -51,14 +51,12 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   margin-top: 20px;
-  border: 2px solid black;
+  border: 2px solid #ccc;
+  border-radius:5px;
   font-size: 15px;
-  
   justify-items: center;
-}
-.post-title{
-  border-bottom:1px solid black;
-  font-size: 20px;
+  background: #efeeee;
+  grid-gap:1em;
 }
 .posts input{
   height: 40px;
@@ -69,7 +67,8 @@ export default {
   text-align: center;
   width:100%;
   border:none;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #ccc;
+  background: #efeeee;
 }
 textarea{
   height: 120px;
@@ -90,6 +89,7 @@ textarea{
 .submit-post:hover{
   border: 2px solid #2ecc71;
   width:200px;
+  color: #6b6b6b;
 }
 
 </style>

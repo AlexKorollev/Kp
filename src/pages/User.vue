@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="about-login">
     <h1>About user {{ id }}</h1>
     <Pagination />
     <Posts :query="'?userId='+this.id"/>
@@ -25,13 +25,17 @@ export default {
     $route (toR, fromR) {
       this.id = toR.params['id']
     },
-    Posts
   }
 }
 </script>
 <style scoped>
-h1{
-  text-align: center;
+.about-login{
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  width:100%;
+  justify-items: center;
+  grid-row-gap:1em;
 }
 </style>
 
