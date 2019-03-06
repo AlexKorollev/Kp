@@ -1,8 +1,8 @@
 <template>
   <div class="pagination">
     <div class="page-buttons">
-      <button class="btn btn-page" @click="prevPage()">PREV</button>
-      <button class="btn btn-page" @click="nextPage()">NEXT</button>
+      <button class="btn btn-page btn-prev-page" @click="prevPage()">PREV</button>
+      <button class="btn btn-page btn-next-page" @click="nextPage()">NEXT</button>
     </div>
     <p>Page: {{ this.$store.state.currentPage }} totalPosts: {{ this.$store.state.totalPosts }}</p>
   </div>
@@ -44,9 +44,16 @@ export default {
   display:grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
+  grid-column-gap: 1em;
 }
 .btn-page{
   border-bottom:2px solid #3498db;
+}
+.btn-prev-page{
+  justify-self: right;
+}
+.btn-next-page{
+  justify-self: left;
 }
 @media only screen and (max-width: 425px){
   .btn{

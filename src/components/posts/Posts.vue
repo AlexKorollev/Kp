@@ -1,6 +1,7 @@
 <template>
   <div class="posts">
-    <div v-for="(userPost, i) in this.$store.state.posts" :key="i" class="all-posts">
+    <div v-if="Object.keys(this.$store.state.posts).length == 0"><h2>No posts</h2></div>
+    <div v-else v-for="(userPost, i) in this.$store.state.posts" :key="i" class="all-posts">
       <div class="post-title">{{ userPost.title || "no title" }}</div>
       <div>{{ userPost.post || "no post"}}</div>
     </div>
@@ -19,12 +20,13 @@ export default {
     printPost () {
       this.$store.commit("establishCurrentPage", 1);
       this.$store.commit("establishQuery", this.query);
-      api.sendRequest(this.$store.state.query)
-      .then(response =>{
-        this.$store.commit("changeTotalPosts",response.data.length);
-        this.$store.commit("changePosts", response.data || "create ur first post");
-        api.refreshPosts(store.state.currentPage)
-      });
+      api.refreshPosts(store.state.currentPage)
+      // api.sendRequest(this.$store.state.query)
+      // .then(response =>{
+      //   this.$store.commit("changeTotalPosts",response.data.length);
+      //   this.$store.commit("changePosts", response.data || "create ur first post");
+      //   api.refreshPosts(store.state.currentPage)
+      // });
     }
   },
   created () {

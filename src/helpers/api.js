@@ -12,10 +12,11 @@ export default {
     return axios(options)
   },
   refreshPosts (page) {
-    if(store.state.loginId){
-      this.sendRequest(store.state.query+'&_page='+(Math.ceil(store.state.totalPosts / store.state.perPage)-page+1)+'&_limit='+store.state.perPage)
+    if(store.state.login){
+      this.sendRequest(store.state.query+'&_page='+page+'&_limit=5&_sort=id&_order=desc')
       .then(response=>{
-        store.commit("changePosts",response.data.reverse() || "create ur first post");
+        store.commit("changeTotalPosts", response.headers['x-total-count'])
+        store.commit("changePosts",response.data);
       });
     }
     else{

@@ -50,7 +50,6 @@ export default {
   width:301px;
   display: grid;
   grid-template-columns: 1fr;
-  margin-top: 20px;
   border: 2px solid #ccc;
   border-radius:5px;
   font-size: 15px;
@@ -91,5 +90,9 @@ textarea{
   width:200px;
   color: #6b6b6b;
 }
-
+@media only screen and (max-width: 425px){
+  .submit-post{
+    font-size: 20px;
+  }
+}
 </style>
