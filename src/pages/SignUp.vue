@@ -8,8 +8,8 @@
         <div class="invalid-feedback" v-if="!$v.firstName.alpha">Use only letters</div>
       </div>
       <div class="form-group">
-        <input type="text" id="last" placeholder="enter ur last name" class="form-control" :class="{'is-invalid': $v.last.$error}" @blur="$v.last.$touch()" v-model="last">
-        <div class="invalid-feedback" v-if="!$v.last.alpha">Use only letters</div>
+        <input type="text" id="lastName" placeholder="enter ur last name" class="form-control" :class="{'is-invalid': $v.lastName.$error}" @blur="$v.lastName.$touch()" v-model="lastName">
+        <div class="invalid-feedback" v-if="!$v.lastName.alpha && $v.lastName.$dirty">Use only letters</div>
       </div>
       <div class="form-group">
         <input type="email" id="email" placeholder="* enter ur email" class="form-control" :class="{'is-invalid': $v.email.$error}" @blur="$v.email.$touch()" v-model="email">
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       firstName: '',
-      last: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -69,7 +69,7 @@ export default {
       required,
       alpha
     },
-    last: {
+    lastName: {
       alpha
     },
     email: {

@@ -67,13 +67,14 @@ export default {
         this.$store.commit("changeLoginName", response.data.user.firstName);
         this.$store.commit("establishUserId", response.data.user.id);
         this.$store.commit("establishAccessToken", response.data.access_token)
+        this.$v.$reset();
       })
       .catch(error => {
         console.log("GOVNO " + error);
         this.uniqLogin = false;
       });
     }
-  }
+  },
 }
 </script>
 <style scoped>

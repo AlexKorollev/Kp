@@ -36,6 +36,7 @@ export default {
         
         axios(options)
         .then(response =>{
+          console.log(response)
           this.names = response.data;
         });
       }
@@ -50,7 +51,7 @@ export default {
     }
   },
   created () {
-    this.debounceFunc = _debounce(this.searchUsers, 1000);
+    this.debounceFunc = _debounce(this.searchUsers, 500);
   },
   watch: {
     search: function () {
