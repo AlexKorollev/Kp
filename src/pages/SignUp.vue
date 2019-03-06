@@ -50,7 +50,8 @@ export default {
       axios.post('http://localhost:3000/auth/register', {
       email: this.email,
       password: this.password,
-      firstName: this.firstName
+      firstName: this.firstName,
+      lastName: this.lastName
       })
       .then(response => {
         console.log(response);
@@ -129,7 +130,6 @@ form{
   display: grid;
   justify-self: center;
 }
-
 h1{
   font-size: 30px;
   text-transform: uppercase;
@@ -142,12 +142,12 @@ h1{
   width: 120px;
   transition: 0.25s;
   padding: 5px 10px;
-  
   font-size: 20px;
 }
 .submit:hover{
   border: 2px solid #2ecc71;
   width: 150px;
+  color: #6b6b6b;
 }
 .invalid-feedback{
   justify-self: center;

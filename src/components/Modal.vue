@@ -67,7 +67,6 @@ export default {
         this.$store.commit("changeLoginName", response.data.user.firstName);
         this.$store.commit("establishUserId", response.data.user.id);
         this.$store.commit("establishAccessToken", response.data.access_token)
-        console.log(response.data.access_token)
       })
       .catch(error => {
         console.log("GOVNO " + error);
@@ -148,9 +147,8 @@ h1{
 .submit:hover{
   border-bottom: 2px solid #2ecc71;
   width: 100px;
+  color: #6b6b6b;
 }
-
-
 .invalid-feedback{
   justify-self: center;
   font-size: 12px;

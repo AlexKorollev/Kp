@@ -12,6 +12,11 @@ export default new Vuex.Store({
     loginId: '',
     access_token: '',
     autocomplite: false,
+    currentPage: 1,
+    perPage: 5,
+    totalPosts: 0,
+    posts: {},
+    query: '',
   },
   getters: {
     computedCounter (state) { 
@@ -36,6 +41,24 @@ export default new Vuex.Store({
     },
     changeAutocomplite(state, bool){
       state.autocomplite = bool;
+    },
+    changeCurrentPage(state,num){
+      state.currentPage += num;
+    },
+    establishCurrentPage(state,num){
+      state.currentPage = num;
+    },
+    changeTotalPosts(state,total){
+      state.totalPosts = total;
+    },
+    incrementTotalPosts(state,num){
+      state.totalPosts += num;
+    },
+    changePosts(state,post){
+      state.posts = post;
+    },
+    establishQuery(state, query){
+      state.query = query || '';
     }
   },
   actions: {

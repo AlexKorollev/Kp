@@ -3,7 +3,7 @@
   <header>
     <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link>
     <Autocomplite class="autocomplite"/>
-    <div class="menu"  @click="closeAutocomplite()">
+    <div class="menu"  >
       <button class="btn" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">Profile</router-link></button>
       <button class="btn" @click ="logOut" v-if="getLogin"><router-link class="log-out btn" :to="'/'" >Log out</router-link></button>
       <button class="btn login" @click="openModal" v-if="!getLogin">Login</button>
@@ -11,7 +11,7 @@
     </div>
     <Modal :modalOpened="modalOpened" @close="closeModal" />
   </header>
-  <div @click="closeAutocomplite()">
+  <div>
     <router-view></router-view>
   </div>
 </div>
@@ -43,16 +43,12 @@ export default {
     closeModal () {
       this.modalOpened = false;
     },
-    closeAutocomplite () {
-      this.$store.commit("changeAutocomplite", false);
-    },
     logOut () {
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
       this.$store.commit("changeLogin", false);
     }
   },
   mounted: function () {
-    console.log(this.$route.query.login)
     if(this.$route.query.login === "false"){
       this.openModal();
     }

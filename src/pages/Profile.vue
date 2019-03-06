@@ -1,48 +1,36 @@
 <template>
-  <div>
-    <h1>Hello dear - {{ name.firstName }} - {{ getLoginName }}</h1>
-    <!-- <div class="about-login">
-       <p v-for="(v, k, i) in name" :key="i">{{i}} - {{k}} - {{v}}</p>
-    </div> -->
-  <Posts />
+  <div class="about-login">
+    <h1>Hello dear {{ this.$store.state.loginId }}</h1>
+    <AddPost />
+    <Pagination />
+    <Posts :query="'?userId='+this.$store.state.loginId"/>
   </div>
 </template>
 
 <script>
-import Posts from ".././components/Posts"
 import axios from 'axios';
+import Posts from ".././components/posts/Posts";
+import Pagination from ".././components/posts/Pagination"
+import AddPost from ".././components/posts/AddPost"
+import api from '../helpers/api'
+import store from '../store'
 export default {
   components:{
-    Posts
+    Posts,
+    Pagination,
+    AddPost,
   },
-  data () {
-    return {
-      name: {}
-    }
-  },
-  computed: {
-    getLoginName () {
-      return this.$store.state.loginName
-    }
-  },
-  created () {
-    axios.get('http://localhost:3000/users/1')
-    .then(response =>{
-      this.name = response.data;
-    })
-  }
 }
 </script>
 
 <style scoped>
-h1{
-  text-align: center;
-}
 .about-login{
   margin-top: 30px;
-  text-align: center;
-  padding:20px;
-  border-bottom: 60px solid crimson;
+  display: grid;
+  grid-template-columns: 1fr;
+  width:100%;
+  justify-items: center;
+  grid-row-gap:1em;
 }
 
 

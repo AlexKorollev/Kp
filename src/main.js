@@ -7,7 +7,6 @@ import VueRouter from 'vue-router'
 import router from './routes'
 import store from './store';
 
-
 Vue.use(Vuelidate);
 Vue.use(axios);
 Vue.use(VueRouter);
