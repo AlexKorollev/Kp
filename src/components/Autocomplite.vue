@@ -1,6 +1,6 @@
 <template>
   <div class="autocomplite">
-    <input type="search" placeholder="Search" id="input" v-model="search" @input="searchUsers()">
+    <input type="search" placeholder="Search" id="input" v-model="search">
     <div class="search-result" v-if="this.$store.state.autocomplite">
       <ul class="list-of-names">
         <!-- <router-link class="autocomplite-users" tag="li" v-for="(name, i) in names" :key="i" :to="'/user/'+ name.id"><a>{{ name.firstName }}  {{ name.lastName }}</a></router-link> -->
@@ -50,12 +50,12 @@ export default {
     }
   },
   created () {
-    // this.debounceFunc = _debounce(this.searchUsers, 1000);
+    this.debounceFunc = _debounce(this.searchUsers, 1000);
   },
   watch: {
-    // search: function () {
-    //   this.debounceFunc()
-    // },
+    search: function () {
+      this.debounceFunc()
+    },
   },
   mounted() {
     document.addEventListener('click', this.handleClickOutside);

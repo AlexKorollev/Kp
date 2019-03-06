@@ -5,7 +5,6 @@ import Test from './pages/Test'
 import Profile from './pages/Profile'
 import User from './pages/User'
 import store from './store'
-import App from "./App"
 
 export default new VueRouter({
   routes:[
