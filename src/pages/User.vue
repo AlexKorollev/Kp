@@ -25,7 +25,7 @@ export default {
     $route (toR, fromR) {
       this.id = toR.params['id']
     },
-  }
+  },
 }
 </script>
 <style scoped>

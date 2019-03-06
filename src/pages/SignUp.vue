@@ -50,7 +50,8 @@ export default {
       axios.post('http://localhost:3000/auth/register', {
       email: this.email,
       password: this.password,
-      firstName: this.firstName
+      firstName: this.firstName,
+      lastName: this.lastName
       })
       .then(response => {
         console.log(response);

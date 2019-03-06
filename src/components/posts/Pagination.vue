@@ -1,5 +1,5 @@
 <template>
-  <div class="pagination posts">
+  <div class="pagination">
     <div class="page-buttons">
       <button class="btn btn-page" @click="prevPage()">PREV</button>
       <button class="btn btn-page" @click="nextPage()">NEXT</button>
@@ -29,14 +29,28 @@ export default {
 }
 </script>
 <style scoped>
+.pagination{
+  width:301px;
+  display:grid;
+  border: 2px solid #ccc;
+  border-radius:5px;
+  grid-gap:1em;
+  text-align: center;
+  padding: 10px 0;
+  background: #efeeee;
+}
 .page-buttons{
   height: 40px;
   display:grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  padding:10px 0;
 }
 .btn-page{
   border-bottom:2px solid #3498db;
+}
+@media only screen and (max-width: 425px){
+  .btn{
+    font-size: 20px;
+  }
 }
 </style>

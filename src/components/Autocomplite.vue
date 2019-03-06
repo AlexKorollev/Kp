@@ -1,9 +1,10 @@
 <template>
   <div class="autocomplite">
-    <input type="search" placeholder="Search" v-model="search" @input="searchUsers()">
+    <input type="search" placeholder="Search" id="input" v-model="search" @input="searchUsers()">
     <div class="search-result" v-if="this.$store.state.autocomplite">
       <ul class="list-of-names">
-        <router-link class="autocomplite-users" tag="li" v-for="(name, i) in names" :key="i" :to="'/user/'+ name.id"><a>{{ name.firstName }}  {{ name.lastName }}</a></router-link>
+        <!-- <router-link class="autocomplite-users" tag="li" v-for="(name, i) in names" :key="i" :to="'/user/'+ name.id"><a>{{ name.firstName }}  {{ name.lastName }}</a></router-link> -->
+        <li @click="closeAutocomplite()" v-for="(name, i) in names" :key="i"><router-link class="autocomplite-users" :to="'/user/'+ name.id">{{ name.firstName }}  {{ name.lastName }}</router-link></li>
       </ul>
     </div>
   </div>
@@ -23,33 +24,45 @@ export default {
   },
   methods: {
     searchUsers () {
-      this.$store.commit("changeAutocomplite", true);
-      const options = {
-        method: 'GET',
-        headers: {
-          'Authorization': "bearer " + this.$store.state.access_token
-          },
-        url: 'http://localhost:3000/users?firstName_like='+this.search,
-      };
-      axios(options)
-      .then(response =>{
-        this.names = response.data;
-        console.log(response)
-      });
-    //   axios.get('http://localhost:3000/users?firstName&q='+this.search)
-    //   .then(response =>{
-    //     console.log(response);
-    // })
+      if(this.$store.state.login){
+        this.$store.commit("changeAutocomplite", true);
+        const options = {
+          method: 'GET',
+          headers: {
+            'Authorization': "bearer " + this.$store.state.access_token
+            },
+          url: 'http://localhost:3000/users?firstName_like='+this.search,
+        };
+        
+        axios(options)
+        .then(response =>{
+          this.names = response.data;
+        });
+      }
     },
+    closeAutocomplite () {
+      this.$store.commit("changeAutocomplite", false);
+    },
+    handleClickOutside(evt) {
+      if (!this.$el.contains(evt.target)) {
+        this.$store.commit("changeAutocomplite", false);
+      }
+    }
   },
   created () {
-    
+    // this.debounceFunc = _debounce(this.searchUsers, 1000);
   },
-  // watch: {
-  //   search: function () {
-  //     _debounce(this.searchUsers(), 1000);
-  //   }
-  // }
+  watch: {
+    // search: function () {
+    //   this.debounceFunc()
+    // },
+  },
+  mounted() {
+    document.addEventListener('click', this.handleClickOutside);
+  },
+  destroyed() {
+    document.removeEventListener('click', this.handleClickOutside);
+  }
 
 }
 </script>

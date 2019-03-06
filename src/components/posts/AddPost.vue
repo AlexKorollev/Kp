@@ -83,7 +83,7 @@ textarea{
   width:150px;
   justify-items: center;
   border-radius: 24px;
-  margin: 20px 0;
+  margin: 5px 0 19px 0;
   transition: 0.5s;
 }
 .submit-post:hover{

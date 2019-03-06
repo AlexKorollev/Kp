@@ -42,7 +42,9 @@ export default {
 .all-posts{
   width:100%;
   text-align:center;
-  border-bottom: 2px solid #ccc;
+  border: 2px solid #ccc;
+  background: #efeeee;
+  border-radius:5px;
 }
 .all-posts>div{
   word-break: break-all;
@@ -58,11 +60,9 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   margin-top: 20px;
-  border: 2px solid #ccc;
   border-radius:5px;
   font-size: 15px;
   justify-items: center;
-  background: #efeeee;
   grid-gap:1em;
 }
 </style>
