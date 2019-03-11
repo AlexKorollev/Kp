@@ -33,7 +33,10 @@ export default {
       })
       .then(response =>{
         this.$store.commit("incrementTotalPosts", 1)
-        api.refreshPosts(this.$store.state.currentPage);
+        console.log(this.$store.state.limit)
+        api.refreshPosts(this.$store.state.limit);
+        // store.commit("changeLimit", -10);
+        
     })
     },
   }

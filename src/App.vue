@@ -1,20 +1,20 @@
 <template>
-<div>
-  <header>
-    <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link>
-    <Autocomplite class="autocomplite"/>
-    <div class="menu"  >
-      <button class="btn" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">Profile</router-link></button>
-      <button class="btn" @click ="logOut" v-if="getLogin"><router-link class="log-out btn" :to="'/'" >Log out</router-link></button>
-      <button class="btn login" @click="openModal" v-if="!getLogin">Login</button>
-      <button class="btn" v-if="!getLogin"><router-link class="sign-up btn" :to="'/sign-up'">Sign Up</router-link></button>
-    </div>
-    <Modal :modalOpened="modalOpened" @close="closeModal" />
-  </header>
   <div>
-    <router-view></router-view>
+    <header>
+      <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link>
+      <Autocomplite class="autocomplite"/>
+      <div class="menu"  >
+        <button class="btn" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">Profile</router-link></button>
+        <button class="btn" @click ="logOut" v-if="getLogin"><router-link class="log-out btn" :to="'/'" >Log out</router-link></button>
+        <button class="btn login" @click="openModal" v-if="!getLogin">Login</button>
+        <button class="btn" v-if="!getLogin"><router-link class="sign-up btn" :to="'/sign-up'">Sign Up</router-link></button>
+      </div>
+      <Modal :modalOpened="modalOpened" @close="closeModal" />
+    </header>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
