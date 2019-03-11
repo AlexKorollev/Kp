@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    counter: 0,
+    counter: 1,
     login: false,
     loginName: '',
     STORAGE_KEY: 'login-storage',
@@ -13,10 +13,13 @@ export default new Vuex.Store({
     access_token: '',
     autocomplite: false,
     currentPage: 1,
-    perPage: 5,
+    perPage: 10,
     totalPosts: 0,
     posts: {},
     query: '',
+    limit: 10,
+    loading: false,
+    users: {},
   },
   getters: {
     computedCounter (state) { 
@@ -26,6 +29,9 @@ export default new Vuex.Store({
   mutations: {
     changeCounter(state, payload){
       state.counter += payload;
+    },
+    establishCounter(state,payload){
+      state.counter = payload;
     },
     changeLogin(state, bool){
       state.login = bool;
@@ -48,17 +54,41 @@ export default new Vuex.Store({
     establishCurrentPage(state,num){
       state.currentPage = num;
     },
+    changePerPage(state, num){
+      state.perPage += num;
+    },
     changeTotalPosts(state,total){
       state.totalPosts = total;
     },
     incrementTotalPosts(state,num){
-      state.totalPosts += num;
+      state.totalPosts = num + state.totalPosts*1;
     },
     changePosts(state,post){
       state.posts = post;
     },
     establishQuery(state, query){
       state.query = query || '';
+    },
+    establishLimit(state, limit){
+      state.limit = limit;
+    },
+    changeLimit(state, limit){
+      state.limit += limit;
+    },
+    changeLoading(state, bool){
+      state.loading = bool;
+    },
+    deletePost(state, id){
+      console.log(state.posts)
+      for (let key in state.posts) {
+        if (state.posts.hasOwnProperty(key) && (state.posts[key].id == id)) {
+          state.posts.splice(key,1);
+          break;
+        }
+       }
+    },
+    establishUsers(state,users){
+      state.users = users;
     }
   },
   actions: {

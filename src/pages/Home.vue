@@ -2,7 +2,7 @@
   <div class="home-page">
     <div v-if="this.$store.state.login" class="about-login">
       <h1>Last posts</h1>
-      <Pagination />
+      <!-- <Pagination /> -->
       <Posts :query="'?'" />
     </div>
     <div v-else class="about-login">
@@ -14,12 +14,12 @@
 
 <script>
 import Posts from ".././components/posts/Posts";
-import Pagination from ".././components/posts/Pagination"
+// import Pagination from ".././components/posts/Pagination"
 export default {
 
   components: {
     Posts,
-    Pagination
+    // Pagination
   },
 }
 </script>

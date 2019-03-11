@@ -16,6 +16,7 @@ const db = low(adapter)
 server.use(middlewares);
 server.use(bodyParser.urlencoded({extended: true}))
 server.use(bodyParser.json())
+server.use('/',(req, res, next) => setTimeout(() => next(), Math.floor(Math.random() * 2000)))
 
 const SECRET_KEY = '123456789'
 const expiresIn = '10h'

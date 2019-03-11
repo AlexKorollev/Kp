@@ -1,7 +1,7 @@
 <template>
   <div class="about-login">
     <h1>About user {{ id }}</h1>
-    <Pagination />
+    <!-- <Pagination /> -->
     <Posts :query="'?userId='+this.id"/>
   </div>
 </template>
@@ -9,11 +9,11 @@
 <script>
 import axios from 'axios'
 import Posts from ".././components/posts/Posts";
-import Pagination from ".././components/posts/Pagination"
+// import Pagination from ".././components/posts/Pagination"
 export default {
   name: 'User',
   components: {
-    Pagination,
+    // Pagination,
     Posts,
   },
   data() {
