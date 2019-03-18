@@ -1,9 +1,10 @@
 import VueRouter from 'vue-router'
 import Home from './pages/Home'
 import SignUp from './pages/SignUp'
-import Test from './pages/Test'
+// import Test from './pages/Test'
 import Profile from './pages/Profile'
 import User from './pages/User'
+import ProfileEdit from './pages/ProfileEdit'
 import store from './store'
 
 export default new VueRouter({
@@ -17,10 +18,10 @@ export default new VueRouter({
       path: '/sign-up', 
       component: SignUp
     },
-    {
-      path: '/test',
-      component: Test
-    },
+    // {
+    //   path: '/test',
+    //   component: Test
+    // },
     {
       path: '/profile',
       component: Profile,
@@ -32,11 +33,33 @@ export default new VueRouter({
         else {
           next('/?login=false');
         }
-      }
+      },
+    },
+    {
+      path: '/edit',
+      component: ProfileEdit,
+      beforeEnter (to, from, next) {
+        store.dispatch('loginState')
+        if(store.state.login) {
+          next(true);
+        }
+        else {
+          next('/?login=false');
+        }
+      },
     },
     {
       path: '/user/:id',
-      component: User
+      component: User,
+      beforeEnter (to, from, next) {
+        store.dispatch('loginState')
+        if(store.state.login) {
+          next(true);
+        }
+        else {
+          next('/?login=false');
+        }
+      },
     }
   ],
   mode: 'history'

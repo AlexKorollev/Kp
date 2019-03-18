@@ -11,9 +11,9 @@ export default {
     };
     return axios(options)
   },
-  refreshPosts (limit) {
+  refreshPosts (page) {
     if(store.state.login){
-      this.sendRequest(store.state.query+'&_page=1&_limit='+limit+'&_sort=id&_order=desc')
+      this.sendRequest(store.state.query+'&_page='+page+'&_limit=10&_sort=id&_order=desc')
       .then(response=>{
         store.commit("changeTotalPosts", response.headers['x-total-count'])
         store.commit("changePosts",response.data);
@@ -23,12 +23,11 @@ export default {
     else{
       this.sendRequest(store.state.query)
       .then(response=>{
-        store.commit("changePosts", response.data || "create ur first post");
+        store.commit("establishPosts", response.data || "create ur first post");
       });
     }
   },
-  deletePost (id){
-    console.log(store.state.totalPosts)
+  deletePost (id, index){
     const options = {
       method: 'DELETE',
       headers: {
@@ -39,9 +38,22 @@ export default {
     axios(options)
     .then(response=>{
       store.commit("incrementTotalPosts", -1)
-      store.commit("deletePost", id);
+      store.commit("deletePost",index);
       store.commit("changePerPage", -1);
-      console.log(store.state.perPage + "   " + store.state.totalPosts)
     })
-  }
+  },
+  searchUsers () {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Authorization': "bearer " + store.state.access_token
+        },
+      url: 'http://localhost:3000/users/',
+    };
+    axios(options)
+    .then(response =>{
+      store.commit("establishUsers", response.data)
+      store.commit("changeLoading", false)
+    });
+  },
 }

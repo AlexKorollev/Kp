@@ -1,30 +1,52 @@
 <template>
   <div class="about-login">
     <h1>About user {{ id }}</h1>
-    <!-- <Pagination /> -->
-    <Posts :query="'?userId='+this.id"/>
+    <Posts :query="'?userId='+id" :users="users"/>
   </div>
+ 
 </template>
 
 <script>
 import axios from 'axios'
 import Posts from ".././components/posts/Posts";
-// import Pagination from ".././components/posts/Pagination"
+import Loader from '.././components/Loader'
+import store from '../store'
 export default {
   name: 'User',
   components: {
-    // Pagination,
     Posts,
+    Loader,
   },
   data() {
     return {
-      id: this.$router.currentRoute.params['id']
+      id: this.$router.currentRoute.params['id'],
+      users: [],
     }
   },
   watch: {
     $route (toR, fromR) {
       this.id = toR.params['id']
     },
+  },
+  methods: {
+    searchUsers () {
+      const options = {
+        method: 'GET',
+        headers: {
+          'Authorization': "bearer " + this.$store.state.access_token
+          },
+        url: 'http://localhost:3000/users/',
+      };
+      axios(options)
+      .then(response =>{
+        store.commit("establishUsers", response.data)
+        this.$store.commit("establishQuery", '?')
+        this.users = response.data;
+      });
+    },
+  },
+  mounted() {
+    this.searchUsers()
   },
 }
 </script>

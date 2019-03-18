@@ -43,6 +43,7 @@ export default {
     },
     closeAutocomplite () {
       this.$store.commit("changeAutocomplite", false);
+      
     },
     handleClickOutside(evt) {
       if (!this.$el.contains(evt.target)) {
@@ -91,6 +92,8 @@ export default {
   width:100%;
   position: absolute;
   word-break: normal;
+  z-index: 100;
+  
 }
 .list-of-names{
   background: #efeeee;
@@ -99,6 +102,7 @@ export default {
   border-bottom-left-radius: 12px;
   max-height: 250px;
   overflow: auto;
+  box-shadow: 0px 3px 16px -3px #797979;
 }
 .list-of-names li{
   list-style-type: none;
@@ -116,6 +120,10 @@ export default {
 @media only screen and (max-width: 425px){
   .autocomplite input{
     font-size: 15px;
+  }
+
+  .list-of-names{
+    width: 200px;
   }
 }
 </style>

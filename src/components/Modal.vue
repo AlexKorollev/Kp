@@ -14,7 +14,7 @@
           <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$dirty">Password field is required</div>
         </div>
         <div class="invalid-feedback" v-if="!uniqLogin">This email not exist or incorrect password</div>
-        <button class="btn submit" type="submit" :disabled="$v.$invalid">Submit</button>
+        <button class="btn submit-login" type="submit" :disabled="$v.$invalid">Submit</button>
       </form>
     </div>
   </transition>
@@ -67,6 +67,7 @@ export default {
         this.$store.commit("changeLoginName", response.data.user.firstName);
         this.$store.commit("establishUserId", response.data.user.id);
         this.$store.commit("establishAccessToken", response.data.access_token)
+        this.$store.commit("establishQuery", '?')
         this.$v.$reset();
       })
       .catch(error => {
@@ -77,7 +78,8 @@ export default {
   },
 }
 </script>
-<style scoped>
+<style>
+
 .modal,.modal-background{
   position: fixed;
   left:0;
@@ -100,7 +102,7 @@ export default {
 .modal-content{
   background-color: #efeeee;
   z-index:50;
-  padding: 2em 4em;
+  padding: 2em 52px;
   display:grid;
   grid-template-columns: 1fr;
   justify-items: center;
@@ -120,12 +122,11 @@ export default {
   border-radius: 24px;
   transition: 0.25s;
   font-size: 20px;
-  
 }
 .modal-content input[type=email]{
   color: #6b6b6b;
 }
-h1{
+.modal-content h1{
   font-size: 30px;
   text-transform: uppercase;
   font-weight: 700;
@@ -134,20 +135,19 @@ h1{
   width:280px;
   border-color: #2ecc71;
 }
-.form-group{
+.modal-content .form-group{
   display: grid;
   grid-template-columns: 1fr;
 }
-.submit{
+.submit-login{
   border-bottom: 2px solid #3498db;
   width: 200px;
   transition: 0.25s;
   font-size: 20px;
   padding-bottom:5px;
 }
-.submit:hover{
+.submit-login:hover{
   border-bottom: 2px solid #2ecc71;
-  width: 100px;
   color: #6b6b6b;
 }
 .invalid-feedback{
@@ -178,7 +178,7 @@ h1{
   cursor: pointer;
   width:10px;
   height: 10px;
-  
+
 }
 @media only screen and (max-width: 1024px) {
   .modal-background{
