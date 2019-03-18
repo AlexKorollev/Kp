@@ -1,6 +1,6 @@
 <template>
   <div class="single-post">
-    <h2>No Posts</h2>
+    <h2>{{ $t('noPosts') }}</h2>
   </div>
 </template>
 <style scoped>

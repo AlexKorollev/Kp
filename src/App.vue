@@ -8,14 +8,20 @@
       <!-- <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link> -->
       <Autocomplite class="autocomplite"/>
       <div class="menu" v-if="getLogin">
-        <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">Home</router-link></button>
-        <button class="btn" @click="switchMenu()" ><router-link class="profile btn" :to="'/profile'">Profile</router-link></button>
-        <button class="btn" @click ="logOut">Log Out</button>
+        <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+        <button class="btn" @click="switchMenu()" ><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
+        <button class="btn" @click ="logOut">{{ $t('logOut') }}</button>
+        <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+          <flag :iso="entry.flag" v-bind:squared=false /> {{entry.title}} 
+        </button>
       </div>
       <div class="menu" v-else>
-        <button class="btn"><router-link class="profile btn" :to="'/'">Home</router-link></button>
-        <button class="btn login" @click="openModal">Login</button>
-        <button class="btn"><router-link class="sign-up btn" :to="'/sign-up'">Sign Up</router-link></button>
+        <button class="btn"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+        <button class="btn login" @click="openModal">{{ $t('login') }}</button>
+        <button class="btn"><router-link class="sign-up btn" :to="'/sign-up'">{{ $t('singUp') }}</router-link></button>
+        <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+          <flag :iso="entry.flag" v-bind:squared=false /> {{entry.title}} 
+        </button>
       </div>
       <div class="burger" @click="switchMenu()">
         <div class="burger-line1"></div>
@@ -35,6 +41,7 @@ import Modal from "./components/Modal"
 import Autocomplite from "./components/Autocomplite"
 import api from "./helpers/api"
 import scroll from './helpers/scroll'
+import i18n from './plugins/i18n';
 export default { 
   components:{
     Modal,
@@ -43,6 +50,10 @@ export default {
   data () {
     return {
       modalOpened: false,
+      languages: [
+            { flag: 'us', language: 'en', title: 'English' },
+            { flag: 'ru', language: 'ru', title: 'Русский' }
+        ]
     }
   },
   computed: {
@@ -139,6 +150,9 @@ export default {
       let burger = document.querySelector('.burger').classList.toggle('burger-toggle')
      
     },
+    changeLocale(locale) {
+        i18n.locale = locale;
+    }
     
   },
   mounted () {
@@ -217,6 +231,7 @@ header{
   justify-content: space-around;
   align-items: flex-start;
 }
+
 .btn{
   background: none;
   border:none;
@@ -299,16 +314,16 @@ header{
     background: var(--theme-header-background);
     grid-template-columns: 1fr;
     justify-items: center;
-    grid-gap:1em;
+    grid-gap:2em;
     box-shadow: var(--theme-header-box-shadow);
-    padding: 10px 0;
-    
+    padding: 20px 0;
+    z-index:50;
   }
 }
 @media only screen and (max-width: 425px){
   
   .btn{
-    font-size: 15px;
+    font-size: 20px;
   }
   .menu-active{
     width: 100%;

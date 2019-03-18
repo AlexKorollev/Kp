@@ -4,7 +4,7 @@
       <img :src="getUser.avatar" width="" alt="" class="profile-image">
       <div class="profile-main-info">
         <div class="profile-name">{{ getUser.firstName }} {{ getUser.lastName }}</div>
-        <button class="btn submit-post"><router-link class="link" :to="'/edit'">Edit profile</router-link></button>
+        <button class="btn submit-post"><router-link class="link" :to="'/edit'">{{ $t('profileEdit') }}</router-link></button>
       </div>
     </div>
   </div>
@@ -68,6 +68,8 @@ export default {
   justify-items: center;
 }
 .submit-post{
+  width: auto;
+  padding: 0 15px;
   height: 40px;
 }
 .submit-post a:hover{
@@ -76,7 +78,7 @@ export default {
 }
 @media only screen and (max-width: 768px) {
   .profile-info-block{
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.6fr 1fr;
     justify-self: center;
     min-width: 400px;
   }
@@ -107,8 +109,9 @@ export default {
     width: 150px;
   }
   .submit-post{
-    width:120px;
-    height: 35px;
+    width:auto;
+    font-size: 15px;
+    padding: 0 5px;
   }
   .submit-post:hover{
     width:150px;

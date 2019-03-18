@@ -1,7 +1,7 @@
 <template>
   <div class="validate">
     <form @submit.prevent="onSubmit" autocomplete="off">
-      <h1 class="title">Registration</h1>
+      <h1 class="title">{{ $t('singUp') }}</h1>
       <div class="form-group">
         <input type="text" id="firstName" placeholder="* enter ur first name" class="form-control" :class="{'is-invalid': $v.firstName.$error}" @blur="$v.firstName.$touch()" v-model="firstName">
         <div class="invalid-feedback" v-if="!$v.firstName.required && $v.firstName.$dirty">First Name field is required</div>
@@ -26,7 +26,7 @@
         <input type="password" id="confirm" placeholder="* repeat ur password" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
         <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$dirty">Password not match</div>
       </div>
-      <button class="btn submit" type="submit" :disabled="$v.$invalid" >Submit</button>
+      <button class="btn submit" type="submit" :disabled="$v.$invalid" >{{ $t('submitButton') }}</button>
     </form>
   </div>
 </template>
@@ -95,6 +95,7 @@ export default {
   justify-content: center;
   width:100vw;
   height: 80vh;
+  background: var(--body);
 }
 form{
   background: var(--theme-background);
@@ -162,7 +163,6 @@ h1{
 
 @media only screen and (max-width: 768px) {
   .validate{
-    background: #efeeee;
     height: 100vh;
   }
 

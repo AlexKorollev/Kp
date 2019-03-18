@@ -1,6 +1,6 @@
 <template>
   <div class="about-login">
-    <h1>About user {{ id }}</h1>
+    <h1>{{ $t('aboutUser') }} {{ users[id-1].firstName }}</h1>
     <Posts :query="'?userId='+id" :users="users"/>
   </div>
  

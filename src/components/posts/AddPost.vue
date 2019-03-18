@@ -7,7 +7,7 @@
         <ProgressBar class="icon" :post="post"/>
       </div>
       
-      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">Submit</button>
+      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">{{ $t('submitButton') }}</button>
     </div>
   </div>
 </template>

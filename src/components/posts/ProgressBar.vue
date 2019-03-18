@@ -73,6 +73,7 @@ export default {
   width:30px;
   height: 30px;
   position: relative;
+  z-index:40;
 }
 #progress-bar-circle{
   width:31px;

@@ -2,11 +2,11 @@
   <div class="about-login">
     <div>
       <div v-if="this.$store.state.login" class="home-page">
-        <h1>Last posts</h1>
+        <h1>{{ $t('lastPosts') }}</h1>
         <Posts :query="'?'" :users="users"/>
       </div>
       <div v-else class="home-page">
-        <h1>Last posts</h1>
+        <h1>{{ $t('lastPosts') }}</h1>
         <Posts :query="'?public=true&_page=1&_limit=5&_sort=id&_order=desc'" :users="users"/>
       </div>
     </div>

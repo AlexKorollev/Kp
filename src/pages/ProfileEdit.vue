@@ -2,7 +2,7 @@
   <div>
     <div class="profile-edit-page" v-if="user!==''">
       <div class="profile-edit-block">
-        <h1 class="title">Edit Profile</h1>
+        <h1 class="title">{{ $t('profileEdit') }}</h1>
         <h2 v-if="error" class="error-title">U don't change ur fuelds</h2>
         <div class="profile-edit-main">
 
@@ -22,8 +22,8 @@
             </div>
             <div></div>
             <div class="button-group">
-              <button class="btn submit-post" type="submit" :disabled="$v.$invalid" @click="onSubmit()">Submit</button>
-              <button class="btn submit-post cancel" type="submit"><router-link class="link" :to="'/profile'">Cancel</router-link></button>
+              <button class="btn submit-post" type="submit" :disabled="$v.$invalid" @click="onSubmit()">{{ $t('submitButton') }}</button>
+              <button class="btn submit-post cancel" type="submit"><router-link class="link" :to="'/profile'">{{ $t('cancelButton') }}</router-link></button>
             </div>
           </div>
           
