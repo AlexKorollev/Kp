@@ -111,46 +111,8 @@ export default new Vuex.Store({
     },
     establishMode(state, mode){
       state.mode = mode;
-      
-      if(state.mode=== 'dark'){
-       
-        let singlePosts = document.querySelectorAll('div > .single-post')
-        
-        let singlePostsTitle = document.querySelectorAll('div > .post-title-name')
-        let singlePostsAvatars = document.querySelectorAll('div > .post-avatar > img');
-        for(let i=0;i<singlePosts.length;i++){
-          singlePosts[i].classList.add('dark-single-post');
-          singlePostsAvatars[i].classList.add('dark-post-avatar')
-          singlePostsTitle[i].classList.add('dark-post-title-name');
-        }
-        
-        document.querySelector('div > .posts').classList.add('dark-posts');
-        document.querySelector('div > .textarea').classList.add('dark-textarea');
-        document.querySelector('div > .profile-name').classList.add('dark-profile-name')
-        document.querySelector('body').classList.add('dark-body');
-        document.querySelector('header').classList.add('dark-header');
-        document.querySelector('div > .profile-image').classList.add('dark-profile-image');
-        document.querySelector('h1').classList.add('dark-title');
-
-      } 
-      else if(state.mode === 'light'){
-        let singlePosts = document.querySelectorAll('div > .single-post');
-        let singlePostsAvatars = document.querySelectorAll('div > .post-avatar > img');
-        let singlePostsTitle = document.querySelectorAll('div > .post-title-name');
-        for(let i=0;i<singlePosts.length;i++){
-          singlePosts[i].classList.remove('dark-single-post');
-          singlePostsAvatars[i].classList.remove('dark-post-avatar')
-          singlePostsTitle[i].classList.remove('dark-post-title-name')
-        }
-        
-        document.querySelector('div > .posts').classList.remove('dark-posts')
-        document.querySelector('div > .textarea').classList.remove('dark-textarea')
-        document.querySelector('div > .profile-name').classList.remove('dark-profile-name')
-        document.querySelector('body').classList.remove('dark-body');
-        document.querySelector('header').classList.remove('dark-header');
-        document.querySelector('div > .profile-image').classList.remove('dark-profile-image');
-        document.querySelector('h1').classList.remove('dark-title');
-      }
+      //   document.querySelector('div > .profile-image').classList.add('dark-profile-image');
+      //   document.querySelector('h1').classList.add('dark-title');
     }
   },
   actions: {

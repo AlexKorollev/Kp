@@ -22,24 +22,7 @@ export default {
     getUser () {
       return this.users[this.$store.state.loginId-1]
     },
-    getMode () {
-      if ((localStorage.getItem('mode') || 'dark') === 'dark'){
-        document.querySelector('div > .profile-image').classList.add('dark-profile-image')
-        document.querySelector('div > .profile-name').classList.add('dark-profile-name')
-        
-      }
-      else{
-        document.querySelector('div > .profile-image').classList.remove('dark-profile-image')
-        document.querySelector('div > .profile-name').classList.remove('dark-profile-name')
-      }
-    },
   },
-  methods: {
-    
-  },
-  mounted () {
-    this.getMode;
-  }
 }
 </script>
 <style scoped>
@@ -58,18 +41,19 @@ export default {
 .profile-image{
   width: 200px;
   height: 200px;
-  border: 2px solid #9E9E9E;
+  border: var(--theme-profile-border);
   border-radius: 50%;
   justify-self: center;
+  transition: 0.25s;
 }
-.dark-profile-image{
-  border: 2px solid #1C2532;
-}
+
 .profile-main-info{
   max-width:250px;
 }
 .profile-name{
   text-align: center;
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 .dark-profile-name{
   color: #fff;

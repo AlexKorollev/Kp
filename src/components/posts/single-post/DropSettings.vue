@@ -56,11 +56,11 @@ export default {
 .drop-settigs-content{
   width:200px;
   min-height: 40px;
-  background: #fff;
+  background: var(--theme-background);
   z-index:50;
   /* border:2px solid #ccc; */
   border-radius: 2px;
-  box-shadow: 0px 3px 16px -3px #797979;
+  box-shadow: var(--theme-box-shadow);
   display:grid;
   grid-template-columns: 1fr;
   justify-items: center;

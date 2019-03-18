@@ -40,7 +40,7 @@ export default {
       axios(options)
       .then(response =>{
         store.commit("establishUsers", response.data)
-        this.$store.commit("establishQuery", '?')
+        this.$store.commit("establishQuery", "?userId="+this.id)
         this.users = response.data;
       });
     },
@@ -58,6 +58,10 @@ export default {
   width:100%;
   justify-items: center;
   grid-row-gap:1em;
+}
+.about-login h1{
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 </style>
 

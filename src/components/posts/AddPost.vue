@@ -1,13 +1,13 @@
 <template>
   <div class="add-post">
-    <div class="posts">
+    <div class="add-post-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="post-textarea">
         <textarea class="textarea" placeholder="Wanna tell something?" v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
         <ProgressBar class="icon" :post="post"/>
       </div>
       
-      <button class="btn submit submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">Submit</button>
+      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">Submit</button>
     </div>
   </div>
 </template>
@@ -57,6 +57,7 @@ export default {
         }
       })
       .then(response =>{
+        this.post = '';
         this.$store.commit("incrementTotalPosts", 1)
         this.$store.commit("addPost", [response.data]);
         this.$store.commit("changeLoading", false);
@@ -77,16 +78,18 @@ export default {
 .add-post{
   width:100%;
 }
-.posts{
+.add-post-block{
   width:400px;
   display: grid;
   grid-template-columns: 1fr;
-  border-top: 2px solid #ccc;
-  border-bottom: 2px solid #ccc;
+  border-top: var(--theme-border-top);
+  border-bottom: var(--theme-border-bottom);
   border-radius:2px;
-  background: #efeeee;
+  background: var(--theme-background);
   grid-gap:1em;
   max-height: 600px;
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 .textarea{
   box-sizing: border-box;
@@ -96,13 +99,15 @@ export default {
   padding: 10px 40px 10px 10px;
   overflow-y:hidden;
   outline: none;
-  min-height: 90px;
+  min-height: 150px;
   width:100%;
   border:none;
   border-bottom: 2px solid #3498db;
-  background: #efeeee;
+  background: var(--theme-background);
+  color: var(--theme-color);
+  transition: 0.25s;
 }
-.dark-posts, .dark-textarea{
+/* .dark-posts, .dark-textarea{
   background: rgb(21, 32, 43);
   color:#fff;
 }
@@ -110,10 +115,10 @@ export default {
   border-bottom: 2px solid rgb(56, 68, 77);
   border-top: 2px solid rgb(56, 68, 77);
   
-}
+} */
+
 .textarea:focus{
   border-bottom: 2px solid #2ecc71;
-  min-height: 300px;
 }
 .cancel-textarea{
   border-bottom: 2px solid #e85a50;
@@ -125,19 +130,17 @@ export default {
   position: relative;
 }
 
-.posts .icon{
+.add-post-block .icon{
   position: absolute;
   right: 2%;
   bottom:15px;
 }
-.posts button {
+.add-post-block button {
   justify-self: center;
-}
-.red{
-  color:red;
 }
 .submit-post{
   transition: 0.25s;
+  color: #3498db;
 }
 .submit-post:hover{
   color: #2ecc71;
@@ -153,7 +156,7 @@ export default {
   .submit-post{
     font-size: 20px;
   }
-  .posts{
+  .add-post-block{
     width:280px;
   }
   .add-post{

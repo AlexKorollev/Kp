@@ -6,7 +6,8 @@
         <div class="post-title">
           <router-link class="post-title-name" :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}}</router-link>
           <div v-if="path == '/profile'" class="post-title-icon" @click="openDropSettings">
-            <img src="/src/assets/download.png" width="15" height="15" alt="">
+            <img v-if="this.mode == 'dark'" src="/src/assets/white-arrow.png" width="15" height="15" alt="">
+            <img v-else src="/src/assets/black-arrow.png" width="15" height="15" alt="">
           </div>
           <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index">qwe</DropSettings>
         </div>
@@ -18,6 +19,7 @@
 </template>
 <script>
 import api from '../../../helpers/api'
+import scroll from '../../../helpers/scroll'
 import DropSettings from './DropSettings'
 export default {
   name: 'SinglePost',
@@ -36,28 +38,6 @@ export default {
     }
   },
   computed: {
-    getMode () {
-      if ((localStorage.getItem('mode') || 'dark') === 'dark'){
-        let singlePosts = document.querySelectorAll('div > .single-post')
-        let singlePostsAvatars = document.querySelectorAll('div > .post-avatar > img');
-        let singlePostsTitle = document.querySelectorAll('div > .post-title-name')
-        for(let i=0;i<singlePosts.length;i++){
-          singlePosts[i].classList.add('dark-single-post')
-          singlePostsAvatars[i].classList.add('dark-post-avatar')
-          singlePostsTitle[i].classList.add('dark-post-title-name')
-        }
-      }
-      else{
-        let singlePosts = document.querySelectorAll('div > .single-post')
-        let singlePostsAvatars = document.querySelectorAll('div > .post-avatar > img');
-        let singlePostsTitle = document.querySelectorAll('div > .post-title-name')
-        for(let i=0;i<singlePosts.length;i++){
-          singlePosts[i].classList.remove('dark-single-post')
-          singlePostsAvatars[i].classList.remove('dark-post-avatar')
-          singlePostsTitle[i].classList.remove('dark-post-title-name')
-        }
-      }
-    },
     mode () {
       return this.$store.state.mode;
     }
@@ -66,9 +46,11 @@ export default {
     
     openDropSettings () {
       this.visibleStatus = true;
+      scroll.disableScroll();
     },
     closeDropSettings () {
       this.visibleStatus = false;
+      scroll.enableScroll();
     },
     openModal () {
       this.modalOpened = true;
@@ -83,33 +65,20 @@ export default {
     },
 
   },
-  watch: {
-    
-  },
-  mounted () {
-    this.getMode;
-  }
 }
 
 </script>
 <style scoped>
 .single-post{
-  /* max-width:400px; */
   width:400px;
   border-radius:2px;
   font-size: 15px;
-  border-top: 2px solid #ccc;
-  border-bottom: 2px solid #ccc;
-  background: #efeeee;
-  /* margin-top: 20px; */
+  border-top: var(--theme-border-top);
+  border-bottom: var(--theme-border-bottom);
+  background: var(--theme-background);
   margin-bottom:20px;
-  color:#4e4343;
-}
-.dark-single-post{
-  background: rgb(21, 32, 43);
-  border-bottom: 2px solid rgb(56, 68, 77);
-  border-top: 2px solid rgb(56, 68, 77);
-  color:#fff;
+  color:var(--theme-color);
+  transition: 0.25s;
 }
 .post-content{
   display: grid;
@@ -119,13 +88,12 @@ export default {
 .avatar-img{
   width: 50px;
   height: 50px;
-  border: 1px solid #9E9E9E;
+  border: var(--theme-posts-border);
   border-radius:50%;
   margin: 5px 10px;
+  transition: 0.25s;
 }
-.dark-post-avatar{
-  border: 1px solid #1C2532;
-}
+
 .post-main-content{
   text-align:left;
   word-break: break-all;
@@ -149,18 +117,15 @@ export default {
   margin-top: 3px;
   text-align: center;
   cursor: pointer;
+  transition: 0.25s;
 }
 .post-title-name{
   font-weight: bold;
   text-decoration:none;
-  color:#4e4343;
+  color:var(--theme-color);
+  transition: 0.25s;
 }
-.dark-post-title-name{
-  color: #fff;
-}
-.post-title-icon{
 
-}
 .drop-settings{
   position: absolute;
   left: 105px;

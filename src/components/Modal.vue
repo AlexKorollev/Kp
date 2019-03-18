@@ -3,7 +3,7 @@
     <div class="modal" v-if="modalOpened">
       <div class="modal-background" @click="emitClose"></div>
       <form class="modal-content" @submit.prevent="onSubmit" autocomplete="off">
-        <div class="close" @click="emitClose"><img src="src/assets/close2.png" width="30" height="30" alt=""></div>
+        <div class="close" @click="emitClose"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
         <h1 class="title">Login</h1>
         <div class="form-group">
           <input type="email" id="emailLogin" class="form-control" placeholder="enter ur login" :class="{'is-invalid': $v.emailLogin.$error}" @blur="$v.emailLogin.$touch()" v-model="emailLogin">
@@ -89,7 +89,7 @@ export default {
   z-index:1000;
 }
 .modal-background{
-  background: rgba(10,10,10,0.4);
+  background: var(--theme-modal-background);
   z-index:40;
 }
 .modal{
@@ -100,15 +100,15 @@ export default {
   transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 .modal-content{
-  background-color: #efeeee;
+  background-color: var(--theme-background);
   z-index:50;
-  padding: 2em 52px;
+  padding: 2em 2.5em;
   display:grid;
   grid-template-columns: 1fr;
   justify-items: center;
   grid-gap:1em;
   border-radius: 2px;
-  width:300px;
+  width:100%;
 }
 .modal-content input{
   border: none;
@@ -118,18 +118,19 @@ export default {
   padding: 14px 0px;
   width: 200px;
   outline: none;
-  color:black;
+  color: var(--theme-color);
   border-radius: 24px;
   transition: 0.25s;
   font-size: 20px;
 }
 .modal-content input[type=email]{
-  color: #6b6b6b;
+  color: var(--theme-color);
 }
 .modal-content h1{
   font-size: 30px;
   text-transform: uppercase;
   font-weight: 700;
+  color: var(--theme-color);
 }
 .modal-content input:focus{
   width:280px;
@@ -182,7 +183,7 @@ export default {
 }
 @media only screen and (max-width: 1024px) {
   .modal-background{
-    background: #efeeee;
+    background: var(--theme-background);
   }
 }
 /* .modal-content input{

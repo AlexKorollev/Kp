@@ -26,20 +26,6 @@
               <button class="btn submit-post cancel" type="submit"><router-link class="link" :to="'/profile'">Cancel</router-link></button>
             </div>
           </div>
-
-          <!-- <div class="form-group">
-            <label for="editLastName">Last Name</label>
-            <input type="password" id="password" placeholder="* enter ur password" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
-            <div class="invalid-feedback" v-if="!$v.password.minLength">min length of password is {{ $v.password.$params.minLength.min }}. Now it is {{ password.length }}</div>
-            <div class="invalid-feedback" v-if="!$v.password.required && $v.password.$dirty">Password field is required</div>
-          </div>
-          
-          <div class="form-group">
-            <label for="editLastName">Last Name</label>
-            <input type="password" id="confirm" placeholder="* repeat ur password" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
-            <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$dirty">Password not match</div>
-          </div> -->
-          
           
         </div>
       </div>
@@ -59,9 +45,6 @@ export default {
     return {
       editFirstName: '',
       editLastName: '',
-      // editOldPassword: '',
-      // editNewPassword: '',
-      // confirmNewPassword: '',
       user: '',
       error: false,
     }
@@ -76,29 +59,7 @@ export default {
     editLastName: {
       required,
     },
-    // editOldPassword: {
-    //   required
-    // },
-    // editNewPassword: {
-    //   minLength: minLength(6),
-    //   required
-    // },
-    // confirmNewPassword: {
-    //   sameAs: sameAs('password')
-    // },
     
-  },
-  computed: {
-    // getMode () {
-    //   if ((localStorage.getItem('mode') || 'dark') === 'dark'){
-    //     document.querySelector('div > .posts').classList.add('dark-posts');
-    //     document.querySelector('div > .textarea').classList.add('dark-textarea');
-    //   }
-    //   else{
-    //     document.querySelector('div > .posts').classList.remove('dark-posts')
-    //     document.querySelector('div > .textarea').classList.remove('dark-textarea')
-    //   }
-    // },
   },
   methods: {
     
@@ -112,7 +73,6 @@ export default {
       };
       axios(options)
       .then(response =>{
-        // store.commit("establishUsers", response.data)
         this.user = response.data;
         this.editFirstName = this.user.firstName + '';
         this.editLastName = this.user.lastName + '';
@@ -134,16 +94,7 @@ export default {
           lastName: this.editLastName,
         })
         .then(response => {
-          console.log(response);
-          console.log("zaebok");
-          // this.emitClose();
-          // this.emailLogin = "";
-          // this.passwordLogin = "";
-          // this.uniqLogin = true;
           this.$router.replace("/profile");
-          // localStorage.setItem(this.$store.state.STORAGE_KEY, JSON.stringify(response.data));
-          // this.$store.commit("changeLogin", true);
-          // this.$store.commit("establishAccessToken", response.data.access_token)
           this.$v.$reset();
           
         })
@@ -156,7 +107,6 @@ export default {
     }
   },
   mounted () {
-    // this.getMode;
     this.searchUsers();
   }
 }
@@ -174,7 +124,7 @@ export default {
   grid-template-columns: 1fr;
   word-break:break-all;
   width:700px;
-  box-shadow: 0px 3px 16px -3px #797979;
+  box-shadow: var(--theme-box-shadow);
   height: auto;
   align-self: center;
   margin: 0 10px;
@@ -182,7 +132,7 @@ export default {
 .profile-edit-main{
   display:grid;
   grid-template-columns: 1fr;
-  background: #efeeee;
+  background: var(--theme-background);
   grid-gap:2em;
   padding: 20px;
 }
@@ -194,11 +144,13 @@ export default {
   font-size: 30px;
   /* text-transform: uppercase; */
   font-weight: 700;
+  color: var(--theme-color);
 }
 .form-group{
   display:grid;
   grid-template-columns: 1fr 2fr;
   grid-gap: 1em;
+  color: var(--theme-color);
 }
 .buttons{
   display:grid;
@@ -223,7 +175,7 @@ export default {
   align-items: center;
   padding: 0;
   outline: none;
-  color:black;
+  color: var(--theme-color);
   transition: 0.25s;
   font-size: 20px;
 }
@@ -238,6 +190,7 @@ export default {
 }
 .submit-post{
   justify-self: left;
+  color: #3498db;
 }
 .cancel{
   justify-self: right;

@@ -65,5 +65,7 @@ export default {
 }
 .home-page h1{
   text-align:center;
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 </style>

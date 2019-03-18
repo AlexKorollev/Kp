@@ -97,7 +97,7 @@ export default {
   height: 80vh;
 }
 form{
-  background: #efeeee;
+  background: var(--theme-background);
   padding: 2em 4em;
   display:grid;
   grid-template-columns: 1fr;
@@ -105,6 +105,8 @@ form{
   grid-gap:0.5em;
   border-radius: 2px;
   width:300px;
+  box-shadow: var(--theme-box-shadow);
+  transition: 0.25s;
 }
 .form-group{
   display: grid;
@@ -121,7 +123,7 @@ form{
   padding: 14px 0 5px 0;
   width: 300px;
   outline: none;
-  color:black;
+  color:var(--theme-color);;
   transition: 0.25s;
   font-size: 20px;
 }
@@ -134,6 +136,8 @@ h1{
   font-size: 30px;
   text-transform: uppercase;
   font-weight: 700;
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 .submit{
   margin-top: 20px;
@@ -143,11 +147,12 @@ h1{
   transition: 0.25s;
   padding: 5px 10px;
   font-size: 20px;
+  color: #3498db;
 }
 .submit:hover{
   border: 2px solid #2ecc71;
   width: 150px;
-  color: #6b6b6b;
+  color: #2ecc71
 }
 .invalid-feedback{
   justify-self: center;
