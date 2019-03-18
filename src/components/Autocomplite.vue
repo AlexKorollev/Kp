@@ -43,6 +43,7 @@ export default {
     },
     closeAutocomplite () {
       this.$store.commit("changeAutocomplite", false);
+      
     },
     handleClickOutside(evt) {
       if (!this.$el.contains(evt.target)) {
@@ -78,7 +79,7 @@ export default {
   text-align: left;
   border-bottom: 2px solid #3498db;
   outline: none;
-  color:#6b6b6b;
+  color:var(--theme-color);
   transition: 0.25s;
   font-size: 20px;
   padding-left: 20px;
@@ -91,19 +92,21 @@ export default {
   width:100%;
   position: absolute;
   word-break: normal;
+  z-index: 100;
 }
 .list-of-names{
-  background: #efeeee;
+  background: var(--theme-background);
   border:none;
   border-bottom-right-radius: 12px;
   border-bottom-left-radius: 12px;
   max-height: 250px;
   overflow: auto;
+  box-shadow: var(--theme-box-shadow);
 }
 .list-of-names li{
   list-style-type: none;
   padding: 10px 20px;
-  border-bottom:1px solid #ccc;
+  border-bottom: var(--theme-border-bottom);
 }
 .list-of-names li a{
   text-decoration: none;
@@ -116,6 +119,10 @@ export default {
 @media only screen and (max-width: 425px){
   .autocomplite input{
     font-size: 15px;
+  }
+
+  .list-of-names{
+    width: 200px;
   }
 }
 </style>

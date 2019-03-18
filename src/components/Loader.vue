@@ -1,5 +1,6 @@
 <template>
-  <div class="loader">
+  <div class="loader-page">
+    <div class="loader">
       <div class="loader-div">
         <div class="loader-div">
           <div class="loader-div">
@@ -12,8 +13,13 @@
         </div>
       </div>
     </div>
+  </div>
 </template>
 <style scoped>
+.loader-page{
+  display:grid;
+  justify-items: center;
+}
 .loader{
   width:50px;
   height: 50px;

@@ -15,11 +15,13 @@ export default new Vuex.Store({
     currentPage: 1,
     perPage: 10,
     totalPosts: 0,
-    posts: {},
+    posts: [],
     query: '',
     limit: 10,
     loading: false,
-    users: {},
+    users: [],
+    addPostError:false,
+    mode: 'light',
   },
   getters: {
     computedCounter (state) { 
@@ -63,8 +65,34 @@ export default new Vuex.Store({
     incrementTotalPosts(state,num){
       state.totalPosts = num + state.totalPosts*1;
     },
-    changePosts(state,post){
-      state.posts = post;
+    changePosts(state,posts){
+      // let postsLen = Object.keys(state.posts).length;
+      // let postLen = post.length;
+      // let j=0;
+      // for(let i=postsLen + 1;i<=postsLen + postLen; (i++ && j++)){
+      //   state.posts[i] = post[j];
+      // }
+      // state.posts.push(posts);
+      // state.posts.push(...posts)
+      posts.forEach(post => state.posts.push(post));
+    },
+    clearPosts(state){
+      state.posts = [];
+    },
+    addPost(state,post){
+      state.posts = post.concat(state.posts);
+      if(state.posts.length>=10){
+        state.posts.pop();
+      }
+    },
+    addPostError(state, error){
+      state.addPostError = error;
+    },
+    deletePost(state, index){
+      state.posts.splice(index,1);
+    },
+    establishPosts(state,posts){
+      state.posts = posts;
     },
     establishQuery(state, query){
       state.query = query || '';
@@ -78,17 +106,13 @@ export default new Vuex.Store({
     changeLoading(state, bool){
       state.loading = bool;
     },
-    deletePost(state, id){
-      console.log(state.posts)
-      for (let key in state.posts) {
-        if (state.posts.hasOwnProperty(key) && (state.posts[key].id == id)) {
-          state.posts.splice(key,1);
-          break;
-        }
-       }
-    },
     establishUsers(state,users){
       state.users = users;
+    },
+    establishMode(state, mode){
+      state.mode = mode;
+      //   document.querySelector('div > .profile-image').classList.add('dark-profile-image');
+      //   document.querySelector('h1').classList.add('dark-title');
     }
   },
   actions: {
@@ -108,6 +132,7 @@ export default new Vuex.Store({
         commit("changeLogin", false);
       }
       return this.state.login;
-    }
+    },
+    
   },
 });

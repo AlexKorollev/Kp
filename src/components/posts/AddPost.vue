@@ -1,9 +1,13 @@
 <template>
   <div class="add-post">
-    <div class="posts">
-      <input type="text" placeholder="title" v-model="title">
-      <textarea placeholder="ur post" v-model="post"></textarea>
-      <button class="btn submit submit-post" @click="addPost()">Submit</button>
+    <div class="add-post-block">
+      <!-- <input type="text" placeholder="title" v-model="title"> -->
+      <div class="post-textarea">
+        <textarea class="textarea" placeholder="Wanna tell something?" v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
+        <ProgressBar class="icon" :post="post"/>
+      </div>
+      
+      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">Submit</button>
     </div>
   </div>
 </template>
@@ -12,16 +16,37 @@
 import axios from 'axios'
 import api from '../../helpers/api'
 import store from '../../store';
+import ProgressBar from './ProgressBar'
 export default {
   name: 'AddPosts',
+  components: {
+    ProgressBar,
+  },
   data() {
     return {
       title: '',
       post: '',
     }
   },
+  computed: {
+    getPostError () {
+      return this.$store.state.addPostError
+    },
+    getMode () {
+      if ((localStorage.getItem('mode') || 'dark') === 'dark'){
+        document.querySelector('div > .posts').classList.add('dark-posts');
+        document.querySelector('div > .textarea').classList.add('dark-textarea');
+      }
+      else{
+        document.querySelector('div > .posts').classList.remove('dark-posts')
+        document.querySelector('div > .textarea').classList.remove('dark-textarea')
+      }
+    },
+  },
+  
   methods: {
     addPost () {
+      this.$store.commit("changeLoading", true);
       axios.post('http://localhost:3000/posts', {
         title: this.title,
         post: this.post,
@@ -32,70 +57,111 @@ export default {
         }
       })
       .then(response =>{
+        this.post = '';
         this.$store.commit("incrementTotalPosts", 1)
-        console.log(this.$store.state.limit)
-        api.refreshPosts(this.$store.state.limit);
-        // store.commit("changeLimit", -10);
-        
+        this.$store.commit("addPost", [response.data]);
+        this.$store.commit("changeLoading", false);
     })
     },
+  },
+   mounted () {
+    this.getMode;
   }
+  // watch: {
+  //   post () {
+  //     console.log("textarea")
+  //   }
+  // }
 }
 </script>
 <style scoped>
 .add-post{
   width:100%;
-  display:grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
 }
-.posts{
-  width:301px;
+.add-post-block{
+  width:400px;
   display: grid;
   grid-template-columns: 1fr;
-  border: 2px solid #ccc;
-  border-radius:5px;
-  font-size: 15px;
-  justify-items: center;
-  background: #efeeee;
+  border-top: var(--theme-border-top);
+  border-bottom: var(--theme-border-bottom);
+  border-radius:2px;
+  background: var(--theme-background);
   grid-gap:1em;
+  max-height: 600px;
+  color: var(--theme-color);
+  transition: 0.25s;
 }
-.posts input{
-  height: 40px;
-  font-size: 20px;
-}
-.posts textarea, .posts input{
-  outline: none;
-  text-align: center;
-  width:100%;
-  border:none;
-  border-bottom: 2px solid #ccc;
-  background: #efeeee;
-}
-textarea{
-  height: 120px;
+.textarea{
   box-sizing: border-box;
   resize: vertical;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 20px;
+  padding: 10px 40px 10px 10px;
+  overflow-y:hidden;
+  outline: none;
+  min-height: 150px;
+  width:100%;
+  border:none;
+  border-bottom: 2px solid #3498db;
+  background: var(--theme-background);
+  color: var(--theme-color);
+  transition: 0.25s;
+}
+/* .dark-posts, .dark-textarea{
+  background: rgb(21, 32, 43);
+  color:#fff;
+}
+.dark-posts{
+  border-bottom: 2px solid rgb(56, 68, 77);
+  border-top: 2px solid rgb(56, 68, 77);
+  
+} */
+
+.textarea:focus{
+  border-bottom: 2px solid #2ecc71;
+}
+.cancel-textarea{
+  border-bottom: 2px solid #e85a50;
+}
+.cancel-textarea:focus{
+  border-bottom: 2px solid #e85a50;
+}
+.post-textarea{
+  position: relative;
+}
+
+.add-post-block .icon{
+  position: absolute;
+  right: 2%;
+  bottom:15px;
+}
+.add-post-block button {
+  justify-self: center;
 }
 .submit-post{
-  height: 45px;
-  border: 2px solid #3498db;
-  width:150px;
-  justify-items: center;
-  border-radius: 24px;
-  margin: 5px 0 19px 0;
-  transition: 0.5s;
+  transition: 0.25s;
+  color: #3498db;
 }
 .submit-post:hover{
-  border: 2px solid #2ecc71;
-  width:200px;
-  color: #6b6b6b;
+  color: #2ecc71;
+}
+.cancel-button{
+  border: 2px solid #e85a50;
+  color:#e85a50;
+}
+.cancel-button:hover{
+  color:#e85a50;
 }
 @media only screen and (max-width: 425px){
   .submit-post{
     font-size: 20px;
+  }
+  .add-post-block{
+    width:280px;
+  }
+  .add-post{
+    display: grid;
+    justify-items: center;
   }
 }
 </style>
