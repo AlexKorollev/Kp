@@ -17,6 +17,17 @@ const messages = {
     submitButton: 'Submit',
     profileEdit: 'Profile edit',
     cancelButton: 'Сancel',
+    fistNameRequest: 'First Name field is required',
+    emailRequest: 'Email field is required',
+    emailValidate: 'This field shoud be in email',
+    emailExist: 'This email alredy exist',
+    passwordRequest: 'Password field is required',
+    passwordNotMatch: 'Passwords not match',
+    minPasswordLengthIs: 'min length of password is',
+    minPasswordLengthNow: 'Now it is',
+    incorrectInfo: 'This email not exist or incorrect password',
+    useOnlyLeterRequest: 'Use only letters',
+    
   },
   'ru': {
     homePage: 'Главная',
@@ -31,6 +42,16 @@ const messages = {
     submitButton: 'Принять',
     profileEdit: 'Изменить профиль',
     cancelButton: 'Отмена',
+    fistNameRequest: 'Поле для ввода имени обязательно',
+    emailRequest: 'Поле для ввода имейла обязательно',
+    emailValidate: 'Это поле должно быть имейлом',
+    emailExist: 'Этот имейл уже существует',
+    passwordRequest: 'Поле для ввода пароля обязательно',
+    passwordNotMatch: 'Пароли не совпадают',
+    minPasswordLengthIs: 'минимальная длина пароля',
+    minPasswordLengthNow: 'Сейчас',
+    incorrectInfo: 'Такого имейла не существует или неправильный пароль',
+    useOnlyLeterRequest: 'Используйте только буквы',
   }
 };
 

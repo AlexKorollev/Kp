@@ -32,16 +32,6 @@ export default {
     getPostError () {
       return this.$store.state.addPostError
     },
-    getMode () {
-      if ((localStorage.getItem('mode') || 'dark') === 'dark'){
-        document.querySelector('div > .posts').classList.add('dark-posts');
-        document.querySelector('div > .textarea').classList.add('dark-textarea');
-      }
-      else{
-        document.querySelector('div > .posts').classList.remove('dark-posts')
-        document.querySelector('div > .textarea').classList.remove('dark-textarea')
-      }
-    },
   },
   
   methods: {
@@ -50,7 +40,8 @@ export default {
       axios.post('http://localhost:3000/posts', {
         title: this.title,
         post: this.post,
-        userId: this.$store.state.loginId
+        userId: this.$store.state.loginId,
+        comments: []
       },{
           headers: {
             authorization: "bearer " + this.$store.state.access_token
@@ -64,14 +55,6 @@ export default {
     })
     },
   },
-   mounted () {
-    this.getMode;
-  }
-  // watch: {
-  //   post () {
-  //     console.log("textarea")
-  //   }
-  // }
 }
 </script>
 <style scoped>

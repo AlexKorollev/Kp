@@ -4,27 +4,27 @@
       <h1 class="title">{{ $t('singUp') }}</h1>
       <div class="form-group">
         <input type="text" id="firstName" placeholder="* enter ur first name" class="form-control" :class="{'is-invalid': $v.firstName.$error}" @blur="$v.firstName.$touch()" v-model="firstName">
-        <div class="invalid-feedback" v-if="!$v.firstName.required && $v.firstName.$dirty">First Name field is required</div>
-        <div class="invalid-feedback" v-if="!$v.firstName.alpha">Use only letters</div>
+        <div class="invalid-feedback" v-if="!$v.firstName.required && $v.firstName.$dirty">{{ $t('fistNameRequest') }}</div>
+        <div class="invalid-feedback" v-if="!$v.firstName.alpha">{{ $t('useOnlyLeterRequest') }}</div>
       </div>
       <div class="form-group">
         <input type="text" id="lastName" placeholder="enter ur last name" class="form-control" :class="{'is-invalid': $v.lastName.$error}" @blur="$v.lastName.$touch()" v-model="lastName">
-        <div class="invalid-feedback" v-if="!$v.lastName.alpha && $v.lastName.$dirty">Use only letters</div>
+        <div class="invalid-feedback" v-if="!$v.lastName.alpha && $v.lastName.$dirty">{{ $t('useOnlyLeterRequest') }}</div>
       </div>
       <div class="form-group">
         <input type="email" id="email" placeholder="* enter ur email" class="form-control" :class="{'is-invalid': $v.email.$error}" @blur="$v.email.$touch()" v-model="email">
-        <div class="invalid-feedback" v-if="!$v.email.required && $v.email.$dirty">Email field is required</div>
-        <div class="invalid-feedback" v-if="!$v.email.email">This field shoud be in email</div>
-        <div class="invalid-feedback" v-if="!uniqEmail">This email alredy exist</div>
+        <div class="invalid-feedback" v-if="!$v.email.required && $v.email.$dirty">{{ $t('emailRequest') }}</div>
+        <div class="invalid-feedback" v-if="!$v.email.email">{{ $t('emailValidate') }}</div>
+        <div class="invalid-feedback" v-if="!uniqEmail">{{ $t('emailExist') }}</div>
       </div>
       <div class="form-group">
         <input type="password" id="password" placeholder="* enter ur password" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
-        <div class="invalid-feedback" v-if="!$v.password.minLength">min length of password is {{ $v.password.$params.minLength.min }}. Now it is {{ password.length }}</div>
-        <div class="invalid-feedback" v-if="!$v.password.required && $v.password.$dirty">Password field is required</div>
+        <div class="invalid-feedback" v-if="!$v.password.minLength">{{ $t('minPasswordLengthIs') }} {{ $v.password.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ password.length }}</div>
+        <div class="invalid-feedback" v-if="!$v.password.required && $v.password.$dirty">{{ $t('passwordRequest') }}</div>
       </div>
       <div class="form-group">
         <input type="password" id="confirm" placeholder="* repeat ur password" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
-        <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$dirty">Password not match</div>
+        <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$dirty">{{ $t('passwordNotMatch') }}</div>
       </div>
       <button class="btn submit" type="submit" :disabled="$v.$invalid" >{{ $t('submitButton') }}</button>
     </form>
@@ -34,6 +34,7 @@
 <script>
 import {required,email,minLength, sameAs, alpha } from 'vuelidate/lib/validators'
 import axios from 'axios'
+import scroll from '.././helpers/scroll'
 export default {
   data() {
     return {
@@ -84,6 +85,12 @@ export default {
       sameAs: sameAs('password')
     }
     
+  },
+  mounted () {
+    scroll.disableScroll();
+  },
+  destroyed () {
+    scroll.enableScroll();
   }
 }
 </script>
@@ -93,9 +100,9 @@ export default {
   display:flex;
   align-items: center;
   justify-content: center;
-  width:100vw;
-  height: 80vh;
-  background: var(--body);
+  /* width:100vw; */
+  height: 95vh;
+  background: var(--theme-background);
 }
 form{
   background: var(--theme-background);
@@ -170,6 +177,7 @@ h1{
 @media only screen and (max-width: 500px) {
   form{
     padding: 2em 0;
+    box-shadow: none;
   }
 }
 

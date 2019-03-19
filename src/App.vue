@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div id="body">
     <header>
       <div @click="changeMode()" id="logo">
         <img v-if="mode=='light'" src="/src/assets/sunny.png" alt="qwe">
@@ -7,21 +7,25 @@
       </div>
       <!-- <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link> -->
       <Autocomplite class="autocomplite"/>
-      <div class="menu" v-if="getLogin">
+
+      <!-- <div class="menu" v-if="getLogin">
         <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
-        <button class="btn" @click="switchMenu()" ><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
-        <button class="btn" @click ="logOut">{{ $t('logOut') }}</button>
+       
         <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
-          <flag :iso="entry.flag" v-bind:squared=false /> {{entry.title}} 
+          <flag :iso="entry.flag" v-bind:squared=false />
         </button>
-      </div>
-      <div class="menu" v-else>
-        <button class="btn"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
-        <button class="btn login" @click="openModal">{{ $t('login') }}</button>
-        <button class="btn"><router-link class="sign-up btn" :to="'/sign-up'">{{ $t('singUp') }}</router-link></button>
-        <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
-          <flag :iso="entry.flag" v-bind:squared=false /> {{entry.title}} 
-        </button>
+      </div> -->
+      <div class="menu">
+        <button class="btn" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+        <button class="btn" @click="switchMenu()" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
+        <button class="btn" @click ="logOut" v-if="getLogin">{{ $t('logOut') }}</button>
+        <button class="btn login" @click="openModal" v-if="!getLogin">{{ $t('login') }}</button>
+        <button class="btn" @click="switchMenu()"  v-if="!getLogin"><router-link class="sign-up btn" :to="'/sign-up'">{{ $t('singUp') }}</router-link></button>
+        <div class="internacializaton">
+          <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+            <flag :iso="entry.flag" v-bind:squared=false />
+          </button>
+        </div>
       </div>
       <div class="burger" @click="switchMenu()">
         <div class="burger-line1"></div>
@@ -33,6 +37,7 @@
     <div>
       <router-view></router-view>
     </div>
+    <a class="back_to_top" title="Наверх"><img width="35" height="35" src="/src/assets/top-arrow-.png" alt="qwe"></a>
   </div>
 </template>
 
@@ -87,6 +92,8 @@ export default {
       scroll.enableScroll();
     },
     logOut () {
+      this.$store.commit("changeLoading", true);
+      this.switchMenu();
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
       this.$store.commit("changeLogin", false);
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
@@ -151,12 +158,14 @@ export default {
      
     },
     changeLocale(locale) {
-        i18n.locale = locale;
+      this.switchMenu();
+      i18n.locale = locale;
     }
     
   },
   mounted () {
     this.printMode;
+    scroll.scrollButton();
     if(this.$route.query.login === "false"){
       this.openModal();
       
@@ -196,7 +205,7 @@ body{
 header{
   border-bottom: 1px solid rgba(0,0,0,0.25);
   display:grid;
-  grid-template-columns: 0.5fr 2fr 1fr;
+  grid-template-columns: 0.1fr 2fr 1.5fr;
   grid-gap:1em;
   align-items: center;
   background: var(--header);
@@ -239,10 +248,17 @@ header{
   font-size: 20px;
   white-space: nowrap;
   color:#6b6b6b;
+  cursor: pointer;
 }
 .btn:hover{
   /* border-bottom: 2px solid #6b6b6b; */
   color:#3498db;
+}
+.internacializaton{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 10px;
+  width:60px;
 }
 .sign-up,.profile,.log-out{
   justify-self: left;
@@ -277,7 +293,29 @@ header{
   background: #2ecc71;
   color: #fff;
 }
-
+.back_to_top {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  background: #3498db;
+  color: #444;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: var(--theme-box-shadow);
+  display: none;
+  transition: 0.25s;
+}
+.back_to_top img{
+  padding-top: 6px;
+}
+.back_to_top-show {
+  display: block;
+}
 @media only screen and (max-width: 950px) {
   .menu button{
     padding: 0 0 0 10px;

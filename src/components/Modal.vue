@@ -7,13 +7,13 @@
         <h1 class="title">{{ $t('login') }}</h1>
         <div class="form-group">
           <input type="email" id="emailLogin" class="form-control" placeholder="enter ur login" :class="{'is-invalid': $v.emailLogin.$error}" @blur="$v.emailLogin.$touch()" v-model="emailLogin">
-          <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$dirty">Email field is required</div> 
+          <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$dirty">{{ $t('emailRequest') }}</div> 
         </div>
         <div class="form-group">
           <input type="password" id="passwordLogin" class="form-control" placeholder="enter ur pass" :class="{'is-invalid': $v.passwordLogin.$error}" @blur="$v.passwordLogin.$touch()" v-model="passwordLogin">
-          <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$dirty">Password field is required</div>
+          <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$dirty">{{ $t('passwordRequest') }}</div>
         </div>
-        <div class="invalid-feedback" v-if="!uniqLogin">This email not exist or incorrect password</div>
+        <div class="invalid-feedback" v-if="!uniqLogin">{{ $t('incorrectInfo') }}</div>
         <button class="btn submit-login" type="submit" :disabled="$v.$invalid">{{ $t('submitButton') }}</button>
       </form>
     </div>
