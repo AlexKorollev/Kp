@@ -22,28 +22,25 @@ export default {
     }
   },
   props: {
-    userPost: Object
+    userPost: Object,
+    comments: Array
   },
   methods: {
     addComment () {
-      console.log(this.userPost.id)
-    //   this.$store.commit("changeLoading", true);
-    //   axios.post('http://localhost:3000/posts', {
-    //     title: this.title,
-    //     post: this.post,
-    //     userId: this.$store.state.loginId,
-    //     comments: []
-    //   },{
-    //       headers: {
-    //         authorization: "bearer " + this.$store.state.access_token
-    //     }
-    //   })
-    //   .then(response =>{
-    //     this.post = '';
-    //     this.$store.commit("incrementTotalPosts", 1)
-    //     this.$store.commit("addPost", [response.data]);
-    //     this.$store.commit("changeLoading", false);
-    // })
+      this.$store.commit("changeLoading", true);
+      axios.post('http://localhost:3000/comments', {
+        comment: this.comment,
+        userId: this.$store.state.loginId,
+        postId: this.userPost.id
+      },{
+          headers: {
+            authorization: "bearer " + this.$store.state.access_token
+        }
+      })
+      .then(response =>{
+        this.comment = '';
+        this.comments.push(response.data);
+      })
     },
   },
 }

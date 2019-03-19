@@ -21,25 +21,27 @@
       <div>
          <img src="/src/assets/share.png" width="20" height="20" alt="">
       </div>
-      <div class="post-comment" @click="showComments()">
+      <div @click="showComments()">
          <img src="/src/assets/comment.png" width="20" height="20" alt="">
-          <p>{{ getComments.length }}</p>
       </div>
     </div>
-    <div v-if="getComments.length!==0 && commentsOpen">
-      <Comments v-for="(comment, index) in getComments" :key="index" :index="index" :comment="comment" :users="users"/>
+    <div v-if="commentsOpen && !commentLoading">
+      <Comments v-for="(comment, index) in comments" :key="index" :index="index" :comment="comment" :users="users"/>
     </div>
-    <div v-if="commentsOpen" >
-      <AddComment :userPost="userPost"/>
+    <div v-if="commentsOpen && !commentLoading" >
+      <AddComment :userPost="userPost" :comments="comments"/>
     </div>
+    <Loader v-else-if="commentsOpen && commentLoading" />
   </div>
 </template>
 <script>
+import axios from 'axios'
 import api from '../../../helpers/api'
 import scroll from '../../../helpers/scroll'
 import DropSettings from './DropSettings'
 import Comments from './Comments'
 import AddComment from './AddComment'
+import Loader from '../../Loader'
 
 export default {
   name: 'SinglePost',
@@ -51,22 +53,23 @@ export default {
   components: {
     DropSettings,
     Comments,
-    AddComment
+    AddComment,
+    Loader
   },
   data() {
     return {
       visibleStatus: false,
       path: this.$router.currentRoute.path,
       commentsOpen: false,
+      commentLoading: false,
+      comments: [],
     }
   },
   computed: {
     mode () {
       return this.$store.state.mode;
     },
-    getComments () {
-      return this.userPost.comments;
-    }
+    
   },
   methods: {
     
@@ -91,7 +94,27 @@ export default {
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
     },
     showComments(){
+      this.commentLoading = true;
       this.commentsOpen = !this.commentsOpen;
+      
+      if(this.commentsOpen){
+        this.getComments();
+      }
+    },
+    getComments () {
+      let vm = this;
+      const options = {
+        method: 'GET',
+        headers: {
+          'Authorization': "bearer " + this.$store.state.access_token
+          },
+        url: 'http://localhost:3000/comments?postId='+this.userPost.id,
+      };
+      axios(options)
+      .then(response =>{
+        vm.comments = response.data;
+        vm.commentLoading = false;
+      });
     }
 
   },
@@ -168,12 +191,12 @@ export default {
   left: 105px;
   top:10px
 }
-.post-comment{
+/* .post-comment{
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
   color: #2ecc71;
-}
+} */
 @media only screen and (max-width: 425px){
   .single-post{
     /* max-width:400px; */
