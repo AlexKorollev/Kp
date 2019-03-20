@@ -3,7 +3,7 @@
     <div class="add-post-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="post-textarea">
-        <textarea class="textarea" placeholder="Wanna tell something?" v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
+        <textarea class="textarea" :placeholder="$t('addPostTextarea')"  v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
         <ProgressBar class="icon" :post="post"/>
       </div>
       
@@ -41,7 +41,6 @@ export default {
         title: this.title,
         post: this.post,
         userId: this.$store.state.loginId,
-        comments: []
       },{
           headers: {
             authorization: "bearer " + this.$store.state.access_token

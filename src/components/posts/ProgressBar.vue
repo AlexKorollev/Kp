@@ -76,8 +76,7 @@ export default {
   z-index:40;
 }
 #progress-bar-circle{
-  width:31px;
-  height: 31x;
+  width:32px;
   border-radius: 50%;
   z-index: 60;
   position: absolute;

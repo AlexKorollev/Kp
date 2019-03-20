@@ -1,9 +1,9 @@
 <template>
-  <div class="add-comment">
+  <div class="add-comment" v-if="this.$store.state.login">
     <div class="add-comment-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="add-comment-textarea">
-        <textarea class="textarea" placeholder="Wanna leave comment?" v-model="comment"></textarea>
+        <textarea class="textarea" :placeholder="$t('addCommentTextarea')" v-model="comment"></textarea>
       </div>
       <button class="btn submit-post" @click="addComment()">{{ $t('submitButton') }}</button>
     </div>
@@ -23,7 +23,9 @@ export default {
   },
   props: {
     userPost: Object,
-    comments: Array
+    comments: Array,
+    newComments: Array,
+    totalComments: String,
   },
   methods: {
     addComment () {
@@ -39,7 +41,9 @@ export default {
       })
       .then(response =>{
         this.comment = '';
-        this.comments.push(response.data);
+        // console.log(this.newComments);
+        this.newComments.push(response.data);
+        // this.totalComments+=1;
       })
     },
   },

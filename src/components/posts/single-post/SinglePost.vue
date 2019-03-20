@@ -9,27 +9,34 @@
             <img v-if="this.mode == 'dark'" src="/src/assets/white-arrow.png" width="15" height="15" alt="">
             <img v-else src="/src/assets/black-arrow.png" width="15" height="15" alt="">
           </div>
-          <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index">qwe</DropSettings>
+          <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index"></DropSettings>
         </div>
         <div class="post-body">{{ userPost.post || "no post"}}</div>
       </div>
     </div>
     <div class="post-footer">
       <div>
-         <img src="/src/assets/like.png" width="20" height="20" alt="">
+         <img src="/src/assets/like.png" class="cp" width="20" height="20" alt="">
       </div>
-      <div>
-         <img src="/src/assets/share.png" width="20" height="20" alt="">
-      </div>
-      <div @click="showComments()">
-         <img src="/src/assets/comment.png" width="20" height="20" alt="">
+      <!-- <div>
+         <img src="/src/assets/share.png" class="cp" width="20" height="20" alt="">
+      </div> -->
+      <div @click="showComments()" class="post-comment">
+         <img src="/src/assets/comment.png" class="cp" width="20" height="20" alt="">
+         <div>{{userPost.comments.length}}</div>
       </div>
     </div>
     <div v-if="commentsOpen && !commentLoading">
       <Comments v-for="(comment, index) in comments" :key="index" :index="index" :comment="comment" :users="users"/>
     </div>
+    <div v-if="comments.length >=5 && comments.length < totalComments-newComments.length">
+      <button class="btn add-more-comments" @click="getComments()">{{ $t('moreComments') }}</button> 
+    </div>
+    <div v-if="commentsOpen && !commentLoading && newComments.length>0">
+      <Comments v-for="(comment, index) in newComments" :key="index" :index="index" :comment="comment" :users="users"/>
+    </div>
     <div v-if="commentsOpen && !commentLoading" >
-      <AddComment :userPost="userPost" :comments="comments"/>
+      <AddComment :userPost="userPost" :newComments="newComments" :totalComments="totalComments"/>
     </div>
     <Loader v-else-if="commentsOpen && commentLoading" />
   </div>
@@ -63,6 +70,9 @@ export default {
       commentsOpen: false,
       commentLoading: false,
       comments: [],
+      newComments: [],
+      page: 1,
+      totalComments: 0,
     }
   },
   computed: {
@@ -100,6 +110,11 @@ export default {
       if(this.commentsOpen){
         this.getComments();
       }
+      else{
+        this.page=1;
+        this.comments = [];
+        this.newComments = [];
+      }
     },
     getComments () {
       let vm = this;
@@ -108,12 +123,19 @@ export default {
         headers: {
           'Authorization': "bearer " + this.$store.state.access_token
           },
-        url: 'http://localhost:3000/comments?postId='+this.userPost.id,
+        url: 'http://localhost:3000/comments?postId='+this.userPost.id +'&_page='+this.page+'&_limit=5',
       };
       axios(options)
       .then(response =>{
-        vm.comments = response.data;
+        response.data.forEach(comment => vm.comments.push(comment));
+        vm.totalComments = response.headers['x-total-count'];
+        vm.page+=1;
         vm.commentLoading = false;
+        if((vm.page-1)*5>vm.totalComments-vm.newComments.length){
+          vm.comments = vm.comments.slice(0,vm.comments.length-vm.newComments.length)
+          vm.newComments.forEach(newComment=>vm.comments.push(newComment))
+          vm.newComments = [];
+        }
       });
     }
 
@@ -171,7 +193,8 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: left;
   align-items: center;
-  color: var(--theme-color)
+  color: var(--theme-color);
+  transition: 0.25s;
 }
 .post-title-icon{
   margin-top: 3px;
@@ -191,12 +214,23 @@ export default {
   left: 105px;
   top:10px
 }
-/* .post-comment{
+.add-more-comments{
+  width: 100%;
+  /* border-top: var(--theme-border-top) */
+  padding: 10px 0;
+  color: #3498db;
+}
+.add-more-comments:hover{
+  /* text-decoration: underline; */
+  color: #2ecc71;
+}
+.post-comment{
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-column-gap: 0.2em;
   justify-items: center;
   color: #2ecc71;
-} */
+}
 @media only screen and (max-width: 425px){
   .single-post{
     /* max-width:400px; */

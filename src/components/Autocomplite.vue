@@ -1,9 +1,8 @@
 <template>
   <div class="autocomplite">
-    <input type="search" placeholder="Search" id="input" v-model="search">
+    <input type="search" :placeholder="$t('autocomplite')" id="input" v-model="search" autocomplete="off">
     <div class="search-result" v-if="this.$store.state.autocomplite">
       <ul class="list-of-names">
-        <!-- <router-link class="autocomplite-users" tag="li" v-for="(name, i) in names" :key="i" :to="'/user/'+ name.id"><a>{{ name.firstName }}  {{ name.lastName }}</a></router-link> -->
         <li @click="closeAutocomplite()" v-for="(name, i) in names" :key="i"><router-link class="autocomplite-users" :to="'/user/'+ name.id">{{ name.firstName }}  {{ name.lastName }}</router-link></li>
       </ul>
     </div>
@@ -42,6 +41,7 @@ export default {
       }
     },
     closeAutocomplite () {
+      this.$store.commit("changeLoading",true);
       this.$store.commit("changeAutocomplite", false);
       
     },

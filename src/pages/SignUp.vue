@@ -3,27 +3,27 @@
     <form @submit.prevent="onSubmit" autocomplete="off">
       <h1 class="title">{{ $t('singUp') }}</h1>
       <div class="form-group">
-        <input type="text" id="firstName" placeholder="* enter ur first name" class="form-control" :class="{'is-invalid': $v.firstName.$error}" @blur="$v.firstName.$touch()" v-model="firstName">
+        <input type="text" id="firstName" :placeholder="$t('inputFirstName')" class="form-control" :class="{'is-invalid': $v.firstName.$error}" @blur="$v.firstName.$touch()" v-model="firstName">
         <div class="invalid-feedback" v-if="!$v.firstName.required && $v.firstName.$dirty">{{ $t('fistNameRequest') }}</div>
         <div class="invalid-feedback" v-if="!$v.firstName.alpha">{{ $t('useOnlyLeterRequest') }}</div>
       </div>
       <div class="form-group">
-        <input type="text" id="lastName" placeholder="enter ur last name" class="form-control" :class="{'is-invalid': $v.lastName.$error}" @blur="$v.lastName.$touch()" v-model="lastName">
+        <input type="text" id="lastName" :placeholder="$t('inputLastName')" class="form-control" :class="{'is-invalid': $v.lastName.$error}" @blur="$v.lastName.$touch()" v-model="lastName">
         <div class="invalid-feedback" v-if="!$v.lastName.alpha && $v.lastName.$dirty">{{ $t('useOnlyLeterRequest') }}</div>
       </div>
       <div class="form-group">
-        <input type="email" id="email" placeholder="* enter ur email" class="form-control" :class="{'is-invalid': $v.email.$error}" @blur="$v.email.$touch()" v-model="email">
+        <input type="email" id="email" :placeholder="$t('inputEmail')" class="form-control" :class="{'is-invalid': $v.email.$error}" @blur="$v.email.$touch()" v-model="email">
         <div class="invalid-feedback" v-if="!$v.email.required && $v.email.$dirty">{{ $t('emailRequest') }}</div>
         <div class="invalid-feedback" v-if="!$v.email.email">{{ $t('emailValidate') }}</div>
         <div class="invalid-feedback" v-if="!uniqEmail">{{ $t('emailExist') }}</div>
       </div>
       <div class="form-group">
-        <input type="password" id="password" placeholder="* enter ur password" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
+        <input type="password" id="password" :placeholder="$t('inputPassword')" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
         <div class="invalid-feedback" v-if="!$v.password.minLength">{{ $t('minPasswordLengthIs') }} {{ $v.password.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ password.length }}</div>
         <div class="invalid-feedback" v-if="!$v.password.required && $v.password.$dirty">{{ $t('passwordRequest') }}</div>
       </div>
       <div class="form-group">
-        <input type="password" id="confirm" placeholder="* repeat ur password" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
+        <input type="password" id="confirm" :placeholder="$t('inputConfirmPassword')" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
         <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs && $v.confirmPassword.$dirty">{{ $t('passwordNotMatch') }}</div>
       </div>
       <button class="btn submit" type="submit" :disabled="$v.$invalid" >{{ $t('submitButton') }}</button>

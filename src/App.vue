@@ -277,7 +277,7 @@ header{
   color: #3498db;
 }
 .submit-post{
-  height: 45px;
+  padding: 12px 0;
   border: 2px solid #3498db;
   width:150px;
   justify-items: center;
@@ -297,7 +297,7 @@ header{
   position: fixed;
   bottom: 80px;
   right: 40px;
-  z-index: 9999;
+  z-index: 1000;
   width: 50px;
   height: 50px;
   text-align: center;
@@ -315,6 +315,9 @@ header{
 }
 .back_to_top-show {
   display: block;
+}
+.cp{
+  cursor: pointer;
 }
 @media only screen and (max-width: 950px) {
   .menu button{

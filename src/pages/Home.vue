@@ -7,7 +7,7 @@
       </div>
       <div v-else class="home-page">
         <h1>{{ $t('lastPosts') }}</h1>
-        <Posts :query="'?public=true&_page=1&_limit=5&_sort=id&_order=desc'" :users="users"/>
+        <Posts :query="'?public=true&_embed=comments&_page=1&_limit=5&_sort=id&_order=desc'" :users="users"/>
       </div>
     </div>
     
@@ -49,7 +49,6 @@ export default {
   mounted() {
     this.$store.commit("clearPosts")
     this.searchUsers()
-    
   },
 }
 </script>

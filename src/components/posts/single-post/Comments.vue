@@ -39,16 +39,7 @@ export default {
 .comments{
   border-top: var(--theme-border-top);
 }
-.single-post{
-  border-radius:2px;
-  font-size: 15px;
-  border-top: var(--theme-border-top);
-  border-bottom: var(--theme-border-bottom);
-  background: var(--theme-background);
-  margin-bottom:20px;
-  color:var(--theme-color);
-  transition: 0.25s;
-}
+
 .post-content{
   display: grid;
   grid-template-columns: 1fr 6fr;

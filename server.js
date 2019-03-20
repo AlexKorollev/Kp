@@ -105,8 +105,9 @@ server.use('/', (req, res, next) => {
 	}
 	
 	if (
-    Object.keys(req.query).length == 5
-    && req.query.public == 'true'
+    Object.keys(req.query).length == 6
+		&& req.query.public == 'true'
+		&& req.query._embed == 'comments'
     && req.query._page == '1'
     && req.query._limit == '5'
     && req.query._sort == 'id'

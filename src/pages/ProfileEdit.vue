@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="profile-edit-page" v-if="user!==''">
+    <div class="profile-edit-page" v-if="user!=='' ">
       <div class="profile-edit-block">
         <h1 class="title">{{ $t('profileEdit') }}</h1>
-        <h2 v-if="error" class="error-title">U don't change ur fuelds</h2>
+        <h2 v-if="error" class="error-title">{{ $t('noChange') }}</h2>
         <div class="profile-edit-main">
 
           <div class="form-group">
-            <label for="Name">First Name</label>
+            <label for="Name">{{ $t('firstName') }}</label>
             <div>
               <input type="text" id="editFirstName" class="form-control" placeholder="" :class="{'is-invalid': $v.editFirstName.$error}" @blur="$v.editFirstName.$touch()" v-model="editFirstName">
               <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$dirty">First name field is required</div> 
@@ -15,7 +15,7 @@
           </div>
 
           <div class="form-group">
-            <label for="editLastName">Last Name</label>
+            <label for="editLastName">{{ $t('lastName') }}</label>
             <div>
               <input type="text" id="editLastName" class="form-control" placeholder="" :class="{'is-invalid': $v.editLastName.$error}" @blur="$v.editLastName.$touch()" v-model="editLastName">
               <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$dirty">Last name field is required</div> 
@@ -23,7 +23,7 @@
             <div></div>
             <div class="button-group">
               <button class="btn submit-post" type="submit" :disabled="$v.$invalid" @click="onSubmit()">{{ $t('submitButton') }}</button>
-              <button class="btn submit-post cancel" type="submit"><router-link class="link" :to="'/profile'">{{ $t('cancelButton') }}</router-link></button>
+              <router-link class="btn submit-post cancel link" :to="'/profile'">{{ $t('cancelButton') }}</router-link>
             </div>
           </div>
           
@@ -185,15 +185,19 @@ export default {
 .modal-content input[type=email]{
   color: #6b6b6b;
 }
-.link:active{
-  color:white;
-}
 .submit-post{
   justify-self: left;
   color: #3498db;
 }
+.submit-post:hover{
+  color: #2ecc71;
+}
+.submit-post:active{
+  color: #fff;
+}
 .cancel{
   justify-self: right;
+      text-align: center;
 }
 .cancel:hover{
   border: 2px solid #e85a50;
@@ -202,7 +206,7 @@ export default {
 .cancel:active{
   border: 2px solid #e82626;
   background: #e85a50;
-  color: #e82626;
+  color: #fff;
 }
 .error-title{
   text-align: center;
@@ -210,12 +214,8 @@ export default {
   width:100%;
   padding: 20px 0;
 }
-.link:hover{
-  color:#e82626;
-}
-.submit-post:hover{
-  color: #2ecc71;
-}
+
+
 @media only screen and (max-width: 600px) {
   .form-group{
     grid-template-columns: 1fr;

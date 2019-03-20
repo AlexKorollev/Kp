@@ -1,14 +1,19 @@
 <template>
   <div class="about-login">
-    <h1>{{ $t('aboutUser') }} {{ users[id-1].firstName }}</h1>
-    <Posts :query="'?userId='+id" :users="users"/>
+    <div class="profile-page" v-if="users!==''">
+      <ProfileInfo :users="users" :id="id"/>
+      <div class="profile-content">
+        <Posts :query="'?userId='+id" :users="users"/>
+      </div>
+    </div>
+    <Loader v-else class="posts-loading"/>
   </div>
- 
 </template>
 
 <script>
 import axios from 'axios'
 import Posts from ".././components/posts/Posts";
+import ProfileInfo from ".././components/ProfileInfo";
 import Loader from '.././components/Loader'
 import store from '../store'
 export default {
@@ -16,11 +21,12 @@ export default {
   components: {
     Posts,
     Loader,
+    ProfileInfo,
   },
   data() {
     return {
       id: this.$router.currentRoute.params['id'],
-      users: [],
+      users: '',
     }
   },
   watch: {
@@ -46,6 +52,8 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit("establishQuery")
+    this.$store.commit("clearPosts")
     this.searchUsers()
   },
 }
@@ -56,12 +64,18 @@ export default {
   display: grid;
   grid-template-columns: 1fr;
   width:100%;
-  justify-items: center;
+  /* justify-items: center; */
   grid-row-gap:1em;
 }
 .about-login h1{
   color: var(--theme-color);
   transition: 0.25s;
+  text-align: left;
+}
+.profile-page{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-column-gap: 4em;
 }
 </style>
 
