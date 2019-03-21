@@ -16,7 +16,7 @@ const db = low(adapter)
 server.use(middlewares);
 server.use(bodyParser.urlencoded({extended: true}))
 server.use(bodyParser.json())
-server.use('/',(req, res, next) => setTimeout(() => next(), Math.floor(Math.random() * 2000)))
+server.use('/',(req, res, next) => setTimeout(() => next(), Math.floor(Math.random() * 1000)))
 
 const SECRET_KEY = '123456789'
 const expiresIn = '10h'
@@ -105,9 +105,10 @@ server.use('/', (req, res, next) => {
 	}
 	
 	if (
-    Object.keys(req.query).length == 6
+    Object.keys(req.query).length == 7
 		&& req.query.public == 'true'
 		&& req.query._embed == 'comments'
+		&& req.query._embed == 'likes'
     && req.query._page == '1'
     && req.query._limit == '5'
     && req.query._sort == 'id'

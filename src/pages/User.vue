@@ -77,5 +77,19 @@ export default {
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 4em;
 }
+@media only screen and (max-width: 768px) {
+  .profile-page{
+    grid-template-columns: 1fr;
+    grid-gap:2em;
+    justify-items: center;
+  }
+  
+}
+@media only screen and (max-width: 425px) {
+  .profile-page{
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
 </style>
 
