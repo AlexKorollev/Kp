@@ -66,14 +66,6 @@ export default new Vuex.Store({
       state.totalPosts = num + state.totalPosts*1;
     },
     changePosts(state,posts){
-      // let postsLen = Object.keys(state.posts).length;
-      // let postLen = post.length;
-      // let j=0;
-      // for(let i=postsLen + 1;i<=postsLen + postLen; (i++ && j++)){
-      //   state.posts[i] = post[j];
-      // }
-      // state.posts.push(posts);
-      // state.posts.push(...posts)
       posts.forEach(post => state.posts.push(post));
     },
     clearPosts(state){

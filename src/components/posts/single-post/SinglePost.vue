@@ -9,27 +9,33 @@
             <img v-if="this.mode == 'dark'" src="/src/assets/white-arrow.png" width="15" height="15" alt="">
             <img v-else src="/src/assets/black-arrow.png" width="15" height="15" alt="">
           </div>
-          <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index">qwe</DropSettings>
+          <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index"></DropSettings>
         </div>
         <div class="post-body">{{ userPost.post || "no post"}}</div>
       </div>
     </div>
-    <div class="post-footer"></div>
+    <SinglePostFooter :userPost="userPost" :users="users" :index="index"/>
   </div>
 </template>
 <script>
+import axios from 'axios'
 import api from '../../../helpers/api'
 import scroll from '../../../helpers/scroll'
 import DropSettings from './DropSettings'
+import SinglePostFooter from './SinglePostFooter'
+import Loader from '../../Loader'
+
 export default {
   name: 'SinglePost',
   props: {
     users: Array,
     userPost: Object,
-    index: Number
+    index: Number,
   },
   components: {
-    DropSettings
+    DropSettings,
+    SinglePostFooter,
+    Loader
   },
   data() {
     return {
@@ -40,7 +46,8 @@ export default {
   computed: {
     mode () {
       return this.$store.state.mode;
-    }
+    },
+    
   },
   methods: {
     
@@ -63,12 +70,12 @@ export default {
       this.$store.commit("changeLogin", false);
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
     },
-
+    
   },
 }
 
 </script>
-<style scoped>
+<style>
 .single-post{
   width:400px;
   border-radius:2px;
@@ -97,6 +104,7 @@ export default {
 .post-main-content{
   text-align:left;
   word-break: break-all;
+  padding-right: 10px;
 }
 .post-body{
   box-sizing: border-box;
@@ -109,13 +117,10 @@ export default {
   align-items: center;
   position: relative;
 }
-.post-footer{
-  border-top:2px solid #3498db;
-  height: 30px;
-}
+
 .post-title-icon{
   margin-top: 3px;
-  text-align: center;
+  text-align: right;
   cursor: pointer;
   transition: 0.25s;
 }
@@ -128,7 +133,7 @@ export default {
 
 .drop-settings{
   position: absolute;
-  left: 105px;
+  left: 112px;
   top:10px
 }
 

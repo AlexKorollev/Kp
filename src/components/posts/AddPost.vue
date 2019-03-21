@@ -3,11 +3,11 @@
     <div class="add-post-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="post-textarea">
-        <textarea class="textarea" placeholder="Wanna tell something?" v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
+        <textarea class="textarea" :placeholder="$t('addPostTextarea')"  v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
         <ProgressBar class="icon" :post="post"/>
       </div>
       
-      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">Submit</button>
+      <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">{{ $t('submitButton') }}</button>
     </div>
   </div>
 </template>
@@ -32,16 +32,6 @@ export default {
     getPostError () {
       return this.$store.state.addPostError
     },
-    getMode () {
-      if ((localStorage.getItem('mode') || 'dark') === 'dark'){
-        document.querySelector('div > .posts').classList.add('dark-posts');
-        document.querySelector('div > .textarea').classList.add('dark-textarea');
-      }
-      else{
-        document.querySelector('div > .posts').classList.remove('dark-posts')
-        document.querySelector('div > .textarea').classList.remove('dark-textarea')
-      }
-    },
   },
   
   methods: {
@@ -50,7 +40,7 @@ export default {
       axios.post('http://localhost:3000/posts', {
         title: this.title,
         post: this.post,
-        userId: this.$store.state.loginId
+        userId: this.$store.state.loginId,
       },{
           headers: {
             authorization: "bearer " + this.$store.state.access_token
@@ -64,14 +54,6 @@ export default {
     })
     },
   },
-   mounted () {
-    this.getMode;
-  }
-  // watch: {
-  //   post () {
-  //     console.log("textarea")
-  //   }
-  // }
 }
 </script>
 <style scoped>

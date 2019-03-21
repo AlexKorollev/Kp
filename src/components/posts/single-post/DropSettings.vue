@@ -2,7 +2,7 @@
   <div class="drop-settigs-menu" v-if="visibleStatus">
       <div class="drop-settigs-background" @click="emitClose"></div>
       <div class="drop-settigs-content">
-        <div class="delete-post" @click="deletePost(userPost.id, index)">Delete</div>
+        <div class="delete-post" @click="deletePost(userPost.id, index)">{{ $t('delete') }}</div>
       </div>
     </div>
 </template>
@@ -42,7 +42,7 @@ export default {
   display:flex;
   align-items: center;
   justify-content: center;
-  z-index:50;
+  z-index:1050;
 }
 .drop-settigs-background{
   position: fixed;

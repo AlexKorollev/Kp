@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div id="body">
     <header>
       <div @click="changeMode()" id="logo">
         <img v-if="mode=='light'" src="/src/assets/sunny.png" alt="qwe">
@@ -7,15 +7,25 @@
       </div>
       <!-- <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link> -->
       <Autocomplite class="autocomplite"/>
-      <div class="menu" v-if="getLogin">
-        <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">Home</router-link></button>
-        <button class="btn" @click="switchMenu()" ><router-link class="profile btn" :to="'/profile'">Profile</router-link></button>
-        <button class="btn" @click ="logOut">Log Out</button>
-      </div>
-      <div class="menu" v-else>
-        <button class="btn"><router-link class="profile btn" :to="'/'">Home</router-link></button>
-        <button class="btn login" @click="openModal">Login</button>
-        <button class="btn"><router-link class="sign-up btn" :to="'/sign-up'">Sign Up</router-link></button>
+
+      <!-- <div class="menu" v-if="getLogin">
+        <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+       
+        <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+          <flag :iso="entry.flag" v-bind:squared=false />
+        </button>
+      </div> -->
+      <div class="menu">
+        <button class="btn" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+        <button class="btn" @click="switchMenu()" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
+        <button class="btn" @click ="logOut" v-if="getLogin">{{ $t('logOut') }}</button>
+        <button class="btn login" @click="openModal" v-if="!getLogin">{{ $t('login') }}</button>
+        <button class="btn" @click="switchMenu()"  v-if="!getLogin"><router-link class="sign-up btn" :to="'/sign-up'">{{ $t('singUp') }}</router-link></button>
+        <div class="internacializaton">
+          <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
+            <flag :iso="entry.flag" v-bind:squared=false />
+          </button>
+        </div>
       </div>
       <div class="burger" @click="switchMenu()">
         <div class="burger-line1"></div>
@@ -27,6 +37,7 @@
     <div>
       <router-view></router-view>
     </div>
+    <a class="back_to_top" title="Наверх"><img width="35" height="35" src="/src/assets/top-arrow-.png" alt="qwe"></a>
   </div>
 </template>
 
@@ -35,6 +46,7 @@ import Modal from "./components/Modal"
 import Autocomplite from "./components/Autocomplite"
 import api from "./helpers/api"
 import scroll from './helpers/scroll'
+import i18n from './plugins/i18n';
 export default { 
   components:{
     Modal,
@@ -43,6 +55,10 @@ export default {
   data () {
     return {
       modalOpened: false,
+      languages: [
+            { flag: 'us', language: 'en', title: 'English' },
+            { flag: 'ru', language: 'ru', title: 'Русский' }
+        ]
     }
   },
   computed: {
@@ -76,6 +92,8 @@ export default {
       scroll.enableScroll();
     },
     logOut () {
+      this.$store.commit("changeLoading", true);
+      this.switchMenu();
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
       this.$store.commit("changeLogin", false);
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
@@ -139,10 +157,15 @@ export default {
       let burger = document.querySelector('.burger').classList.toggle('burger-toggle')
      
     },
+    changeLocale(locale) {
+      this.switchMenu();
+      i18n.locale = locale;
+    }
     
   },
   mounted () {
     this.printMode;
+    scroll.scrollButton();
     if(this.$route.query.login === "false"){
       this.openModal();
       
@@ -182,7 +205,7 @@ body{
 header{
   border-bottom: 1px solid rgba(0,0,0,0.25);
   display:grid;
-  grid-template-columns: 0.5fr 2fr 1fr;
+  grid-template-columns: 0.1fr 2fr 1.5fr;
   grid-gap:1em;
   align-items: center;
   background: var(--header);
@@ -217,6 +240,7 @@ header{
   justify-content: space-around;
   align-items: flex-start;
 }
+
 .btn{
   background: none;
   border:none;
@@ -224,10 +248,17 @@ header{
   font-size: 20px;
   white-space: nowrap;
   color:#6b6b6b;
+  cursor: pointer;
 }
 .btn:hover{
   /* border-bottom: 2px solid #6b6b6b; */
   color:#3498db;
+}
+.internacializaton{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0 10px;
+  width:60px;
 }
 .sign-up,.profile,.log-out{
   justify-self: left;
@@ -246,7 +277,7 @@ header{
   color: #3498db;
 }
 .submit-post{
-  height: 45px;
+  padding: 12px 0;
   border: 2px solid #3498db;
   width:150px;
   justify-items: center;
@@ -262,7 +293,32 @@ header{
   background: #2ecc71;
   color: #fff;
 }
-
+.back_to_top {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  background: #3498db;
+  color: #444;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: var(--theme-box-shadow);
+  display: none;
+  transition: 0.25s;
+}
+.back_to_top img{
+  padding-top: 6px;
+}
+.back_to_top-show {
+  display: block;
+}
+.cp{
+  cursor: pointer;
+}
 @media only screen and (max-width: 950px) {
   .menu button{
     padding: 0 0 0 10px;
@@ -299,16 +355,16 @@ header{
     background: var(--theme-header-background);
     grid-template-columns: 1fr;
     justify-items: center;
-    grid-gap:1em;
+    grid-gap:2em;
     box-shadow: var(--theme-header-box-shadow);
-    padding: 10px 0;
-    
+    padding: 20px 0;
+    z-index:50;
   }
 }
 @media only screen and (max-width: 425px){
   
   .btn{
-    font-size: 15px;
+    font-size: 20px;
   }
   .menu-active{
     width: 100%;

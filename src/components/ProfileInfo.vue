@@ -4,7 +4,7 @@
       <img :src="getUser.avatar" width="" alt="" class="profile-image">
       <div class="profile-main-info">
         <div class="profile-name">{{ getUser.firstName }} {{ getUser.lastName }}</div>
-        <button class="btn submit-post"><router-link class="link" :to="'/edit'">Edit profile</router-link></button>
+        <router-link v-if="!id || equalsId" class="btn submit-post link" :to="'/edit'">{{ $t('profileEdit') }}</router-link>
       </div>
     </div>
   </div>
@@ -16,12 +16,22 @@ import api from '../helpers/api'
 import store from '../store'
 export default {
   props: {
-    users: Array
+    users: Array,
+    id: String,
   },
   computed: {
     getUser () {
-      return this.users[this.$store.state.loginId-1]
+      if(this.id){
+        return this.users[this.id-1]
+      }
+      else{
+        return this.users[this.$store.state.loginId-1]
+      }
+      
     },
+    equalsId () {
+      return this.id*1 == this.users[this.$store.state.loginId].id-1
+    }
   },
 }
 </script>
@@ -68,15 +78,19 @@ export default {
   justify-items: center;
 }
 .submit-post{
-  height: 40px;
+  width: auto;
+  padding: 10px 15px;
+  text-align: center;
 }
-.submit-post a:hover{
-  width:150px;
+.submit-post:hover{
   color: #2ecc71;
+}
+.submit-post:active{
+  color: #fff;
 }
 @media only screen and (max-width: 768px) {
   .profile-info-block{
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.6fr 1fr;
     justify-self: center;
     min-width: 400px;
   }
@@ -107,8 +121,8 @@ export default {
     width: 150px;
   }
   .submit-post{
-    width:120px;
-    height: 35px;
+    font-size: 15px;
+    padding: 10px 5px;
   }
   .submit-post:hover{
     width:150px;

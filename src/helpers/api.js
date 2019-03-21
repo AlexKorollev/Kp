@@ -13,7 +13,7 @@ export default {
   },
   refreshPosts (page) {
     if(store.state.login){
-      this.sendRequest(store.state.query+'&_page='+page+'&_limit=10&_sort=id&_order=desc')
+      this.sendRequest(store.state.query+'&_embed=likes&_embed=comments&_page='+page+'&_limit=10&_sort=id&_order=desc')
       .then(response=>{
         store.commit("changeTotalPosts", response.headers['x-total-count'])
         store.commit("changePosts",response.data);
@@ -23,7 +23,7 @@ export default {
     else{
       this.sendRequest(store.state.query)
       .then(response=>{
-        store.commit("establishPosts", response.data || "create ur first post");
+        store.commit("establishPosts", response.data);
       });
     }
   },
@@ -56,4 +56,5 @@ export default {
       store.commit("changeLoading", false)
     });
   },
+  
 }
