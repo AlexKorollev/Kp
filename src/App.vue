@@ -23,7 +23,7 @@
         <div class="burger-line2"></div>
         <div class="burger-line3"></div>
       </div>
-      <Modal :modalOpened="modalOpened" @close="closeModal" @menuClose="switchMenu()"/>
+      <Modal :modalOpened="modalOpened" @modalClose="closeModal" @menuClose="switchMenu()"/>
     </header>
     <div>
       <router-view ></router-view>

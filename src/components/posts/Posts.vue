@@ -52,6 +52,7 @@ export default {
       // }
       window.onscroll = () => {
         let bottomOfWindow = Math.floor(document.documentElement.scrollTop) + 10 + window.innerHeight >= document.documentElement.offsetHeight;
+        console.log()
         if (bottomOfWindow && ((Object.keys(this.$store.state.posts).length - this.$store.state.totalPosts)<0) && !this.$store.state.loading) {
           console.log("scroll")
           this.downloadPosts();

@@ -1,17 +1,18 @@
 <template>
   <transition name="modal-transition">
     <div class="modal" v-if="modalOpened">
-      <div class="modal-background" @click="emitClose"></div>
+      <div class="modal-background" @click="emitCloseModal"></div>
       <form class="modal-content" @submit.prevent="onSubmit" autocomplete="off">
-        <div class="close" @click="emitClose"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
+        <div class="close" @click="emitCloseModal"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
         <h1 class="title">{{ $t('login') }}</h1>
         <div class="form-group">
           <input type="email" id="emailLogin" class="form-control" :placeholder="$t('inputEmail')" :class="{'is-invalid': $v.emailLogin.$error}" @blur="$v.emailLogin.$touch()" v-model="emailLogin">
-          <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$dirty">{{ $t('emailRequest') }}</div> 
+          <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$error">{{ $t('emailRequest') }}</div>
+           <div class="invalid-feedback" v-if="!$v.emailLogin.email && $v.emailLogin.$error">{{ $t('emailValidate') }}</div> 
         </div>
         <div class="form-group">
           <input type="password" id="passwordLogin" class="form-control" :placeholder="$t('inputPassword')" :class="{'is-invalid': $v.passwordLogin.$error}" @blur="$v.passwordLogin.$touch()" v-model="passwordLogin">
-          <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$dirty">{{ $t('passwordRequest') }}</div>
+          <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$error">{{ $t('passwordRequest') }}</div>
         </div>
         <div class="invalid-feedback" v-if="!uniqLogin">{{ $t('incorrectInfo') }}</div>
         <button class="btn submit-login" type="submit" :disabled="$v.$invalid">{{ $t('submitButton') }}</button>
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-import { required } from 'vuelidate/lib/validators'
+import { required,email } from 'vuelidate/lib/validators'
 import axios from 'axios'
 export default {
   name: 'Modal',
@@ -40,14 +41,15 @@ export default {
   validations: {
     emailLogin: {
       required,
+      email,
     },
     passwordLogin: {
       required
     }
   },
   methods: {
-    emitClose(){
-      this.$emit('close');
+    emitCloseModal(){
+      this.$emit('modalClose');
     },
     emitMenuClose () {
       this.$emit('menuClose');
@@ -60,7 +62,7 @@ export default {
       .then(response => {
         console.log(response);
         console.log("zaebok");
-        this.emitClose();
+        this.emitCloseModal();
         this.emitMenuClose();
         this.emailLogin = "";
         this.passwordLogin = "";

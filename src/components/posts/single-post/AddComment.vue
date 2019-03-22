@@ -53,7 +53,7 @@ export default {
         response.data.date = "today"
         // console.log(this.newComments);
         this.newComments.push(response.data);
-        
+        this.$store.commit("changeLoading", false);
       })
     },
   },

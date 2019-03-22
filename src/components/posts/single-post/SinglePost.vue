@@ -5,7 +5,7 @@
       <div class="post-main-content">
         <div class="post-title">
           <router-link class="post-title-name" :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}} <Date :object="userPost" /> </router-link>
-          <div v-if="path == '/profile' || equalsId" class="post-title-icon" @click="openDropSettings">
+          <div v-if="path == '/profile' || equalsId || userPost.userId==getLogin" class="post-title-icon" @click="openDropSettings">
             <img v-if="this.mode == 'dark'" src="/src/assets/down-arrow-white.png" width="15" height="15" alt="">
             <img v-else src="/src/assets/down-arrow.png" width="15" height="15" alt="">
           </div>
@@ -59,6 +59,9 @@ export default {
     },
     equalsId () {
       return this.id*1 == this.users[this.$store.state.loginId].id-1
+    },
+    getLogin () {
+      return this.$store.state.loginId;
     }
     
   },
