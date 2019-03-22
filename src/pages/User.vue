@@ -3,7 +3,7 @@
     <div class="profile-page" v-if="users!==''">
       <ProfileInfo :users="users" :id="id"/>
       <div class="profile-content">
-        <Posts :query="'?userId='+id" :users="users"/>
+        <Posts :query="'?userId='+id" :users="users" :id="id"/>
       </div>
     </div>
     <Loader v-else class="posts-loading"/>

@@ -1,15 +1,12 @@
 <template>
   <div>
     <div class="post-footer">
-      <div class="post-likes" @click="changePostLike()">
-        <img v-if="like" src="/src/assets/likefull.png" class="cp" width="20" height="20" alt="">
-        <img v-else src="/src/assets/like.png" class="cp" width="20" height="20" alt="">     
+      <div class="post-likes" @click="changePostLike()" v-if="getLogin">
+        <img v-if="like" src="/src/assets/likefull.png" class="cp" width="20" height="20" alt="">     
+        <img v-else src="/src/assets/like.png" class="cp" width="20" height="20" alt="">
         <div>{{userPost.likes.length}}</div>
       </div>
-      <!-- <div>
-         <img src="/src/assets/share.png" class="cp" width="20" height="20" alt="">
-      </div> -->
-      <div @click="showComments()" class="post-comment">
+      <div @click="showComments()" v-if="getLogin" class="post-comment">
          <img src="/src/assets/comment.png" class="cp" width="20" height="20" alt="">
          <div>{{userPost.comments.length}}</div>
       </div>
@@ -24,7 +21,7 @@
       <Comments v-for="(comment, index) in newComments" :key="index" :index="index" :comment="comment" :users="users"/>
     </div>
     <div v-if="commentsOpen && !commentLoading" >
-      <AddComment :userPost="userPost" :newComments="newComments" :totalComments="totalComments"/>
+      <AddComment  @add="increaseTotalComments()" :userPost="userPost" :newComments="newComments" :totalComments="totalComments"/>
     </div>
     <Loader v-else-if="commentsOpen && commentLoading" />
   </div>
@@ -40,7 +37,6 @@ export default {
   props: {
     users: Array,
     userPost: Object,
-    index: Number,
   },
   components: {
     Comments,
@@ -55,29 +51,15 @@ export default {
       newComments: [],
       page: 1,
       totalComments: 0,
-      like: Boolean,
+      like: false,
       likeId: Number,
       newLike: Boolean,
-      lastChange: String,
+      lastChange: "del",
+      scroll: 0,
     }
   },
   computed: {
-    hasLike () {
-      let filter = this.userPost.likes.filter(elem => { 
-        return elem.userId == this.getLoginId;
-      });
-      if(filter.length!==0){
-        // this.like = true;
-        this.likeId = filter[0].id;
-        this.newLike = true;
-        this.like = true
-      }
-      else{
-        // this.like = false;
-        this.newLike = true;
-        this.like = false
-      }
-    },
+
     lastLikeChange () {
       if(this.like==true){
         this.lastChange = "add"
@@ -89,26 +71,54 @@ export default {
     getLike () {
       return this.like
     },
+    getLogin () {
+      return this.$store.state.login
+    },
     getLoginId () {
       return this.$store.state.loginId
-    }
+    },
+    hasLike () {
+      let filter = this.userPost.likes.filter((elem,index) => { 
+        if(elem.userId == this.getLoginId){
+          this.index = index;
+          return true;
+        }
+        else{
+          return false;
+        }
+        
+      });
+      if(filter.length!==0){
+        this.likeId = filter[0].id;
+        this.like = true
+      }
+      else{
+        this.like = false
+      }
+    
+    },
   },
   methods: {
     showComments(){
+      document.addEventListener('click', this.handleClickOutside);
       this.commentLoading = true;
       this.commentsOpen = !this.commentsOpen;
-      
       if(this.commentsOpen){
         this.getComments();
+        
       }
       else{
+        window.scrollBy(0, -this.scroll);
         this.page=1;
         this.comments = [];
         this.newComments = [];
+        document.removeEventListener('click', this.handleClickOutside);
+        
       }
     },
     getComments () {
       let vm = this;
+      this.scroll+=this.$el.offsetWidth;
       const options = {
         method: 'GET',
         headers: {
@@ -129,17 +139,27 @@ export default {
         }
       });
     },
+    increaseTotalComments () {
+      this.totalComments++;
+      this.userPost.comments.length++;
+    },
+   
     changePostLike () {
       
       if(this.like){
-        this.userPost.likes.pop();
+        this.userPost.likes.splice(this.index,1);
       }
       else{
-        this.userPost.likes.push({});
+        this.userPost.likes.splice(this.index,0,{
+          userId: this.getLoginId,
+          postId: this.userPost.id,
+          id: this.likeId
+        });
       }
       this.like = !this.like;
     },
     changeLike () {
+      
       if(this.like && this.lastChange!=="add"){
         this.lastChange = "add"
         this.addLike();
@@ -159,7 +179,6 @@ export default {
       };
       axios(options)
       .then(response=>{
-        this.likeId = Number;
       })
     },
     addLike () {
@@ -175,6 +194,21 @@ export default {
       .then(response =>{
         this.likeId = response.data.id;
       })
+      
+    },
+    handleClickOutside(evt) {
+      let blockHeigth;
+      
+      // console.log('height',this.$el.offsetWidth * this.$store.state.counter) 
+      if (!this.$el.contains(evt.target) && this.commentsOpen) {
+        this.showComments();
+        
+        // let coordinate = elem.getBoundingClientRect()
+        // window.scrollBy(0, -this.$el.style.height);
+      }
+      else{
+        blockHeigth = this.$el.offsetWidth
+      }
     }
 
   },
@@ -183,18 +217,18 @@ export default {
     this.lastLikeChange;
   },
   created () {
-    
     this.debounceFunc = _debounce(this.changeLike, 500);
    
   },
   watch: {
     like: function () {
-      if(!this.newLike){
-        this.debounceFunc()
-      }
-      this.newLike = false;
+      this.debounceFunc()
     },
-  },
+    userPost: function () {
+      this.hasLike;
+      this.lastLikeChange;
+    },
+  }
 }
 
 </script>
@@ -219,12 +253,10 @@ export default {
 
 .add-more-comments{
   width: 100%;
-  /* border-top: var(--theme-border-top) */
   padding: 10px 0;
   color: #3498db;
 }
 .add-more-comments:hover{
-  /* text-decoration: underline; */
   color: #2ecc71;
 }
 .post-comment, .post-likes{
@@ -233,15 +265,43 @@ export default {
   grid-column-gap: 0.2em;
   justify-items: center;
   color: #2ecc71;
+  
+  position: relative;
 }
 .post-likes{
   color: #f34141;
+}
+.post-likes::before,.post-comment:before{
+  position: absolute;
+  width:28px;
+  height: 28px;
+  opacity: 0;
+  bottom:-17.8px;
+  right: 19px;
+  margin-bottom: 15px;
+  border-radius: 50%;
+  content: '';
+  background: #f34141;
+  transition: 0.25s;
+}
+.post-comment:before{
+  background:#2ecc71;
+}
+.post-likes:hover::before,.post-comment:hover::before{
+  opacity: 0.2;
+}
+.post-likes:active::before,.post-comment:active::before{
+  width:35px;
+  height: 35px;
+  bottom:-21px;
+  right: 16px;
 }
 @media only screen and (max-width: 425px){
   
   .post-footer{
     padding-left: 0;
     justify-items: center;
+    
   }
 }
 </style>

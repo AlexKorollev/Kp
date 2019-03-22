@@ -37,10 +37,13 @@ export default {
   methods: {
     addPost () {
       this.$store.commit("changeLoading", true);
+      var now = new Date();
+      now = Math.round(now.getTime()/1000);
       axios.post('http://localhost:3000/posts', {
         title: this.title,
         post: this.post,
         userId: this.$store.state.loginId,
+        date: now + ''
       },{
           headers: {
             authorization: "bearer " + this.$store.state.access_token
@@ -48,6 +51,9 @@ export default {
       })
       .then(response =>{
         this.post = '';
+        response.data.date = "today"
+        response.data.comments = [];
+        response.data.likes = [];
         this.$store.commit("incrementTotalPosts", 1)
         this.$store.commit("addPost", [response.data]);
         this.$store.commit("changeLoading", false);

@@ -16,7 +16,6 @@ import axios from 'axios';
 import Posts from ".././components/posts/Posts";
 import ProfileInfo from ".././components/ProfileInfo"
 import AddPost from ".././components/posts/AddPost"
-import api from '../helpers/api'
 import store from '../store'
 import Loader from '.././components/Loader'
 export default {
@@ -48,7 +47,6 @@ export default {
     },
   },
   mounted() {
-    // this.$store.state("clearPosts")
     this.searchUsers()
   },
 }

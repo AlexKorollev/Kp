@@ -49,6 +49,9 @@ export default {
     emitClose(){
       this.$emit('close');
     },
+    emitMenuClose () {
+      this.$emit('menuClose');
+    },
     onSubmit() {
       axios.post('http://localhost:3000/auth/login', {
       email: this.emailLogin,
@@ -58,6 +61,7 @@ export default {
         console.log(response);
         console.log("zaebok");
         this.emitClose();
+        this.emitMenuClose();
         this.emailLogin = "";
         this.passwordLogin = "";
         this.uniqLogin = true;
@@ -146,10 +150,11 @@ export default {
   transition: 0.25s;
   font-size: 20px;
   padding-bottom:5px;
+  color: #3498db;
 }
 .submit-login:hover{
   border-bottom: 2px solid #2ecc71;
-  color: #6b6b6b;
+  color: #2ecc71;
 }
 .invalid-feedback{
   justify-self: center;
