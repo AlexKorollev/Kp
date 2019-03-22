@@ -64,6 +64,7 @@ export default {
   },
   destroyed() {
     document.removeEventListener('click', this.handleClickOutside);
+    
   }
 
 }

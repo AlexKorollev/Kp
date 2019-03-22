@@ -4,10 +4,10 @@
       <router-link :to="'/user/'+ userPost.userId" class="post-avatar"><img class="avatar-img" :src="users[userPost.userId-1].avatar"></router-link>
       <div class="post-main-content">
         <div class="post-title">
-          <router-link class="post-title-name" :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}}</router-link>
-          <div v-if="path == '/profile'" class="post-title-icon" @click="openDropSettings">
-            <img v-if="this.mode == 'dark'" src="/src/assets/white-arrow.png" width="15" height="15" alt="">
-            <img v-else src="/src/assets/black-arrow.png" width="15" height="15" alt="">
+          <router-link class="post-title-name" :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}} <Date :object="userPost" /> </router-link>
+          <div v-if="path == '/profile' || equalsId" class="post-title-icon" @click="openDropSettings">
+            <img v-if="this.mode == 'dark'" src="/src/assets/down-arrow-white.png" width="15" height="15" alt="">
+            <img v-else src="/src/assets/down-arrow.png" width="15" height="15" alt="">
           </div>
           <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index"></DropSettings>
         </div>
@@ -18,10 +18,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-import api from '../../../helpers/api'
 import scroll from '../../../helpers/scroll'
 import DropSettings from './DropSettings'
+import Date from './Date'
 import SinglePostFooter from './SinglePostFooter'
 import Loader from '../../Loader'
 
@@ -31,11 +30,13 @@ export default {
     users: Array,
     userPost: Object,
     index: Number,
+    id: String,
   },
   components: {
     DropSettings,
     SinglePostFooter,
-    Loader
+    Loader,
+    Date
   },
   data() {
     return {
@@ -47,6 +48,18 @@ export default {
     mode () {
       return this.$store.state.mode;
     },
+    getUser () {
+      if(this.id){
+        return this.users[this.id-1]
+      }
+      else{
+        return this.users[this.$store.state.loginId-1]
+      }
+      
+    },
+    equalsId () {
+      return this.id*1 == this.users[this.$store.state.loginId].id-1
+    }
     
   },
   methods: {
@@ -58,18 +71,7 @@ export default {
     closeDropSettings () {
       this.visibleStatus = false;
       scroll.enableScroll();
-    },
-    openModal () {
-      this.modalOpened = true;
-    },
-    closeModal () {
-      this.modalOpened = false;
-    },
-    logOut () {
-      localStorage.removeItem(this.$store.state.STORAGE_KEY);
-      this.$store.commit("changeLogin", false);
-      this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
-    },
+    }
     
   },
 }
@@ -129,6 +131,7 @@ export default {
   text-decoration:none;
   color:var(--theme-color);
   transition: 0.25s;
+  display: flex;
 }
 
 .drop-settings{

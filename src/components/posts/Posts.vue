@@ -1,9 +1,9 @@
 <template>
   <div class="posts">
     <div class="content" v-if="!pageLoading && users.length!==0">
-      <SinglePost v-for="(userPost, index) in posts" :key="index" :userPost="userPost" :users="users" :index="index"/>
+      <SinglePost v-for="(userPost, index) in posts" :key="index" :userPost="userPost" :users="users" :index="index" :id="id"/>
     </div>
-    <Loader v-if="isLoading && query!='?public=true&_embed=likes&_embed=comments&_page=1&_limit=5&_sort=id&_order=desc'" class="posts-loading"/>
+    <Loader v-if="isLoading && query!='?public=true&_embed=comments&_embed=likes&_page=1&_limit=5&_sort=id&_order=desc'" class="posts-loading"/>
     <NoPosts v-if="Object.keys(this.$store.state.posts).length == 0 && !this.$store.state.loading" />
   </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   props: {
     query: String,
     users: Array,
+    id: String,
   },
   components: {
     Loader,

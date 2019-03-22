@@ -5,16 +5,7 @@
         <img v-if="mode=='light'" src="/src/assets/sunny.png" alt="qwe">
         <img v-else-if="mode=='dark'" src="/src/assets/moon-1.png" alt="qwe">
       </div>
-      <!-- <router-link class="" :to="'/'"><img class="logo" src="/src/assets/logo.png" alt="qwe"></router-link> -->
       <Autocomplite class="autocomplite"/>
-
-      <!-- <div class="menu" v-if="getLogin">
-        <button class="btn"  @click="switchMenu()" ><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
-       
-        <button class="btn" v-for="entry in languages" :key="entry.title" @click="changeLocale(entry.language)">
-          <flag :iso="entry.flag" v-bind:squared=false />
-        </button>
-      </div> -->
       <div class="menu">
         <button class="btn" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
         <button class="btn" @click="switchMenu()" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
@@ -32,10 +23,10 @@
         <div class="burger-line2"></div>
         <div class="burger-line3"></div>
       </div>
-      <Modal :modalOpened="modalOpened" @close="closeModal" />
+      <Modal :modalOpened="modalOpened" @close="closeModal" @menuClose="switchMenu()"/>
     </header>
     <div>
-      <router-view></router-view>
+      <router-view ></router-view>
     </div>
     <a class="back_to_top" title="Наверх"><img width="35" height="35" src="/src/assets/top-arrow-.png" alt="qwe"></a>
   </div>
@@ -56,9 +47,10 @@ export default {
     return {
       modalOpened: false,
       languages: [
-            { flag: 'us', language: 'en', title: 'English' },
-            { flag: 'ru', language: 'ru', title: 'Русский' }
-        ]
+        { flag: 'us', language: 'en', title: 'English' },
+        { flag: 'ru', language: 'ru', title: 'Русский' }
+      ],
+      menu: false,
     }
   },
   computed: {
@@ -95,6 +87,7 @@ export default {
       this.$store.commit("changeLoading", true);
       this.switchMenu();
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
+      this.$store.commit("clearPosts");
       this.$store.commit("changeLogin", false);
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
       this.$router.replace('/')
@@ -117,8 +110,8 @@ export default {
         '--body': '#10171e',
         '--header': '#1c2938',
         '--theme-background': 'rgb(21, 32, 43)',
-        '--theme-border-bottom': '2px solid rgb(56, 68, 77)',
-        '--theme-border-top': '2px solid rgb(56, 68, 77)',
+        '--theme-border-bottom': '1px solid rgb(56, 68, 77)',
+        '--theme-border-top': '1px solid rgb(56, 68, 77)',
         '--theme-color': '#fff',
         '--theme-posts-border': '1px solid #1C2532',
         '--theme-profile-border': '2px solid #1C2532',
@@ -137,8 +130,8 @@ export default {
         '--body': '#fff',
         '--header': '#efeeee',
         '--theme-background': '#efeeee',
-        '--theme-border-bottom': '2px solid #ccc',
-        '--theme-border-top': '2px solid #ccc',
+        '--theme-border-bottom': '1px solid #ccc',
+        '--theme-border-top': '1px solid #ccc',
         '--theme-color': '#4e4343',
         '--theme-posts-border': '1px solid #9E9E9E',
         '--theme-profile-border': '2px solid #9E9E9E',
@@ -153,15 +146,29 @@ export default {
     },
 
     switchMenu () {
-      let menu = document.querySelector('.menu').classList.toggle('menu-active')
-      let burger = document.querySelector('.burger').classList.toggle('burger-toggle')
-     
+      
+      this.menu = !this.menu;
+      if(this.menu){
+        document.addEventListener('click', this.handleClickOutside);
+        let menu = document.querySelector('.menu').classList.add('menu-active')
+        let burger = document.querySelector('.burger').classList.add('burger-toggle')
+      }
+      else{
+        let menu = document.querySelector('.menu').classList.remove('menu-active')
+        let burger = document.querySelector('.burger').classList.remove('burger-toggle')
+        document.removeEventListener('click', this.handleClickOutside);
+      }
     },
     changeLocale(locale) {
       this.switchMenu();
       i18n.locale = locale;
+    },
+    handleClickOutside(evt) {
+      let header = document.querySelector("header");
+      if (!header.contains(evt.target)) {
+        this.switchMenu();
+      }
     }
-    
   },
   mounted () {
     this.printMode;
@@ -351,7 +358,7 @@ header{
     top: 50px;
     display: grid;
     height: auto;
-    width: 50%;
+    width: 30%;
     background: var(--theme-header-background);
     grid-template-columns: 1fr;
     justify-items: center;
@@ -359,6 +366,17 @@ header{
     box-shadow: var(--theme-header-box-shadow);
     padding: 20px 0;
     z-index:50;
+  }
+  .menu button{
+    padding: 0;
+  }
+}
+@media only screen and (max-width: 600px){
+  .back_to_top-show {
+    display: none;
+  }
+  .menu-active{
+    width: 40%;
   }
 }
 @media only screen and (max-width: 425px){

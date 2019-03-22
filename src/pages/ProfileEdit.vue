@@ -10,7 +10,7 @@
             <label for="Name">{{ $t('firstName') }}</label>
             <div>
               <input type="text" id="editFirstName" class="form-control" placeholder="" :class="{'is-invalid': $v.editFirstName.$error}" @blur="$v.editFirstName.$touch()" v-model="editFirstName">
-              <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$dirty">First name field is required</div> 
+              <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$dirty">{{ $t('fistNameRequest') }}</div> 
             </div>
           </div>
 
@@ -18,7 +18,7 @@
             <label for="editLastName">{{ $t('lastName') }}</label>
             <div>
               <input type="text" id="editLastName" class="form-control" placeholder="" :class="{'is-invalid': $v.editLastName.$error}" @blur="$v.editLastName.$touch()" v-model="editLastName">
-              <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$dirty">Last name field is required</div> 
+              <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$dirty">{{ $t('lastNameRequest') }}</div> 
             </div>
             <div></div>
             <div class="button-group">

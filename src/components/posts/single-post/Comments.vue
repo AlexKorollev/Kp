@@ -4,7 +4,7 @@
       <router-link :to="'/user/'+comment.userId" class="post-avatar"><img class="avatar-img" :src="users[comment.userId-1].avatar"></router-link>
       <div class="post-main-content">
         <div class="post-title">
-          <router-link class="post-title-name" :to="'/user/'+comment.userId">{{users[comment.userId-1].firstName}} {{users[comment.userId-1].lastName}}</router-link>
+          <router-link class="post-title-name" :to="'/user/'+comment.userId">{{users[comment.userId-1].firstName}} {{users[comment.userId-1].lastName}} <Date :object="comment"/> </router-link>
         </div>
         <div class="post-body">{{ comment.comment || "no post"}}</div>
       </div>
@@ -14,8 +14,12 @@
 <script>
  
 import api from '../../../helpers/api'
+import Date from './Date'
 export default {
   name: 'Comments',
+  components: {
+    Date,
+  },
   props: {
     comment: Object,
     users: Array

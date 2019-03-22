@@ -25,15 +25,24 @@ export default {
     userPost: Object,
     comments: Array,
     newComments: Array,
-    totalComments: String,
+  },
+  computed: {
+   
   },
   methods: {
+    emitAdd(){
+      this.$emit('add');
+    },
     addComment () {
+      this.emitAdd()
       this.$store.commit("changeLoading", true);
+      var now = new Date();
+      now = Math.round(now.getTime()/1000)
       axios.post('http://localhost:3000/comments', {
         comment: this.comment,
         userId: this.$store.state.loginId,
-        postId: this.userPost.id
+        postId: this.userPost.id,
+        date: now + ''
       },{
           headers: {
             authorization: "bearer " + this.$store.state.access_token
@@ -41,9 +50,10 @@ export default {
       })
       .then(response =>{
         this.comment = '';
+        response.data.date = "today"
         // console.log(this.newComments);
         this.newComments.push(response.data);
-        // this.totalComments+=1;
+        
       })
     },
   },
