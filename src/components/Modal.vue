@@ -1,17 +1,19 @@
 <template>
   <transition name="modal-transition">
     <div class="modal" v-if="modalOpened">
-      <div class="modal-background" @click="emitCloseModal"></div>
+      <div class="modal-background" @click="emitCloseModal()"></div>
       <form class="modal-content" @submit.prevent="onSubmit" autocomplete="off">
-        <div class="close" @click="emitCloseModal"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
+        <div class="close" @click="emitCloseModal()"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
         <h1 class="title">{{ $t('login') }}</h1>
         <div class="form-group">
           <input type="email" id="emailLogin" class="form-control" :placeholder="$t('inputEmail')" :class="{'is-invalid': $v.emailLogin.$error}" @blur="$v.emailLogin.$touch()" v-model="emailLogin">
           <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$error">{{ $t('emailRequest') }}</div>
            <div class="invalid-feedback" v-if="!$v.emailLogin.email && $v.emailLogin.$error">{{ $t('emailValidate') }}</div> 
         </div>
-        <div class="form-group">
-          <input type="password" id="passwordLogin" class="form-control" :placeholder="$t('inputPassword')" :class="{'is-invalid': $v.passwordLogin.$error}" @blur="$v.passwordLogin.$touch()" v-model="passwordLogin">
+        <div class="form-group password">
+          <input :type="passwordType" id="passwordLogin" class="form-control" :placeholder="$t('inputPassword')" :class="{'is-invalid': $v.passwordLogin.$error}" @blur="$v.passwordLogin.$touch()" v-model="passwordLogin">
+          <img v-if="passwordType == 'password'" src="/src/assets/view.png" width="25" class="show-password" @click="changePasswrodType()">
+          <img v-else src="/src/assets/view-active.png" width="25" class="show-password" @click="changePasswrodType()">
           <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$error">{{ $t('passwordRequest') }}</div>
         </div>
         <div class="invalid-feedback" v-if="!uniqLogin">{{ $t('incorrectInfo') }}</div>
@@ -31,6 +33,7 @@ export default {
       emailLogin: '',
       passwordLogin: '',
       uniqLogin: true,
+      passwordType: 'password',
     }
   },
   props: {
@@ -50,9 +53,11 @@ export default {
   methods: {
     emitCloseModal(){
       this.$emit('modalClose');
+      this.$v.$reset();
     },
-    emitMenuClose () {
+    emitMenuClose(){
       this.$emit('menuClose');
+      this.$v.$reset();
     },
     onSubmit() {
       axios.post('http://localhost:3000/auth/login', {
@@ -80,6 +85,14 @@ export default {
         console.log("GOVNO " + error);
         this.uniqLogin = false;
       });
+    },
+    changePasswrodType () {
+      if(this.passwordType == 'password'){
+        this.passwordType = 'text';
+      }
+      else{
+        this.passwordType = 'password'
+      }
     }
   },
 }
@@ -163,6 +176,7 @@ export default {
   font-size: 12px;
   color: #bb0000;
   margin: 10px 0 0 0;
+  text-align: center;
 }
 .is-invalid{
   color: red;
@@ -191,6 +205,16 @@ export default {
 @media only screen and (max-width: 1024px) {
   .modal-background{
     background: var(--theme-background);
+  }
+}
+@media only screen and (max-width: 425px){
+  .show-password{
+    right: -30px;
+  }
+}
+@media only screen and (max-width: 355px){
+  .modal-content input:focus{
+    width:240px;
   }
 }
 /* .modal-content input{

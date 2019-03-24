@@ -15,7 +15,7 @@ import Loader from '../Loader'
 import SinglePost from './single-post/SinglePost'
 import NoPosts from './NoPosts'
 export default {
-  name: 'NewPosts',
+  name: 'Posts',
   props: {
     query: String,
     users: Array,

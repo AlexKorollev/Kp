@@ -84,11 +84,11 @@ export default {
       scroll.enableScroll();
     },
     logOut () {
+      this.$store.commit("changeLogin", false);
+      this.$store.commit("clearPosts");
       this.$store.commit("changeLoading", true);
       this.switchMenu();
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
-      this.$store.commit("clearPosts");
-      this.$store.commit("changeLogin", false);
       this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
       this.$router.replace('/')
     },
@@ -118,7 +118,8 @@ export default {
         '--theme-box-shadow': '0px 3px 16px -3px black',
         '--theme-header-box-shadow': '0px 7px 16px -3px black',
         '--theme-header-background': '#1c2938',
-        '--theme-modal-background': 'rgba(10,10,10,0.8)'
+        '--theme-modal-background': 'rgba(10,10,10,0.8)',
+        '--theme-button-color': 'rgb(136, 153, 166)',
       }
       for(let k in darkTheme) {
         rootElement.style.setProperty(k, darkTheme[k])
@@ -138,7 +139,8 @@ export default {
         '--theme-box-shadow': '0px 3px 16px -3px #797979',
         '--theme-header-box-shadow': '0px 7px 16px -3px #797979',
         '--theme-header-background': '#efeeee',
-        '--theme-modal-background': 'rgba(10,10,10,0.4)'
+        '--theme-modal-background': 'rgba(10,10,10,0.4)',
+        '--theme-button-color': 'rgb(102, 117, 127)',
       }
       for(let k in lightTheme) {
         rootElement.style.setProperty(k, lightTheme[k])
@@ -254,7 +256,7 @@ header{
   outline: none;
   font-size: 20px;
   white-space: nowrap;
-  color:#6b6b6b;
+  color:var(--theme-button-color);
   cursor: pointer;
 }
 .btn:hover{
@@ -270,7 +272,6 @@ header{
 .sign-up,.profile,.log-out{
   justify-self: left;
   text-decoration:none;
-  color: #6b6b6b;
 }
 .link{
   text-decoration:none;
@@ -325,6 +326,14 @@ header{
 }
 .cp{
   cursor: pointer;
+}
+.password{
+  position: relative;
+}
+.show-password{
+  position: absolute;
+  right: -40px;
+  top: 15px;
 }
 @media only screen and (max-width: 950px) {
   .menu button{
@@ -386,6 +395,9 @@ header{
   }
   .menu-active{
     width: 100%;
+  }
+  .show-password{
+    right: 0px;
   }
 }
 

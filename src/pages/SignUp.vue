@@ -17,16 +17,19 @@
         <div class="invalid-feedback" v-if="!$v.email.email && $v.email.$error">{{ $t('emailValidate') }}</div>
         <div class="invalid-feedback" v-if="!uniqEmail">{{ $t('emailExist') }}</div>
       </div>
-      <div class="form-group">
-        <input type="password" id="password" :placeholder="$t('inputPassword')" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
+      <div class="form-group password">
+        <input :type="passwordType" id="password" :placeholder="$t('inputPassword')" class="form-control" :class="{'is-invalid': $v.password.$error}" @blur="$v.password.$touch()" v-model="password">
+        <img v-if="passwordType == 'password'" src="/src/assets/view.png" width="25" class="show-password" @click="changePasswrodType()">
+        <img v-else src="/src/assets/view-active.png" width="25" class="show-password" @click="changePasswrodType()">
         <div class="invalid-feedback" v-if="!$v.password.minLength && $v.password.$error">{{ $t('minPasswordLengthIs') }} {{ $v.password.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ password.length }}</div>
         <div class="invalid-feedback" v-if="!$v.password.required && $v.password.$dirty ">{{ $t('passwordRequest') }}</div>
       </div>
       <div class="form-group">
-        <input type="password" id="confirm" :placeholder="$t('inputConfirmPassword')" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
+        <input :type="passwordType" id="confirm" :placeholder="$t('inputConfirmPassword')" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
         <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs || $v.confirmPassword.$error ">{{ $t('passwordNotMatch') }}</div>
       </div>
-      <button class="btn submit is-invalid" type="submit" :disabled="$v.$invalid" >{{ $t('submitButton') }}</button>
+      <button class="btn submit is-invalid" @click="submitForm()" :disabled="$v.$invalid" >{{ $t('submitButton') }}</button>
+      
     </form>
   </div>
 </template>
@@ -44,11 +47,13 @@ export default {
       password: '',
       confirmPassword: '',
       uniqEmail: true,
+      passwordType: 'password',
     }
   },
   methods: {
-    onSubmit() {
+    submitForm() {
       axios.post('http://localhost:3000/auth/register', {
+      avatar: '/src/assets/no-avatar.gif',
       email: this.email,
       password: this.password,
       firstName: this.firstName,
@@ -64,6 +69,14 @@ export default {
         this.uniqEmail = false;
       });
     },
+    changePasswrodType () {
+      if(this.passwordType == 'password'){
+        this.passwordType = 'text';
+      }
+      else{
+        this.passwordType = 'password'
+      }
+    }
   },
   validations: {
     firstName:{
@@ -174,11 +187,17 @@ h1{
   }
 
 }
+@media only screen and (max-width: 425px){
+  .show-password{
+    right: 0px;
+  }
+}
 @media only screen and (max-width: 500px) {
   form{
     padding: 2em 0;
     box-shadow: none;
   }
+  
 }
 
 </style>

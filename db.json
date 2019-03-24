@@ -223,6 +223,22 @@
       "lastName": "Verylonglastname",
       "avatar": "/src/assets/avatars/avatar1483.jpg",
       "id": 28
+    },
+    {
+      "email": "xbox360-9@mail.ru",
+      "password": "qweqwe",
+      "firstName": "Alex",
+      "lastName": "Dobrii",
+      "avatar": "/src/assets/avatars/no-avatar.jpg",
+      "id": 29
+    },
+    {
+      "avatar": "/src/assets/avatars/no-avatar.jpg",
+      "email": "x@qq.ru",
+      "password": "qweqwe",
+      "firstName": "Jacob",
+      "lastName": "Adams",
+      "id": 30
     }
   ],
   "posts": [
@@ -1102,9 +1118,9 @@
     },
     {
       "title": "",
-      "post": "qwe32",
-      "userId": 1,
-      "date": "1553190069",
+      "post": "test 1",
+      "userId": 30,
+      "date": "1553282648",
       "id": 167
     }
   ],
@@ -1605,48 +1621,6 @@
       "postId": 166,
       "date": "1553175521",
       "id": 73
-    },
-    {
-      "comment": "qwe1",
-      "userId": 1,
-      "postId": 165,
-      "date": "1553247494",
-      "id": 74
-    },
-    {
-      "comment": "qwe1",
-      "userId": 1,
-      "postId": 165,
-      "date": "1553247500",
-      "id": 75
-    },
-    {
-      "comment": "qwe2",
-      "userId": 1,
-      "postId": 165,
-      "date": "1553247561",
-      "id": 76
-    },
-    {
-      "comment": "test 9",
-      "userId": 1,
-      "postId": 162,
-      "date": "1553247624",
-      "id": 77
-    },
-    {
-      "comment": "q",
-      "userId": 1,
-      "postId": 165,
-      "date": "1553248573",
-      "id": 78
-    },
-    {
-      "comment": "q2",
-      "userId": 1,
-      "postId": 165,
-      "date": "1553248628",
-      "id": 79
     }
   ],
   "likes": [
@@ -1677,11 +1651,6 @@
     },
     {
       "userId": 1,
-      "postId": 165,
-      "id": 7
-    },
-    {
-      "userId": 1,
       "postId": 164,
       "id": 8
     },
@@ -1692,7 +1661,7 @@
     },
     {
       "userId": 1,
-      "postId": 167,
+      "postId": 165,
       "id": 10
     }
   ]

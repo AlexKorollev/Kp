@@ -4,6 +4,7 @@
       <div class="profile-edit-block">
         <h1 class="title">{{ $t('profileEdit') }}</h1>
         <h2 v-if="error" class="error-title">{{ $t('noChange') }}</h2>
+        <h2 v-else-if="passwordError" class="error-title">{{ $t('passwordNotMatch') }}</h2>
         <div class="profile-edit-main">
 
           <div class="form-group">
@@ -20,13 +21,46 @@
               <input type="text" id="editLastName" class="form-control" placeholder="" :class="{'is-invalid': $v.editLastName.$error}" @blur="$v.editLastName.$touch()" v-model="editLastName">
               <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$dirty">{{ $t('lastNameRequest') }}</div> 
             </div>
+          </div>
+
+          <div class="form-group password">
+            <label for="editPassword">{{ $t('oldPassword') }}</label>
+            <img v-if="passwordType == 'password'" src="/src/assets/view.png" width="25" class="show-password" @click="changePasswrodType()">
+            <img v-else src="/src/assets/view-active.png" width="25" class="show-password" @click="changePasswrodType()">
+            <div>
+              <input :type="passwordType" id="editPassword"  class="form-control" :class="{'is-invalid': $v.editPassword.$error}" @blur="$v.editPassword.$touch()" v-model="editPassword">
+              <div class="invalid-feedback" v-if="!$v.editPassword.minLength && $v.editPassword.$error">{{ $t('minPasswordLengthIs') }} {{ $v.editPassword.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ editPassword.length }}</div>
+              <div class="invalid-feedback" v-if="!$v.editPassword.required && $v.editPassword.$dirty ">{{ $t('passwordRequest') }}</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="editNewpassword">{{ $t('newPassword') }}</label>
+            <div>
+              <input :type="passwordType" id="editNewpassword"  class="form-control" :class="{'is-invalid': $v.editNewpassword.$error}" @blur="$v.editNewpassword.$touch()" v-model="editNewpassword">
+              <div class="invalid-feedback" v-if="!$v.editNewpassword.minLength && $v.editNewpassword.$error">{{ $t('minPasswordLengthIs') }} {{ $v.editNewpassword.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ editNewpassword.length }}</div>
+              <div class="invalid-feedback" v-if="!$v.editNewpassword.required && $v.editNewpassword.$dirty ">{{ $t('passwordRequest') }}</div>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            <input type="password" id="confirm" :placeholder="$t('inputConfirmPassword')" class="form-control" :class="{'is-invalid': $v.confirmPassword.$error}" @blue="$v.confirmPassword.$touch()" v-model="confirmPassword">
+            <div class="invalid-feedback" v-if="!$v.confirmPassword.sameAs || $v.confirmPassword.$error ">{{ $t('passwordNotMatch') }}</div>
+          </div> -->
+
+          <div class="form-group">
+            <label for="editConfirmPassword">{{ $t('confirmPassword') }}</label>
+            <div>
+              <input :type="passwordType" id="editConfirmPassword" class="form-control" :class="{'is-invalid': $v.editConfirmPassword.$error}" @blur="$v.editConfirmPassword.$touch()" v-model="editConfirmPassword">
+              <div class="invalid-feedback" v-if="!$v.editConfirmPassword.required && $v.editConfirmPassword.$error">{{ $t('passwordNotMatch') }}</div> 
+              <div class="invalid-feedback" v-if="!$v.editConfirmPassword.sameAs || $v.editConfirmPassword.$error ">{{ $t('passwordNotMatch') }}</div>
+            </div>
             <div></div>
             <div class="button-group">
               <button class="btn submit-post" type="submit" :disabled="$v.$invalid" @click="onSubmit()">{{ $t('submitButton') }}</button>
               <router-link class="btn submit-post cancel link" :to="'/profile'">{{ $t('cancelButton') }}</router-link>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -45,8 +79,13 @@ export default {
     return {
       editFirstName: '',
       editLastName: '',
+      editPassword: '',
+      editNewpassword: '',
+      editConfirmPassword: '',
       user: '',
       error: false,
+      passwordError: false,
+      passwordType:'password',
     }
   },
   components: {
@@ -59,6 +98,17 @@ export default {
     editLastName: {
       required,
     },
+    editPassword: {
+      required
+    },
+    editNewpassword: {
+      minLength: minLength(6),
+      required
+    },
+    editConfirmPassword: {
+      required,
+      sameAs: sameAs('editNewpassword')
+    }
     
   },
   methods: {
@@ -84,8 +134,12 @@ export default {
         this.error = true;
         console.log("error",this.error)
       }
+      else if(this.user.password !== this.editPassword){
+        this.passwordError = true;
+      }
       else {
         this.error = false;
+        this.passwordError = false;
         axios.put('http://localhost:3000/users/' + this.user.id, {
           avatar: this.user.avatar,
           email: this.user.email,
@@ -103,11 +157,22 @@ export default {
           this.uniqLogin = false;
         });
       }
-      
+    },
+    scroll () {
+      window.onscroll = () => {}
+    },
+    changePasswrodType () {
+      if(this.passwordType == 'password'){
+        this.passwordType = 'text';
+      }
+      else{
+        this.passwordType = 'password'
+      }
     }
   },
   mounted () {
     this.searchUsers();
+    this.scroll()
   }
 }
 </script>
@@ -117,7 +182,7 @@ export default {
   display:flex;
   justify-content: center;
   width: 100%;
-  height: 80vh;
+  /* height: 100vh; */
 }
 .profile-edit-block{
   display: grid;
@@ -128,6 +193,7 @@ export default {
   height: auto;
   align-self: center;
   margin: 0 10px;
+  transition: 0.25s;
 }
 .profile-edit-main{
   display:grid;
@@ -135,6 +201,8 @@ export default {
   background: var(--theme-background);
   grid-gap:2em;
   padding: 20px;
+  
+  transition: 0.25s;
 }
 .title{
   background: #3498db;
@@ -145,6 +213,7 @@ export default {
   /* text-transform: uppercase; */
   font-weight: 700;
   color: var(--theme-color);
+  
 }
 .form-group{
   display:grid;
@@ -165,6 +234,8 @@ export default {
   justify-self: right;
   font-size: 25px;
   font-weight: bold;
+  word-break: normal;  /* не поддерживает Opera12.14, значение keep-all не поддерживается IE, Chrome */ 
+  text-align: right;
 }
 .form-group input{
   border: none;
@@ -215,11 +286,17 @@ export default {
   padding: 20px 0;
 }
 
-
+.invalid-feedback{
+  text-align: left;
+}
+.show-password{
+  right: 0px;
+  top: -2px;
+}
 @media only screen and (max-width: 600px) {
   .form-group{
     grid-template-columns: 1fr;
-    margin: 30px 0;
+    margin: 15px 0;
   }
   .form-group label{
     justify-self: left;
@@ -232,6 +309,9 @@ export default {
   }
   .form-group input{
     text-align: left;
+  }
+  .show-password{
+    top: 0px;
   }
 }
 @media only screen and (max-width: 425px) {

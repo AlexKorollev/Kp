@@ -56,11 +56,12 @@ export default {
   },
   watch: {
     search: function () {
+      document.addEventListener('click', this.handleClickOutside);
       this.debounceFunc()
     },
   },
   mounted() {
-    document.addEventListener('click', this.handleClickOutside);
+    
   },
   destroyed() {
     document.removeEventListener('click', this.handleClickOutside);
@@ -112,15 +113,13 @@ export default {
 .list-of-names li a{
   text-decoration: none;
   outline:none;
-  color: #6b6b6b;
+  color:var(--theme-button-color);
 }
 .list-of-names li a:hover{
   color: #3498db;
 }
 @media only screen and (max-width: 425px){
-  .autocomplite input{
-    font-size: 15px;
-  }
+  
 
   .list-of-names{
     width: 200px;

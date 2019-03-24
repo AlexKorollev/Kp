@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 import Home from './pages/Home'
 import SignUp from './pages/SignUp'
-// import Test from './pages/Test'
+import Test from './pages/Test'
 import Profile from './pages/Profile'
 import User from './pages/User'
 import ProfileEdit from './pages/ProfileEdit'
@@ -18,10 +18,10 @@ export default new VueRouter({
       path: '/sign-up', 
       component: SignUp
     },
-    // {
-    //   path: '/test',
-    //   component: Test
-    // },
+    {
+      path: '/test',
+      component: Test
+    },
     {
       path: '/profile',
       component: Profile,

@@ -47,7 +47,7 @@ export default {
 .post-content{
   display: grid;
   grid-template-columns: 1fr 6fr;
-  margin: 5px 0;
+  margin: 5px 28px;
 }
 .avatar-img{
   width: 30px;
@@ -65,5 +65,10 @@ export default {
 }
 .post-body{
   font-size: 13px;
+}
+@media only screen and (max-width: 425px) {
+  .post-content{
+    margin: 5px 13px;
+  }
 }
 </style>
