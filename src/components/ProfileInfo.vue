@@ -1,11 +1,20 @@
 <template>
   <div class="profile-info">
     <div class="profile-info-block">
-      <img :src="getUser.avatar" width="" alt="" class="profile-image">
+      <img :src="getUser.avatar" alt="avatar" class="profile-image">
       <div class="profile-main-info">
         <div class="profile-name">{{ getUser.firstName }} {{ getUser.lastName }}</div>
-        <router-link v-if="!id || equalsId" class="btn submit-post link" :to="'/edit'">{{ $t('profileEdit') }}</router-link>
+        <router-link v-if="(!id || equalsId)" class="btn submit-post link" :to="'/edit'">{{ $t('profileEdit') }}</router-link>
+        <div v-else>
+          <Subscribe :users="users" :id="id" />
+        </div>
+        <div v-if="((!id || equalsId) && size=='more')">
+          <ProfileSubscribers :users="users" />
+        </div>
       </div>
+    </div>
+    <div v-if="((!id || equalsId) && size=='less')" class="profile-main-subscribers">
+      <ProfileSubscribers :users="users" />
     </div>
   </div>
 </template>
@@ -14,7 +23,18 @@
 import axios from 'axios';
 import api from '../helpers/api'
 import store from '../store'
+import Subscribe from './Subscribe'
+import ProfileSubscribers from './ProfileSubscribers'
 export default {
+  data () {
+    return {
+      size: String,
+    }
+  },
+  components: {
+    Subscribe,
+    ProfileSubscribers
+  },
   props: {
     users: Array,
     id: String,
@@ -31,8 +51,72 @@ export default {
     },
     equalsId () {
       return this.id*1 == this.users[this.$store.state.loginId].id-1
+    },
+    windowSize() {
+      let width = window.innerWidth
+      // console.log(width)
+      if(width>768){
+        this.size = "more";
+      }
+      else{
+        this.size = "less";
+      }
     }
+    
   },
+  methods: {
+    addPicture(e) {
+      var files = e.target.files || e.dataTransfer.files
+      if (!files.length) {
+        return
+      }
+      this.createImage(files[0])
+    },
+    createImage(file) {
+      this.edited = true
+      var reader = new FileReader();
+      reader.onload = (e) => {
+        this.image = e.target.result
+        this.message.image = this.image
+      }
+      reader.readAsDataURL(file)
+      console.log("file",file)
+    },
+    
+    
+  },
+  mounted () {
+    this.windowSize;
+  },
+  created () {
+    window.addEventListener('resize', () => {
+      let width = window.innerWidth
+      // console.log(width)
+      if(width>768){
+        // console.log('more',this.size)
+        this.size = "more";
+      }
+      else{
+        // console.log('less',this.size)
+        this.size = "less";
+      }
+    })
+  },
+  beforeDestroy (){
+    window.removeEventListener('resize', () => {
+      let width = window.innerWidth
+      // console.log(width)
+      if(width>768){
+        // console.log('more',this.size)
+        this.size = "more";
+      }
+      else{
+        // console.log('less',this.size)
+        this.size = "less";
+      }
+    })
+  }
+  
 }
 </script>
 <style scoped>
@@ -42,6 +126,7 @@ export default {
   align-items: start;
   font-size: 30px;
   font-weight: bold;
+  grid-row-gap: 1em;
 }
 .profile-info-block{
   display: grid;
@@ -58,7 +143,8 @@ export default {
 }
 
 .profile-main-info{
-  max-width:250px;
+  /* max-width:250px; */
+  grid-row-gap: 0.2em;
 }
 .profile-name{
   text-align: center;
@@ -88,6 +174,15 @@ export default {
 .submit-post:active{
   color: #fff;
 }
+.profile-main-subscribers{
+  justify-self: center;
+}
+/* @media only screen and (min-width: 920px) {
+  .profile-info-block{
+    margin-left: 10px;
+  }
+  
+} */
 @media only screen and (max-width: 768px) {
   .profile-info-block{
     grid-template-columns: 0.6fr 1fr;
@@ -119,6 +214,7 @@ export default {
   }
   .profile-main-info {
     width: 150px;
+    margin-left: 5px;
   }
   .submit-post{
     font-size: 15px;
@@ -127,5 +223,6 @@ export default {
   .submit-post:hover{
     width:150px;
   }
+  
 }
 </style>

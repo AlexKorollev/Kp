@@ -8,6 +8,7 @@
       <Autocomplite class="autocomplite"/>
       <div class="menu">
         <button class="btn" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
+        <button class="btn" @click="switchMenu()"  v-if="getLogin"><router-link class="profile btn" :to="'/feed'">{{ $t('feedPage') }}</router-link></button>
         <button class="btn" @click="switchMenu()" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
         <button class="btn" @click ="logOut" v-if="getLogin">{{ $t('logOut') }}</button>
         <button class="btn login" @click="openModal" v-if="!getLogin">{{ $t('login') }}</button>
@@ -113,13 +114,15 @@ export default {
         '--theme-border-bottom': '1px solid rgb(56, 68, 77)',
         '--theme-border-top': '1px solid rgb(56, 68, 77)',
         '--theme-color': '#fff',
-        '--theme-posts-border': '1px solid #1C2532',
+        '--theme-posts-border': '2px solid #1C2532',
         '--theme-profile-border': '2px solid #1C2532',
         '--theme-box-shadow': '0px 3px 16px -3px black',
         '--theme-header-box-shadow': '0px 7px 16px -3px black',
         '--theme-header-background': '#1c2938',
         '--theme-modal-background': 'rgba(10,10,10,0.8)',
         '--theme-button-color': 'rgb(136, 153, 166)',
+        '--theme-profile-edit-header': '#232D3D',
+        '--theme-list-background': '#18191A',
       }
       for(let k in darkTheme) {
         rootElement.style.setProperty(k, darkTheme[k])
@@ -134,13 +137,15 @@ export default {
         '--theme-border-bottom': '1px solid #ccc',
         '--theme-border-top': '1px solid #ccc',
         '--theme-color': '#4e4343',
-        '--theme-posts-border': '1px solid #9E9E9E',
+        '--theme-posts-border': '2px solid #9E9E9E',
         '--theme-profile-border': '2px solid #9E9E9E',
         '--theme-box-shadow': '0px 3px 16px -3px #797979',
         '--theme-header-box-shadow': '0px 7px 16px -3px #797979',
         '--theme-header-background': '#efeeee',
         '--theme-modal-background': 'rgba(10,10,10,0.4)',
         '--theme-button-color': 'rgb(102, 117, 127)',
+        '--theme-profile-edit-header': '#3498db',
+        '--theme-list-background': '#A9C7DF',
       }
       for(let k in lightTheme) {
         rootElement.style.setProperty(k, lightTheme[k])
@@ -214,7 +219,7 @@ body{
 header{
   border-bottom: 1px solid rgba(0,0,0,0.25);
   display:grid;
-  grid-template-columns: 0.1fr 2fr 1.5fr;
+  grid-template-columns: 0.1fr 1.5fr 2fr;
   grid-gap:1em;
   align-items: center;
   background: var(--header);

@@ -7,6 +7,7 @@ const messages = {
   'en': {
     homePage: 'Home',
     profilePage: 'Profile',
+    feedPage: 'Feed',
     login: 'Log in',
     logOut: 'Log Out',
     singUp: 'Sign Up',
@@ -15,7 +16,9 @@ const messages = {
     aboutUser: 'About',
     delete: 'Delete',
     submitButton: 'Submit',
-    profileEdit: 'Edit profile',
+    profileEdit: 'Change profile',
+    passwordEdit: 'Change password',
+    avatarEdit: 'Change avatar',
     cancelButton: 'Сancel',
     firstName: 'First Name',
     lastName: 'Last Name',
@@ -43,11 +46,15 @@ const messages = {
     inputLastName: 'Enter ur last name',
     noChange: 'U don\'t change ur fuelds',
     moreComments: 'More comments',
+    showMore: 'Show more',
+    subscriptions: 'Subscriptions',
+    noSubscriptions: 'No subscriptions',
     
   },
   'ru': {
     homePage: 'Главная',
     profilePage: 'Профиль',
+    feedPage: 'Новости',
     login: 'Войти',
     logOut: 'Выйти',
     singUp: 'Регистрация',
@@ -57,6 +64,8 @@ const messages = {
     delete: 'Удалить',
     submitButton: 'Отправить',
     profileEdit: 'Изменить профиль',
+    passwordEdit: 'Изменить пароль',
+    avatarEdit: 'Изменить аватар',
     cancelButton: 'Отмена',
     firstName: 'Имя',
     lastName: 'Фамилия',
@@ -83,6 +92,9 @@ const messages = {
     inputLastName: 'Введите вашу фамилию',
     noChange: 'Вы ничего не изменили',
     moreComments: 'Ещё комментарии',
+    showMore: 'Показать ещё',
+    subscriptions: 'Подписки',
+    noSubscriptions: 'Нет подписок',
   }
 };
 

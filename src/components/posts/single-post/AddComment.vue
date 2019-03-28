@@ -89,7 +89,7 @@ export default {
   border-bottom: 2px solid #3498db;
   background: var(--theme-background);
   color: var(--theme-color);
-  transition: 0.25s;
+  /* transition: 0.25s; */
 }
 .textarea:focus{
   border-bottom: 2px solid #2ecc71;

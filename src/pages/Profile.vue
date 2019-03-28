@@ -68,7 +68,7 @@ export default {
   grid-column-gap: 4em;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 920px) {
   .profile-page{
     grid-template-columns: 1fr;
     grid-gap:2em;

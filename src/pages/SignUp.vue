@@ -53,11 +53,12 @@ export default {
   methods: {
     submitForm() {
       axios.post('http://localhost:3000/auth/register', {
-      avatar: '/src/assets/no-avatar.gif',
       email: this.email,
       password: this.password,
       firstName: this.firstName,
-      lastName: this.lastName
+      lastName: this.lastName,
+      avatar: '/src/assets/avatars/no-avatar.jpg',
+      subscribers: [],
       })
       .then(response => {
         console.log(response);

@@ -1,29 +1,33 @@
 <template>
   <div>
     <div class="post-footer">
-      <div class="post-likes" @click="changePostLike()" v-if="getLogin">
+      <div class="post-likes cp" @click="changePostLike()" v-if="getLogin">
         <img v-if="like" src="/src/assets/likefull.png" class="cp" width="20" height="20" alt="">     
         <img v-else src="/src/assets/like.png" class="cp" width="20" height="20" alt="">
         <div>{{userPost.likes.length}}</div>
       </div>
-      <div @click="showComments()" v-if="getLogin" class="post-comment">
+      <div @click="showComments()" v-if="getLogin" class="post-comment cp transition">
          <img src="/src/assets/comment.png" class="cp" width="20" height="20" alt="">
          <div>{{userPost.comments.length}}</div>
       </div>
     </div>
-    <div v-if="commentsOpen && !commentLoading">
-      <Comments v-for="(comment, index) in comments" :key="index" :index="index" :comment="comment" :users="users"/>
-    </div>
+    <transition name="slide-fade">
+      <div v-if="commentsOpen && !commentLoading" class="transition">
+        <Comments v-for="(comment, index) in comments" :key="index" :index="index" :comment="comment" :users="users"/>
+      </div>
+    </transition>
     <div v-if="comments.length >=5 && comments.length < totalComments-newComments.length">
       <button class="btn add-more-comments" @click="getComments()">{{ $t('moreComments') }}</button> 
     </div>
-    <div v-if="commentsOpen && !commentLoading && newComments.length>0">
-      <Comments v-for="(comment, index) in newComments" :key="index" :index="index" :comment="comment" :users="users"/>
-    </div>
+    <transition name="slide-fade">
+      <div v-if="commentsOpen && !commentLoading && newComments.length>0">
+        <Comments v-for="(comment, index) in newComments" :key="index" :index="index" :comment="comment" :users="users"/>
+      </div>
+     </transition>
     <div v-if="commentsOpen && !commentLoading" >
       <AddComment  @add="increaseTotalComments()" :userPost="userPost" :newComments="newComments" :totalComments="totalComments"/>
     </div>
-    <Loader v-else-if="commentsOpen && commentLoading" />
+    <Loader v-else-if="commentsOpen && commentLoading" class="comment-loader"/>
   </div>
 </template>
 <script>
@@ -56,6 +60,7 @@ export default {
       newLike: Boolean,
       lastChange: "del",
       scroll: 0,
+      first: 1,
     }
   },
   computed: {
@@ -100,25 +105,28 @@ export default {
   },
   methods: {
     showComments(){
-      document.addEventListener('click', this.handleClickOutside);
+      // document.addEventListener('click', this.handleClickOutside);
       this.commentLoading = true;
       this.commentsOpen = !this.commentsOpen;
+      if(this.first == 1){
+        this.scroll = document.documentElement.scrollTop;
+        this.first += 1;
+      }
       if(this.commentsOpen){
         this.getComments();
         
       }
       else{
-        window.scrollBy(0, -this.scroll);
+        console.log(this.scroll)
+        // window.scrollTo( 0, this.scroll);
         this.page=1;
         this.comments = [];
         this.newComments = [];
-        document.removeEventListener('click', this.handleClickOutside);
-        
+        // document.removeEventListener('click', this.handleClickOutside);
       }
     },
     getComments () {
       let vm = this;
-      this.scroll+=this.$el.offsetWidth;
       const options = {
         method: 'GET',
         headers: {
@@ -196,20 +204,19 @@ export default {
       })
       
     },
-    handleClickOutside(evt) {
-      let blockHeigth;
+    // handleClickOutside(evt) {
       
-      // console.log('height',this.$el.offsetWidth * this.$store.state.counter) 
-      if (!this.$el.contains(evt.target) && this.commentsOpen) {
-        this.showComments();
+    //   // console.log('height',this.$el.offsetWidth * this.$store.state.counter) 
+    //   if (!this.$el.contains(evt.target) && this.commentsOpen) {
+    //     this.showComments();
         
-        // let coordinate = elem.getBoundingClientRect()
-        // window.scrollBy(0, -this.$el.style.height);
-      }
-      else{
-        blockHeigth = this.$el.offsetWidth
-      }
-    }
+    //     // let coordinate = elem.getBoundingClientRect()
+    //     // window.scrollBy(0, -this.$el.style.height);
+    //   }
+    //   else{
+    //     blockHeigth = this.$el.offsetWidth
+    //   }
+    // }
 
   },
   mounted () {
@@ -296,6 +303,10 @@ export default {
   bottom:-21px;
   right: 16px;
 }
+.comment-loader{
+  padding: 10px 0;
+}
+
 @media only screen and (max-width: 425px){
   
   .post-footer{

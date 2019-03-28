@@ -45,12 +45,8 @@ export default {
   font-size: 14px;
   color:var(--theme-button-color);
   padding-left: 15px;
-  
 }
-.date:hover{
-  text-decoration: underline;
-  
-}
+
 .date:before {
   position: absolute;
     content: "\00b7";
