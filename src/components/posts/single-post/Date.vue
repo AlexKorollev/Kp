@@ -43,14 +43,10 @@ export default {
 <style scoped>
 .date{
   font-size: 14px;
-  color: #657786;
+  color:var(--theme-button-color);
   padding-left: 15px;
-  
 }
-.date:hover{
-  text-decoration: underline;
-  
-}
+
 .date:before {
   position: absolute;
     content: "\00b7";

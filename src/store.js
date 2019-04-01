@@ -22,6 +22,7 @@ export default new Vuex.Store({
     users: [],
     addPostError:false,
     mode: 'light',
+    lang: 'ru',
   },
   getters: {
     computedCounter (state) { 
@@ -105,6 +106,9 @@ export default new Vuex.Store({
       state.mode = mode;
       //   document.querySelector('div > .profile-image').classList.add('dark-profile-image');
       //   document.querySelector('h1').classList.add('dark-title');
+    },
+    establishLanguage(state,lang){
+      state.lang = lang;
     }
   },
   actions: {

@@ -15,7 +15,7 @@ import Loader from '../Loader'
 import SinglePost from './single-post/SinglePost'
 import NoPosts from './NoPosts'
 export default {
-  name: 'NewPosts',
+  name: 'Posts',
   props: {
     query: String,
     users: Array,
@@ -41,32 +41,25 @@ export default {
   },
   methods: {
     printPost () {
-      console.log(this.query)
+      console.log('main-query',this.query)
       api.refreshPosts(store.state.currentPage)
       this.pageLoading = false
     },
     scroll () {
-      // if((window.innerHeight >= document.documentElement.offsetHeight) && ((this.$store.state.counter * 10 - this.$store.state.totalPosts)<0)){
-      //   console.log("na down")
-      //   this.downloadPosts();
-      // }
       window.onscroll = () => {
         let bottomOfWindow = Math.floor(document.documentElement.scrollTop) + 10 + window.innerHeight >= document.documentElement.offsetHeight;
         if (bottomOfWindow && ((Object.keys(this.$store.state.posts).length - this.$store.state.totalPosts)<0) && !this.$store.state.loading) {
-          console.log("scroll")
           this.downloadPosts();
         }
       };
     },
     downloadPosts () {
-      console.log("down")
       this.$store.commit("changeLoading", true)
       this.$store.commit("changeCurrentPage", 1);
       api.refreshPosts(store.state.currentPage)
     },
   },
   created () {
-    
   },
   watch: {
     query () {

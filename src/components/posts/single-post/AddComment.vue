@@ -3,7 +3,7 @@
     <div class="add-comment-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="add-comment-textarea">
-        <textarea class="textarea" :placeholder="$t('addCommentTextarea')" v-model="comment"></textarea>
+        <textarea class="textarea" :placeholder="$t('addCommentTextarea')" v-model="comment" @keyup.ctrl.enter="ctrlEnterPress()"></textarea>
       </div>
       <button class="btn submit-post" @click="addComment()">{{ $t('submitButton') }}</button>
     </div>
@@ -53,8 +53,11 @@ export default {
         response.data.date = "today"
         // console.log(this.newComments);
         this.newComments.push(response.data);
-        
+        this.$store.commit("changeLoading", false);
       })
+    },
+    ctrlEnterPress () {
+      this.addComment()
     },
   },
 }
@@ -89,7 +92,7 @@ export default {
   border-bottom: 2px solid #3498db;
   background: var(--theme-background);
   color: var(--theme-color);
-  transition: 0.25s;
+  /* transition: 0.25s; */
 }
 .textarea:focus{
   border-bottom: 2px solid #2ecc71;

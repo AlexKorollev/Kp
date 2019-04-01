@@ -36,6 +36,7 @@ export default {
   },
   methods: {
     searchUsers () {
+      console.log('id',this.id);
       const options = {
         method: 'GET',
         headers: {
@@ -50,11 +51,19 @@ export default {
         this.users = response.data;
       });
     },
+    profileId () {
+      console.log('id',this.id);
+      console.log('myid',this.$store.state.loginId)
+      if(this.id==this.$store.state.loginId){
+        this.$router.replace("/profile");
+      }
+    }
   },
   mounted() {
     this.$store.commit("establishQuery")
     this.$store.commit("clearPosts")
-    this.searchUsers()
+    this.searchUsers();
+    this.profileId()
   },
 }
 </script>
