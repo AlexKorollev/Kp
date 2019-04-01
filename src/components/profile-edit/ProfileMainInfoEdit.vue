@@ -15,7 +15,7 @@
         <label for="Name">{{ $t('firstName') }}</label>
         <div>
           <input type="text" id="editFirstName" class="form-control" placeholder="" :class="{'is-invalid': $v.editFirstName.$error}" @blur="$v.editFirstName.$touch()" v-model="editFirstName">
-          <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$dirty">{{ $t('fistNameRequest') }}</div> 
+          <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$error">{{ $t('fistNameRequest') }}</div> 
         </div>
       </div>
 
@@ -23,11 +23,11 @@
         <label for="editLastName">{{ $t('lastName') }}</label>
         <div>
           <input type="text" id="editLastName" class="form-control" placeholder="" :class="{'is-invalid': $v.editLastName.$error}" @blur="$v.editLastName.$touch()" v-model="editLastName">
-          <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$dirty">{{ $t('lastNameRequest') }}</div> 
+          <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$error">{{ $t('lastNameRequest') }}</div> 
         </div>
         <div></div>
         <div class="button-group">
-          <button class="btn submit-post" type="submit" @click="onSubmit()">{{ $t('submitButton') }}</button>
+          <button class="btn submit-post" type="submit" :disabled="$v.$invalid" @click="onSubmit()">{{ $t('submitButton') }}</button>
           <router-link class="btn submit-post cancel link" :to="'/profile'">{{ $t('cancelButton') }}</router-link>
         </div>
       </div>
@@ -78,11 +78,12 @@ export default {
       else {
         this.error = false;
         axios.put('http://localhost:3000/users/' + this.user.id, {
-          avatar: this.user.avatar,
           email: this.user.email,
           password: this.user.password,
           firstName: this.editFirstName,
           lastName: this.editLastName,
+          avatar: this.user.avatar,
+          subscribers: this.user.subscribers,
         })
         .then(response => {
           this.$router.replace("/profile");

@@ -62,7 +62,7 @@ export default {
 }
 .title{
   background: var(--theme-profile-edit-header);
-  padding: 15px 50px;
+  padding: 15px 0;
   text-align:center;
   font-size: 30px;
   font-weight: 700;

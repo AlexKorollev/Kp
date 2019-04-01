@@ -83,6 +83,7 @@ export default {
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       avatar: image,
+      subscribers: this.user.subscribers,
       },{
         headers: {
           'Authorization': "bearer " + this.$store.state.access_token
@@ -92,7 +93,7 @@ export default {
       })
       .then(response => {
         console.log(response);
-        this.$router.replace("/profile");
+        // this.$router.replace("/profile");
       })
       .catch(error => {
         console.log("GOVNO " + error);

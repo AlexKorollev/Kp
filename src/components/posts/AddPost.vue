@@ -1,5 +1,6 @@
 <template>
   <div class="add-post">
+    <h1 v-if="imageError" class="error-title">{{ $t('imageError') }}</h1>
     <div class="add-post-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="post-textarea">
@@ -9,7 +10,9 @@
         <img v-if="image!==''" src="/src/assets/one.png" class="one">
         <img tabindex="0" for="my-file" src="/src/assets/paperclip.png" class="input-file-trigger">
       </div>
+      
       <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">{{ $t('submitButton') }}</button>
+      
     </div>
   </div>
 </template>
@@ -32,6 +35,7 @@ export default {
       maximumSize: 5000000,
       selectedImage: null,
       image: '',
+      imageError: false,
     }
   },
   computed: {
@@ -42,6 +46,7 @@ export default {
   
   methods: {
     addPost () {
+      this.imageError = false;
       let hashtags = this.post.match(/(|^)#[A-Za-z0-9\-\.\_]+(|$)/g);
       this.$store.commit("changeLoading", true);
       var now = new Date();
@@ -68,6 +73,10 @@ export default {
         this.$store.commit("incrementTotalPosts", 1)
         this.$store.commit("addPost", [response.data]);
         this.$store.commit("changeLoading", false);
+    })
+    .catch(error =>{
+      console.log('error',error)
+      this.imageError = true;
     })
     },
     validate(image) {
@@ -137,6 +146,12 @@ export default {
   max-height: 2000px;
   color: var(--theme-color);
   transition: 0.25s;
+}
+.error-title{
+  text-align: center;
+  background: #e85a50;
+  width:400px;
+  padding: 10px 0;
 }
 .textarea{
   box-sizing: border-box;
@@ -247,6 +262,10 @@ export default {
   .add-post{
     display: grid;
     justify-items: center;
+  }
+  .error-title{
+    width:280px;
+    font-size: 22px;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1 class="title">{{ $t('passwordEdit') }}</h1>
-    <h2 v-if="passwordError" class="error-title">{{ $t('passwordNotMatch') }}</h2>
-    <div class="profile-edit-main">
+    <h2 v-if="passwordError" class="error-title">{{ $t('passwordNotChange') }}</h2>
+    <div class="profile-edit-main ">
 
       <!-- <div class="form-group">
         <label for="">Avatar</label>
@@ -10,6 +10,7 @@
           <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
         </div>
       </div> -->
+      
       <div class="form-group password">
         <label for="editPassword">{{ $t('oldPassword') }}</label>
         <img v-if="passwordType == 'password'" src="/src/assets/view.png" width="25" class="show-password" @click="changePasswrodType()">
@@ -26,7 +27,7 @@
         <div>
           <input :type="passwordType" id="editNewpassword"  class="form-control" :class="{'is-invalid': $v.editNewpassword.$error}" @blur="$v.editNewpassword.$touch()" v-model="editNewpassword">
           <div class="invalid-feedback" v-if="!$v.editNewpassword.minLength && $v.editNewpassword.$error">{{ $t('minPasswordLengthIs') }} {{ $v.editNewpassword.$params.minLength.min }}. {{ $t('minPasswordLengthNow') }} {{ editNewpassword.length }}</div>
-          <div class="invalid-feedback" v-if="!$v.editNewpassword.required && $v.editNewpassword.$dirty ">{{ $t('passwordRequest') }}</div>
+          <div class="invalid-feedback" v-if="!$v.editNewpassword.required && $v.editNewpassword.$error ">{{ $t('passwordRequest') }}</div>
         </div>
       </div>
      
@@ -34,12 +35,12 @@
         <label for="editConfirmPassword">{{ $t('confirmPassword') }}</label>
         <div>
           <input :type="passwordType" id="editConfirmPassword" class="form-control" :class="{'is-invalid': $v.editConfirmPassword.$error}" @blur="$v.editConfirmPassword.$touch()" v-model="editConfirmPassword">
-          <div class="invalid-feedback" v-if="!$v.editConfirmPassword.required && $v.editConfirmPassword.$error">{{ $t('passwordNotMatch') }}</div> 
+          <!-- <div class="invalid-feedback" v-if="!$v.editConfirmPassword.required && $v.editConfirmPassword.$error">{{ $t('passwordRequest') }}</div>  -->
           <div class="invalid-feedback" v-if="!$v.editConfirmPassword.sameAs || $v.editConfirmPassword.$error ">{{ $t('passwordNotMatch') }}</div>
         </div>
         <div></div>
         <div class="button-group">
-          <button class="btn submit-post" type="submit"  @click="onSubmit()">{{ $t('submitButton') }}</button>
+          <button class="btn submit-post" type="submit" :disabled="$v.$invalid || passwordError"  @click="onSubmit()">{{ $t('submitButton') }}</button>
           <router-link class="btn submit-post cancel link" :to="'/profile'">{{ $t('cancelButton') }}</router-link>
         </div>
       </div>
@@ -73,6 +74,7 @@ export default {
   },
   validations: {
     editPassword: {
+      minLength: minLength(6),
       required
     },
     editNewpassword: {
@@ -89,21 +91,24 @@ export default {
     
     
     onSubmit() {
-      if(this.user.password !== this.editPassword){
+      if(this.user.password == this.editNewpassword){
         this.passwordError = true;
+        this.$v.$invalid = true;
+        console.log("da")
       }
       else {
         this.passwordError = false;
         axios.put('http://localhost:3000/users/' + this.user.id, {
-          avatar: this.user.avatar,
           email: this.user.email,
           password: this.editNewpassword,
           firstName: this.user.firstName,
           lastName: this.user.lastName,
+          avatar: this.user.avatar,
+          subscribers: this.user.subscribers,
         })
         .then(response => {
           this.$router.replace("/profile");
-          this.$v.$reset();
+          // this.$v.$reset();
           
         })
         .catch(error => {
@@ -113,6 +118,7 @@ export default {
       }
     },
     changePasswrodType () {
+      console.log(this.$v)
       if(this.passwordType == 'password'){
         this.passwordType = 'text';
       }

@@ -147,7 +147,11 @@ export default {
 @media only screen and (max-width: 425px) {
   .profile-edit-image-block{
     grid-column-gap: 0.5em;
-    padding:0 10px;
+    margin:0 5px;
+  }
+  .profile-image{
+    width:140px;
+    height: 140px;
   }
 }
 </style>

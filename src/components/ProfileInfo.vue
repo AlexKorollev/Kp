@@ -41,6 +41,7 @@ export default {
   },
   computed: {
     getUser () {
+      console.log('id',this.id);
       if(this.id){
         return this.users[this.id-1]
       }
@@ -50,7 +51,7 @@ export default {
       
     },
     equalsId () {
-      return this.id*1 == this.users[this.$store.state.loginId].id-1
+      return this.id*1 == this.users[this.$store.state.loginId-1].id
     },
     windowSize() {
       let width = window.innerWidth

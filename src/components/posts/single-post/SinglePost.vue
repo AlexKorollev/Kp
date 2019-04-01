@@ -1,11 +1,16 @@
 <template>
   <div class="single-post">
     <div class="post-content">
-      <router-link :to="'/user/'+ userPost.userId" class="post-avatar"><img class="avatar-img" :src="users[userPost.userId-1].avatar"></router-link>
+      <div class="post-content-avatar">
+        <router-link :to="'/user/'+ userPost.userId" class="post-avatar"><img class="avatar-img" :src="users[userPost.userId-1].avatar"></router-link>
+        <div class="post-avatar-line">
+          <div class="line"></div>
+        </div>
+      </div>
       <div class="post-main-content">
         <div class="post-title">
           <div class="post-title-name">
-            <router-link  :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}} </router-link>
+            <router-link :to="'/user/'+ userPost.userId">{{users[userPost.userId-1].firstName}} {{users[userPost.userId-1].lastName}} </router-link>
             <Date :object="userPost" /> 
           </div>
           <div v-if="path == '/profile' || (userPost.userId==getLoginId && getLogin)" class="post-title-icon" @click="openDropSettings">
@@ -15,13 +20,15 @@
           <DropSettings class="drop-settings" :visibleStatus="visibleStatus" @close="closeDropSettings" :userPost="userPost" :index="index"></DropSettings>
         </div>
         <div class="post-body" v-html="parseText"></div>
-          <div v-if="userPost.image" class="post-body post-image" @click="openImage()"><img :src="userPost.image" alt=""></div>
+          <div v-if="userPost.image" class="post-body post-image " ><img @click="openImage()" :src="userPost.image" alt="" class="cp"></div>
           <transition name="modal-transition">
-            <div class="modal" v-if="image">
-              <div class="modal-background" @click="openImage()"></div>
-              <div class="modal-content">
-                <div class="close" @click="openImage()"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
-                <img :src="userPost.image" alt="">
+            <div class="modal-img" v-if="image">
+              <div class="modal-background-img" @click="openImage()"></div>
+              <div class="modal-content-img">
+                <div class="close-img" @click="openImage()">
+                  <img  src="/src/assets/close.png" width="20" height="20" alt="">
+                </div>
+                <img :src="userPost.image" class="modal-content-main-img" alt="">
               </div>
             </div>
           </transition>
@@ -174,19 +181,42 @@ export default {
 }
 .post-content{
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 5fr;
   margin: 5px 0;
+}
+.post-content-avatar{
+ width:100%; 
+ display: flex;
+ flex-direction: column;
 }
 .avatar-img{
   width: 50px;
   height: 50px;
   border: var(--theme-posts-border);
   border-radius:50%;
-  margin: 5px 10px;
+  margin: 0px 5px;
   transition: 0.25s;
+}
+.post-avatar{
+  justify-self: center;
+  align-self: flex-start;
 }
 .avatar-img:hover{
   border: 2px solid #3498db;
+}
+
+.post-avatar-line{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.line{
+  content: '';
+  height: 100%;
+  width: 4px;
+  background: var(--theme-posts-line);
+  transition: 0.25s;
 }
 .post-main-content{
   text-align:left;
@@ -213,37 +243,7 @@ export default {
 .post-body img{
   max-width:100%;
 }
-.post-image-active,.post-image-backgroud-active{
-  position: fixed;
-  left:0;
-  top:0;
-  width: 100vw;
-  height: 100vh;
-  transition: 1s ease;
-}
-.post-image-backgroud-active{
-  background: var(--theme-modal-background);
-  z-index:40;
-}
 
-.post-image-active{
-  /* transition: 1s ease; */
-  z-index:9999;
-  /* padding: 2em 2.5em; */
-  display:grid;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  align-items: center;
-  /* grid-gap:1em; */
-  border-radius: 2px;
-  width:100%;
-}
-.post-image-active img{
-  /* width: 500px; */
-  /* transition: 1s ease; */
-  background-color: var(--theme-background);
-  padding: 2em 4em;
-}
 .post-title-icon{
   margin-top: 3px;
   text-align: right;
@@ -281,24 +281,62 @@ export default {
   transform: translateX(10px);
   opacity: 0;
 }
-
-.modal-content{
-  width:auto;
-  padding: 0;
-  grid-gap: 0;
+.modal-img,.modal-background-img{
+  position: fixed;
+  left:0;
+  top:0;
+  width: 100vw;
+  height: 100vh;
+  z-index:1000;
+}
+.modal-background-img{
+  background: var(--theme-modal-background);
+  z-index:30;
+}
+.modal-img{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  z-index:50;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.modal-content-img{
+  background-color: var(--theme-background);
+  z-index:100;
   position: relative;
   padding: 10px;
+  display:grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  grid-gap: 0;
+  border-radius: 2px;
+  /* max-width:50%;
+  max-height: 50%; */
 }
-.close{
+.modal-content-img .modal-content-main-img{
+  max-width:500px;
+  /* max-height: 50%; */
+}
+.close-img{
   cursor: pointer;
   position: absolute;
   top:-25px;
   right: -15px;
+  width:10px;
+  height: 10px;
+}
+@media only screen and (max-width: 520px){
+  .modal-content-img .modal-content-main-img{
+    max-width:400px;
+  }
 }
 @media only screen and (max-width: 425px){
   .single-post{
     /* max-width:400px; */
     width:280px;
+  }
+  .modal-content-img .modal-content-main-img{
+    max-width:240px;
   }
 }
 @media only screen and (max-width: 768px){
@@ -308,4 +346,6 @@ export default {
     left:0;
   }
 }
+
+
 </style>

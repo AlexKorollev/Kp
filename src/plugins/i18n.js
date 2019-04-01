@@ -23,6 +23,7 @@ const messages = {
     firstName: 'First Name',
     lastName: 'Last Name',
     fistNameRequest: 'First Name field is required',
+    lastNameRequest: 'Last Name field is required',
     emailRequest: 'Email field is required',
     emailValidate: 'This field shoud be in email',
     emailExist: 'This email alredy exist',
@@ -31,6 +32,7 @@ const messages = {
     confirmPassword: 'Confirm password',
     passwordRequest: 'Password field is required',
     passwordNotMatch: 'Passwords not match',
+    passwordNotChange: 'You not change password',
     minPasswordLengthIs: 'min length of password is',
     minPasswordLengthNow: 'Now it is',
     incorrectInfo: 'This email not exist or incorrect password',
@@ -49,6 +51,7 @@ const messages = {
     showMore: 'Show more',
     subscriptions: 'Subscriptions',
     noSubscriptions: 'No subscriptions',
+    imageError: 'Image too large',
     
   },
   'ru': {
@@ -70,6 +73,7 @@ const messages = {
     firstName: 'Имя',
     lastName: 'Фамилия',
     fistNameRequest: 'Поле для ввода имени обязательно',
+    lastNameRequest: 'Поле для ввода фамилии обязательно',
     emailRequest: 'Поле для ввода имейла обязательно',
     emailValidate: 'Это поле должно быть имейлом',
     emailExist: 'Этот имейл уже существует',
@@ -78,6 +82,7 @@ const messages = {
     confirmPassword: 'Подтвердите пароль',
     passwordRequest: 'Поле для ввода пароля обязательно',
     passwordNotMatch: 'Пароли не совпадают',
+    passwordNotChange: 'Вы не поменяли пароль',
     minPasswordLengthIs: 'минимальная длина пароля',
     minPasswordLengthNow: 'Сейчас',
     incorrectInfo: 'Такого имейла не существует или неправильный пароль',
@@ -95,6 +100,7 @@ const messages = {
     showMore: 'Показать ещё',
     subscriptions: 'Подписки',
     noSubscriptions: 'Нет подписок',
+    imageError: 'Большое изоображение',
   }
 };
 

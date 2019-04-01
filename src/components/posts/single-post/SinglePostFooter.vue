@@ -240,12 +240,6 @@ export default {
 
 </script>
 <style>
-.post-content{
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  margin: 5px 0;
-}
-
 .post-footer{
   padding-left: 80px;
   border-top:var(--theme-border-top);
