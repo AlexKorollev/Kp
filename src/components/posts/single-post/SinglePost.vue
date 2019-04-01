@@ -108,7 +108,7 @@ export default {
           // this.getLinkPreview ();
           let uniqUrls = this.unique(urls);
           uniqUrls.forEach(link => {
-            buff = buff.replaceAll(link,"<a style='color:#3498db' class='link post-link' href='"+link+"'>"+link+"</a>")
+            buff = buff.replaceAll(link,"<a style='color:#3498db' target='_blank' class='link post-link' href='"+link+"'>"+link+"</a>")
           
           });
         }
@@ -116,7 +116,7 @@ export default {
           let uniqHashtags = this.unique(hashtags);
           uniqHashtags.forEach(hashtag => {
 
-            buff = buff.replaceAll(hashtag,"<a style='color:#3498db' class='link post-link' href='/tags/"+hashtag.split('').slice(1).join("")+"'>"+hashtag+"</a>")
+            buff = buff.replaceAll(hashtag,"<a style='color:#3498db' class='link post-link' target='_blank' href='/tags/"+hashtag.split('').slice(1).join("")+"'>"+hashtag+"</a>")
           });
         }
       return "<div>"+buff+"</div>"

@@ -16,6 +16,7 @@
         <div>
           <input type="text" id="editFirstName" class="form-control" placeholder="" :class="{'is-invalid': $v.editFirstName.$error}" @blur="$v.editFirstName.$touch()" v-model="editFirstName">
           <div class="invalid-feedback" v-if="!$v.editFirstName.required && $v.editFirstName.$error">{{ $t('fistNameRequest') }}</div> 
+          <div class="invalid-feedback" v-if="!$v.editFirstName.alpha && $v.editFirstName.$error">{{ $t('useOnlyLeterRequest') }}</div>
         </div>
       </div>
 
@@ -23,7 +24,8 @@
         <label for="editLastName">{{ $t('lastName') }}</label>
         <div>
           <input type="text" id="editLastName" class="form-control" placeholder="" :class="{'is-invalid': $v.editLastName.$error}" @blur="$v.editLastName.$touch()" v-model="editLastName">
-          <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$error">{{ $t('lastNameRequest') }}</div> 
+          <div class="invalid-feedback" v-if="!$v.editLastName.required && $v.editLastName.$error">{{ $t('lastNameRequest') }}</div>
+          <div class="invalid-feedback" v-if="!$v.editLastName.alpha && $v.editLastName.$error">{{ $t('useOnlyLeterRequest') }}</div> 
         </div>
         <div></div>
         <div class="button-group">
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, sameAs, alpha } from 'vuelidate/lib/validators'
 import axios from 'axios'
 import store from '../../store'
 import Loader from '../Loader'
@@ -59,9 +61,11 @@ export default {
   validations: {
     editFirstName: {
       required,
+      alpha
     },
     editLastName: {
       required,
+      alpha
     },
   },
   methods: {

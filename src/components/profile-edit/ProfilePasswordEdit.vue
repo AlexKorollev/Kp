@@ -2,6 +2,8 @@
   <div>
     <h1 class="title">{{ $t('passwordEdit') }}</h1>
     <h2 v-if="passwordError" class="error-title">{{ $t('passwordNotChange') }}</h2>
+    <h2 v-if="passwordNotEqual" class="error-title">{{ $t('passwordNotEqual') }}</h2>
+
     <div class="profile-edit-main ">
 
       <!-- <div class="form-group">
@@ -40,7 +42,7 @@
         </div>
         <div></div>
         <div class="button-group">
-          <button class="btn submit-post" type="submit" :disabled="$v.$invalid || passwordError"  @click="onSubmit()">{{ $t('submitButton') }}</button>
+          <button class="btn submit-post" type="submit" :disabled="$v.$invalid"  @click="onSubmit()">{{ $t('submitButton') }}</button>
           <router-link class="btn submit-post cancel link" :to="'/profile'">{{ $t('cancelButton') }}</router-link>
         </div>
       </div>
@@ -63,6 +65,7 @@ export default {
       editNewpassword: '',
       editConfirmPassword: '',
       passwordError: false,
+      passwordNotEqual: false,
       passwordType:'password',
     }
   },
@@ -91,13 +94,22 @@ export default {
     
     
     onSubmit() {
-      if(this.user.password == this.editNewpassword){
+      this.passwordError = false;
+      this.passwordNotEqual = false;
+
+      
+      if(this.user.password !== this.editPassword){
+        console.log("daaa")
+        // this.passwordError = false;
+        this.passwordNotEqual = true;
+      }
+      else if(this.user.password == this.editNewpassword){
         this.passwordError = true;
-        this.$v.$invalid = true;
         console.log("da")
       }
-      else {
+      if(this.passwordError == false && this.passwordNotEqual == false) {
         this.passwordError = false;
+        this.passwordNotEqual = false;
         axios.put('http://localhost:3000/users/' + this.user.id, {
           email: this.user.email,
           password: this.editNewpassword,

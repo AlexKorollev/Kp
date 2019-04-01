@@ -197,7 +197,7 @@ export default {
     },
     changeLocale(locale) {
       // console.log(locale)
-      localStorage.setItem('lang', (localStorage.getItem('lang') || 'ru') === 'ru' ? 'en' : 'ru')
+      localStorage.setItem('lang', locale || 'ru')
       this.$store.commit("establishLanguage",localStorage.getItem('lang') || 'ru');
       this.addLocaleClass(locale);
       // console.log(this.$el)

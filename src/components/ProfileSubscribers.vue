@@ -54,7 +54,7 @@ export default {
 <style scoped>
 .profile-subscribers{
   background: var(--theme-background);
-  border-top:var(--theme-border-top);
+  /* border-top:var(--theme-border-top); */
   border-bottom:var(--theme-border-top);
   width:400px;
   transition: 0.25s;

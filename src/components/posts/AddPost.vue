@@ -1,18 +1,22 @@
 <template>
-  <div class="add-post">
+  <div class="add-post" >
     <h1 v-if="imageError" class="error-title">{{ $t('imageError') }}</h1>
     <div class="add-post-block">
       <!-- <input type="text" placeholder="title" v-model="title"> -->
       <div class="post-textarea">
-        <textarea class="textarea" :placeholder="$t('addPostTextarea')"  v-model="post" :class="{'cancel-textarea': getPostError}"></textarea>
+        <textarea class="textarea" :placeholder="$t('addPostTextarea')"  v-model="post" :class="{'cancel-textarea': getPostError}" @keyup.ctrl.enter="ctrlEnterPress()"></textarea>
         <ProgressBar class="icon" :post="post"/>
-        <input class="input-file cp" id="my-file" type="file" v-on:change="changeImage">
-        <img v-if="image!==''" src="/src/assets/one.png" class="one">
-        <img tabindex="0" for="my-file" src="/src/assets/paperclip.png" class="input-file-trigger">
+        <input class="input-file cp" id="my-file" type="file" @change="changeImage">
+        <img v-if="image" src="/src/assets/one.png" class="one">
+        <img tabindex="0" for="my-file" src="/src/assets/paperclip.png" class="input-file-trigger cp">
       </div>
-      
       <button class="btn submit-post" @click="addPost()" :disabled="getPostError" :class="{'cancel-button': getPostError}">{{ $t('submitButton') }}</button>
-      
+      <div v-if="image" class="image-preview">
+        <img :src="image" alt="" srcset="">
+        <div class="close-img" @click="deleteImage()">
+          <img  src="/src/assets/close.png" width="20" height="20" alt="">
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,8 +38,10 @@ export default {
       allowableTypes: ['jpg', 'jpeg', 'png', 'gif','mp4'],
       maximumSize: 5000000,
       selectedImage: null,
-      image: '',
+      image: null,
       imageError: false,
+      clearImage: null,
+      eventTarget: null,
     }
   },
   computed: {
@@ -96,8 +102,9 @@ export default {
       console.log(err, 'do something with error')
     },
     changeImage($event) {
-      this.selectedImage = $event.target.files[0]
-    
+      // console.log("da",$event)
+      this.selectedImage = $event.target.files[0];
+      // console.log('selectedimg',this.selectedImage)
       //validate the image
       if (!this.validate(this.selectedImage))
         return
@@ -113,8 +120,21 @@ export default {
       const reader = new FileReader()
       reader.onload = (e) => {
         this.image = e.target.result
+        console.log('img',this.image)
       };
       reader.readAsDataURL(this.selectedImage)
+      
+      console.log('img2',this.selectedImage)
+    },
+    deleteImage () {
+      this.image = null;
+      this.selectedImage = null;
+      document.getElementById('my-file').value= "";
+    },
+    ctrlEnterPress () {
+      if(this.getPostError!==true){
+        this.addPost()
+      }
     },
   },
   watch: {
@@ -191,9 +211,9 @@ export default {
 .post-textarea{
   position: relative;
 }
-.post-textarea input{
-  height: 40px;
-  width: 40px;
+.post-textarea input[file]{
+  /* height: 40px;
+  width: 40px; */
 }
 .add-post-block .icon{
   position: absolute;
@@ -226,6 +246,7 @@ export default {
   right: 7px;
   bottom:-65px;
   width: 40px;
+  /* height: 40px; */
   z-index:10;
 }
 .one{
@@ -239,8 +260,9 @@ export default {
   right: 7px;
   bottom:-65px;
   width: 40px;
-  height: 40px;
+  height: 60px;
   opacity: 0;
+  border:none;
   cursor: pointer;
   z-index:20;
 }
@@ -250,8 +272,33 @@ export default {
 .input-file-trigger:hover,
 .input-file-trigger:focus {
   outline: none;
+  cursor: pointer;
 }
 
+.image-preview{
+  /* background: #fff; */
+  /* border-top:2px solid #3498db; */
+  position: relative;
+  width:100%;
+  margin: 0 10px 5px 10px;
+}
+.image-preview img{
+  background: var(--theme-modal-background);
+  /* max-width:100%; */
+}
+.image-preview > img{
+  max-width: calc(100% - 20px);
+}
+.close-img {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 10px;
+  height: 10px;
+  
+  /* margin: 0 10px 10px 0; */
+}
 @media only screen and (max-width: 425px){
   .submit-post{
     font-size: 20px;

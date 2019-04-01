@@ -21,7 +21,12 @@ export default {
   },
   computed: {
     getReversePostLength () {
-      return (this.post.length-255)*-1 || 0;
+      if((this.post.length-255)*-1 > -30){
+        return (this.post.length-255)*-1 || 0;
+      }
+      else{
+        return -30;
+      }
     }
   },
   methods: {
