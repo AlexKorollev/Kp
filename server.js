@@ -16,7 +16,7 @@ const db = low(adapter)
 server.use(middlewares);
 server.use(bodyParser.urlencoded({extended: true}))
 server.use(bodyParser.json())
-server.use('/',(req, res, next) => setTimeout(() => next(), Math.floor(Math.random() * 1000)))
+server.use('/',(req, res, next) => setTimeout(() => next(), Math.floor(Math.random() * 1)))
 
 const SECRET_KEY = '123456789'
 const expiresIn = '10h'
@@ -33,14 +33,14 @@ function verifyToken(token, cb) {
 }
 
 // Check if the user exists in database
-function isAuthenticated({email, password}) {
+function isAuthenticated({nickname, password}) {
 	const userdb = JSON.parse(fs.readFileSync('db.json', 'UTF-8'))
-	return userdb.users.findIndex(user => user.email === email && user.password === password) !== -1
+	return userdb.users.findIndex(user => user.nickname === nickname && user.password === password) !== -1
 }
 
-function findUser({email, password}) {
+function findUser({nickname, password}) {
 	const userdb = JSON.parse(fs.readFileSync('db.json', 'UTF-8'))
-	return userdb.users.find(user => user.email === email && user.password === password)
+	return userdb.users.find(user => user.nickname === nickname && user.password === password)
 }
 
 function findUsersByIds(userIds) {
@@ -61,26 +61,24 @@ server.post('/comments/replies', (req, res) => {
 
 
 server.post('/auth/login', (req, res) => {
-	const email = req.body.email
-	console.log(email)
+	const nickname = req.body.nickname
 	const password = req.body.password
-	console.log(password)
 
-	if (isAuthenticated({email, password}) === false) {
+	if (isAuthenticated({nickname, password}) === false) {
 		const status = 401
 		const message = 'Incorrect email or password'
 		res.status(status).json({status, message})
 		return
 	}
-	const user = findUser({email, password})
-	const access_token = createToken({email, password})
+	const user = findUser({nickname, password})
+	const access_token = createToken({nickname, password})
 	res.status(200).json({access_token, user})
 })
 
 server.post('/auth/register', (req, res) => {
-	const email = req.body.email
+	const nickname = req.body.nickname
 	const password = req.body.password
-	if (findUser({email, password}) !== undefined) {
+	if (findUser({nickname, password}) !== undefined) {
 		const status = 401
 		const message = 'This user already registered'
 		res.status(status).json({status, message})

@@ -1,10 +1,7 @@
 <template>
   <div id="body">
     <header>
-      <!-- <div @click="changeMode()" id="logo">
-        <img v-if="mode=='light'" src="/src/assets/sunny.png" alt="qwe">
-        <img v-else-if="mode=='dark'" src="/src/assets/moon-1.png" alt="qwe">
-      </div> -->
+
       <div id="logo">
         <div class="toggle-btn" @click="changeMode()">
           <div class="inner-circle">
@@ -13,17 +10,14 @@
           </div>
         </div>
       </div>
-      <Autocomplite class="autocomplite"/>
       <div class="menu">
-        <button class="btn" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
-        <button class="btn" @click="switchMenu()"  v-if="getLogin"><router-link class="profile btn" :to="'/feed'">{{ $t('feedPage') }}</router-link></button>
-        <button class="btn" @click="switchMenu()" v-if="getLogin"><router-link class="profile btn" :to="'/profile'">{{ $t('profilePage') }}</router-link></button>
-        <button class="btn" @click ="logOut" v-if="getLogin">{{ $t('logOut') }}</button>
+        <button class="btn" v-if="getAdmin" @click="switchMenu()"><router-link class="profile btn" :to="'/admin'">{{ $t('adminPage') }}</router-link></button>
+        <button class="btn" v-if="getLogin" @click="switchMenu()"><router-link class="profile btn" :to="'/'">{{ $t('homePage') }}</router-link></button>
         <button class="btn login" @click="openModal" v-if="!getLogin">{{ $t('login') }}</button>
-        <button class="btn" @click="switchMenu()"  v-if="!getLogin"><router-link class="sign-up btn" :to="'/sign-up'">{{ $t('singUp') }}</router-link></button>
+        <button class="btn" v-if="getLogin" @click="logOut()">{{ $t('logOut') }}</button>
         <div class="internacializaton">
           <button  v-for="(entry,index) in languages" :key="entry.title" :class="'btn language-'+(index*1+1)" @click="changeLocale(entry.language)">
-            <flag :iso="entry.flag" v-bind:squared=false />
+            <flag :iso="entry.flag" v-bind:squared="false" />
           </button>
         </div>
       </div>
@@ -35,7 +29,7 @@
       <Modal :modalOpened="modalOpened" @modalClose="closeModal" @menuClose="switchMenu()"/>
     </header>
     <div>
-      <router-view ></router-view>
+      <router-view v-if="getLogin"></router-view>
     </div>
     <a class="back_to_top" title="Наверх"><img width="35" height="35" src="/src/assets/top-arrow-.png" alt="qwe"></a>
   </div>
@@ -43,7 +37,6 @@
 
 <script>
 import Modal from "./components/Modal"
-import Autocomplite from "./components/Autocomplite"
 import api from "./helpers/api"
 import scroll from './helpers/scroll'
 import i18n from './plugins/i18n';
@@ -51,7 +44,6 @@ import i18n from './plugins/i18n';
 export default { 
   components:{
     Modal,
-    Autocomplite
   },
   data () {
     return {
@@ -67,6 +59,9 @@ export default {
     getLogin () {
       this.$store.dispatch("loginState")
       return this.$store.state.login;
+    },
+    getAdmin () {
+      return this.$store.state.admin
     },
     printMode () {
       if (localStorage.getItem('mode') === 'dark'){
@@ -84,15 +79,12 @@ export default {
         this.$store.commit("establishLanguage","ru");
         this.addLocaleClass('ru')
         i18n.locale = 'ru';
-        // this.activateDarkMode();
       }
       else{
         this.$store.commit("establishLanguage","en");
         this.addLocaleClass('en')
         i18n.locale = 'en';
-        // this.activateLightMode();
       }
-      // this.changeLocale();
     },
     mode () {
       return this.$store.state.mode;
@@ -106,15 +98,15 @@ export default {
     },
     closeModal () {
       this.modalOpened = false;
+      this.adminModalOpened = true;
       scroll.enableScroll();
     },
     logOut () {
       this.$store.commit("changeLogin", false);
-      this.$store.commit("clearPosts");
       this.$store.commit("changeLoading", true);
+      this.$store.commit("establishAdmin", false);
       this.switchMenu();
       localStorage.removeItem(this.$store.state.STORAGE_KEY);
-      this.$store.commit("establishQuery", '?public=true&_page=1&_limit=5&_sort=id&_order=desc')
       this.$router.replace('/')
     },
     changeMode (mode) {
@@ -146,10 +138,16 @@ export default {
         '--theme-header-box-shadow': '0px 7px 16px -3px black',
         '--theme-header-background': '#1c2938',
         '--theme-modal-background': 'rgba(10,10,10,0.6)',
+        '--theme-like-preview-background': 'rgba(10,10,10,0.95)',
         '--theme-button-color': 'rgb(136, 153, 166)',
         '--theme-profile-edit-header': '#232D3D',
         '--theme-list-background': '#18191A',
-        '--theme-toggle-button' : '#3498db'
+        '--theme-toggle-button' : '#3498db',
+        '--theme-table-two': '#0f181d',
+        '--theme-sort-and-search-box-shadow-right': '4px -4px 5px -1px #0f181d inset',
+        '--theme-sort-and-search-box-shadow-left': '-4px -4px 5px -1px #0f181d inset',
+
+
       }
       for(let k in darkTheme) {
         rootElement.style.setProperty(k, darkTheme[k])
@@ -171,10 +169,15 @@ export default {
         '--theme-header-box-shadow': '0px 7px 16px -3px #797979',
         '--theme-header-background': '#efeeee',
         '--theme-modal-background': 'rgba(10,10,10,0.4)',
+        '--theme-like-preview-background': 'rgba(10,10,10,0.9)',
         '--theme-button-color': 'rgb(102, 117, 127)',
         '--theme-profile-edit-header': '#3498db',
         '--theme-list-background': '#A9C7DF',
-        '--theme-toggle-button': 'rgb(147, 147, 147)'
+        '--theme-toggle-button': 'rgb(147, 147, 147)',
+        '--theme-table-two': '#d2d2d2',
+        '--theme-sort-and-search-box-shadow-right': '4px -4px 5px -6px #0f181d inset',
+        '--theme-sort-and-search-box-shadow-left': '-4px -4px 5px -6px #0f181d inset',
+
       }
       for(let k in lightTheme) {
         rootElement.style.setProperty(k, lightTheme[k])
@@ -224,11 +227,9 @@ export default {
   mounted () {
     this.printMode;
     this.printLanguage;
-    // this.changeLocale('ru')
     scroll.scrollButton();
     if(this.$route.query.login === "false"){
       this.openModal();
-      
     }
   },
 }
@@ -245,14 +246,14 @@ export default {
 }
 
 ::-webkit-scrollbar-track  {
-   -webkit-box-shadow: var(--theme-box-shadow) ;
+   box-shadow: var(--theme-box-shadow) ;
    transition: 0.25s;
    
 }
 
 ::-webkit-scrollbar-thumb  {
     background: var(--header);
-    border: var(--theme-posts-border);
+    border: var(--theme-border-bottom);
     transition: 0.25s;
  }
 .scroll{
@@ -266,7 +267,7 @@ body{
 header{
   border-bottom: 1px solid rgba(0,0,0,0.25);
   display:grid;
-  grid-template-columns: 0.3fr 1.5fr 2fr;
+  grid-template-columns: 0.3fr 2fr;
   grid-gap:1em;
   align-items: center;
   background: var(--header);
@@ -286,9 +287,19 @@ header{
   background: var(--theme-color);
   transition: all 0.3s ease;
 }
+.title{
+  background: var(--theme-profile-edit-header);
+  width:100%;
+  padding: 20px 0;
+  text-align:center;
+  font-size: 30px;
+  /* text-transform: uppercase; */
+  font-weight: 700;
+  color: #fff;
+  
+}
 #logo{
   width: 50px;
-  /* margin-left:20px; */
 }
 #logo img{
   width: 30px;
@@ -312,9 +323,7 @@ header{
   border-radius: 50%;
   transition: all 300ms ease-in-out;
 }
-.toggle-btn.active {
-  /* background: #3498db; */
-}
+
 .toggle-btn.active >.inner-circle {
   margin-left: 30px;
 }
@@ -323,11 +332,14 @@ header{
 }
 .menu{
   display:flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   height: 40px;
+  padding-left: 10px;
 }
-
+.menu button{
+  padding:0 10px;
+}
 .btn{
   background: none;
   border:none;
@@ -336,10 +348,37 @@ header{
   white-space: nowrap;
   color:var(--theme-button-color);
   cursor: pointer;
+  
 }
 .btn:hover{
-  /* border-bottom: 2px solid #6b6b6b; */
   color:#3498db;
+}
+.link{
+  text-decoration:none;
+  color: #3498db;
+}
+.link:active{
+  color:white;
+}
+.router-link-exact-active{
+  color: #3498db;
+}
+.submit-post{
+  padding: 12px 0;
+  border: 2px solid #3498db;
+  width:150px;
+  justify-items: center;
+  border-radius: 24px;
+  margin: 5px 0 19px 0;
+}
+.submit-post:hover{
+  border: 2px solid #2ecc71;
+  color: #6b6b6b;
+}
+.submit-post:active{
+  border: 2px solid #2ecc71;
+  background: #2ecc71;
+  color: #fff;
 }
 .internacializaton{
   display: grid;
@@ -378,34 +417,7 @@ header{
   justify-self: left;
   text-decoration:none;
 }
-.link{
-  text-decoration:none;
-  color: #3498db;
-}
-.link:active{
-  color:white;
-}
 
-.router-link-exact-active{
-  color: #3498db;
-}
-.submit-post{
-  padding: 12px 0;
-  border: 2px solid #3498db;
-  width:150px;
-  justify-items: center;
-  border-radius: 24px;
-  margin: 5px 0 19px 0;
-}
-.submit-post:hover{
-  border: 2px solid #2ecc71;
-  color: #6b6b6b;
-}
-.submit-post:active{
-  border: 2px solid #2ecc71;
-  background: #2ecc71;
-  color: #fff;
-}
 .back_to_top {
   position: fixed;
   bottom: 80px;
@@ -429,9 +441,6 @@ header{
 .back_to_top-show {
   display: block;
 }
-.cp{
-  cursor: pointer;
-}
 .password{
   position: relative;
 }
@@ -440,17 +449,40 @@ header{
   right: -40px;
   top: 15px;
 }
+.cp{
+  cursor: pointer;
+}
+.bold{
+  font-weight: 700;
+}
+.center{
+  text-align: center;
+}
+.required{
+  position: relative;
+}
+.show-required{
+  position: absolute;
+  left: 0px;
+  top: 8px;
+}
 @media only screen and (max-width: 950px) {
   .menu button{
     padding: 0 0 0 10px;
   }
   header{
-    grid-template-columns: 2.5fr 10fr 1fr;
+    grid-template-columns: 2.5fr 10fr;
   }
 }
 @media only screen and (max-width: 768px) {
   header{
-    grid-template-columns: 2fr 10fr 1fr;
+    grid-template-columns: 2fr 10fr;
+  }
+  
+}
+@media only screen and (max-width: 650px){
+  .back_to_top-show {
+    display: none;
   }
   .menu{
    display: none;
@@ -474,7 +506,7 @@ header{
     top: 50px;
     display: grid;
     height: auto;
-    width: 30%;
+    width: 50%;
     background: var(--theme-header-background);
     grid-template-columns: 1fr;
     justify-items: center;
@@ -487,17 +519,9 @@ header{
     padding: 0;
   }
 }
-@media only screen and (max-width: 600px){
-  .back_to_top-show {
-    display: none;
-  }
-  .menu-active{
-    width: 40%;
-  }
-}
 @media only screen and (max-width: 425px){
   header{
-    grid-template-columns: 2fr 5fr 1fr;
+    grid-template-columns: 2fr 5fr;
   }
   .btn{
     font-size: 20px;
@@ -505,9 +529,7 @@ header{
   .menu-active{
     width: 100%;
   }
-  .show-password{
-    right: 0px;
-  }
+  
 }
 
 </style>

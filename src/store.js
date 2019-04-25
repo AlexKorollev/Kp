@@ -5,37 +5,30 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    counter: 1,
     login: false,
+    admin: false,
     loginName: '',
     STORAGE_KEY: 'login-storage',
     loginId: '',
     access_token: '',
-    autocomplite: false,
     currentPage: 1,
-    perPage: 10,
+    perPage: 3,
     totalPosts: 0,
-    posts: [],
-    query: '',
-    limit: 10,
     loading: false,
     users: [],
-    addPostError:false,
+    clients: [],
+    deleteClientsArray: [],
+    deleteIndexes: [],
+    providers: [],
+    taxes: [],
+    search: false,
+    searchQuery: '',
     mode: 'light',
     lang: 'ru',
   },
-  getters: {
-    computedCounter (state) { 
-      return state.counter * 10;
-    }
-  },
+  
   mutations: {
-    changeCounter(state, payload){
-      state.counter += payload;
-    },
-    establishCounter(state,payload){
-      state.counter = payload;
-    },
+    
     changeLogin(state, bool){
       state.login = bool;
     },
@@ -48,8 +41,57 @@ export default new Vuex.Store({
     establishAccessToken(state, token){
       state.access_token = token;
     },
-    changeAutocomplite(state, bool){
-      state.autocomplite = bool;
+    establishAdmin(state,bool){
+      state.admin = bool;
+    },
+    establishUsers(state,users){
+      state.users = users;
+    },
+    addUser(state,user){
+      state.users = user.concat(state.users);
+    },
+    deleteUser(state, index){
+      state.users.splice(index,1);
+    },
+    establishClients(state,clients){
+      state.clients = clients;
+    },
+    addDeleteClient(state,id){
+      state.deleteClientsArray.push(id)
+    },
+    deleteDeleteClient(state,id){
+      state.deleteClientsArray = state.deleteClientsArray.filter(clientId => clientId !== id)
+    },
+    deleteClients(state){
+      state.deleteIndexes.sort((a,b) => b-a)
+
+      for(let i = 0;i<state.deleteIndexes.length;i++){
+        state.clients.splice(state.deleteIndexes[i],1)
+      }
+    },
+    clearDeleteClient(state){
+      state.deleteClientsArray = [];
+    },
+    addIndexForDeleteClient(state,index){
+      state.deleteIndexes.push(index);
+    },
+    deleteIndexForDeleteClient(state,index){
+      state.deleteIndexes = state.deleteIndexes.filter(deleteIndex => deleteIndex !== index)
+    },
+    clearDeleteClientsArray(state){
+      state.deleteClientsArray = [];
+    },
+    changeTotalClients(state){
+      state.totalPosts -= state.deleteClientsArray.length;
+    },
+    searchClients(state, search) {
+      state.clients = search;
+    },
+    establishProviders(state,providers){
+      state.providers = providers;
+    },
+    establishTaxes(state,taxes){
+      state.taxes = taxes;
     },
     changeCurrentPage(state,num){
       state.currentPage += num;
@@ -66,63 +108,36 @@ export default new Vuex.Store({
     incrementTotalPosts(state,num){
       state.totalPosts = num + state.totalPosts*1;
     },
-    changePosts(state,posts){
-      posts.forEach(post => state.posts.push(post));
+    changeSearch(state,search){
+      state.search = search;
     },
-    clearPosts(state){
-      state.posts = [];
-    },
-    addPost(state,post){
-      state.posts = post.concat(state.posts);
-      if(state.posts.length>=10){
-        state.posts.pop();
-      }
-    },
-    addPostError(state, error){
-      state.addPostError = error;
-    },
-    deletePost(state, index){
-      state.posts.splice(index,1);
-    },
-    establishPosts(state,posts){
-      state.posts = posts;
-    },
-    establishQuery(state, query){
-      state.query = query || '';
-    },
-    establishLimit(state, limit){
-      state.limit = limit;
-    },
-    changeLimit(state, limit){
-      state.limit += limit;
+    changeSearchQuery(state,query){
+      state.searchQuery = query;
     },
     changeLoading(state, bool){
       state.loading = bool;
     },
-    establishUsers(state,users){
-      state.users = users;
-    },
+    
     establishMode(state, mode){
       state.mode = mode;
-      //   document.querySelector('div > .profile-image').classList.add('dark-profile-image');
-      //   document.querySelector('h1').classList.add('dark-title');
+      
     },
     establishLanguage(state,lang){
       state.lang = lang;
     }
   },
   actions: {
-    asyncChangeCounter ({commit}, payload) {
-      setTimeout(() => {
-        commit('changeCounter', payload.counterValue)
-      }, payload.timeOutDelay)
-    },
+    
     loginState ({commit}) {
       if(localStorage.getItem(this.state.STORAGE_KEY)) {
-        commit("changeLoginName", JSON.parse(localStorage.getItem(this.state.STORAGE_KEY)).user.firstName);
+        if(JSON.parse(localStorage.getItem(this.state.STORAGE_KEY)).user.nickname == "Admin"){
+          commit("establishAdmin", true);
+        }
+        commit("changeLoginName", JSON.parse(localStorage.getItem(this.state.STORAGE_KEY)).user.nickname);
         commit("changeLogin", true);
         commit("establishUserId", JSON.parse(localStorage.getItem(this.state.STORAGE_KEY)).user.id);
         commit("establishAccessToken", JSON.parse(localStorage.getItem(this.state.STORAGE_KEY)).access_token);
+        
       }
       else {
         commit("changeLogin", false);

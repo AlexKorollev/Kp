@@ -4,11 +4,10 @@
       <div class="modal-background" @click="emitCloseModal()"></div>
       <form class="modal-content" @submit.prevent="onSubmit" autocomplete="off">
         <div class="close" @click="emitCloseModal()"><img src="src/assets/close.png" width="20" height="20" alt=""></div>
-        <h1 class="title">{{ $t('login') }}</h1>
+        <h1 class="title title-modal">{{ $t('login') }}</h1>
         <div class="form-group">
-          <input type="email" id="emailLogin" class="form-control" :placeholder="$t('inputEmail')" :class="{'is-invalid': $v.emailLogin.$error}" @blur="$v.emailLogin.$touch()" v-model="emailLogin">
-          <div class="invalid-feedback" v-if="!$v.emailLogin.required && $v.emailLogin.$error">{{ $t('emailRequest') }}</div>
-           <div class="invalid-feedback" v-if="!$v.emailLogin.email && $v.emailLogin.$error">{{ $t('emailValidate') }}</div> 
+          <input type="text" id="nickname" class="form-control" :placeholder="'Никнейм'" :class="{'is-invalid': $v.nickname.$error}" @blur="$v.nickname.$touch()" v-model="nickname">
+          <div class="invalid-feedback" v-if="!$v.nickname.required && $v.nickname.$error">Никнейм обязателен</div>
         </div>
         <div class="form-group password">
           <input :type="passwordType" id="passwordLogin" class="form-control" :placeholder="$t('inputPassword')" :class="{'is-invalid': $v.passwordLogin.$error}" @blur="$v.passwordLogin.$touch()" v-model="passwordLogin">
@@ -16,7 +15,7 @@
           <img v-else src="/src/assets/view-active.png" width="25" class="show-password" @click="changePasswrodType()">
           <div class="invalid-feedback" v-if="!$v.passwordLogin.required && $v.passwordLogin.$error">{{ $t('passwordRequest') }}</div>
         </div>
-        <div class="invalid-feedback" v-if="!uniqLogin">{{ $t('incorrectInfo') }}</div>
+        <div class="invalid-feedback" v-if="!uniqUserLogin">Не корректные данные</div>
         <button class="btn submit-login" type="submit" :disabled="$v.$invalid">{{ $t('submitButton') }}</button>
       </form>
     </div>
@@ -24,15 +23,15 @@
 </template>
 
 <script>
-import { required,email } from 'vuelidate/lib/validators'
+import { required } from 'vuelidate/lib/validators'
 import axios from 'axios'
 export default {
   name: 'Modal',
   data() {
     return {
-      emailLogin: '',
+      nickname: '',
+      uniqUserLogin: true,
       passwordLogin: '',
-      uniqLogin: true,
       passwordType: 'password',
     }
   },
@@ -42,9 +41,8 @@ export default {
     }
   },
   validations: {
-    emailLogin: {
+    nickname: {
       required,
-      email,
     },
     passwordLogin: {
       required
@@ -61,29 +59,35 @@ export default {
     },
     onSubmit() {
       axios.post('http://localhost:3000/auth/login', {
-      email: this.emailLogin,
-      password: this.passwordLogin
+      nickname: this.nickname,
+      password: this.passwordLogin,
       })
       .then(response => {
         console.log(response);
         console.log("zaebok");
+        
         this.emitCloseModal();
         this.emitMenuClose();
-        this.emailLogin = "";
+       
+        this.uniqUserLogin = true;
+        console.log(this.nickname);
+        if(this.nickname == "Admin"){
+          this.$store.commit('establishAdmin', true);
+          this.$router.replace("/admin");
+          console.log(this.$store.state.admin)
+        }
+        else{
+          this.$router.replace("/");
+        }
+        this.nickname = "";
         this.passwordLogin = "";
-        this.uniqLogin = true;
-        this.$router.replace("/");
         localStorage.setItem(this.$store.state.STORAGE_KEY, JSON.stringify(response.data));
-        this.$store.commit("changeLogin", true);
-        this.$store.commit("changeLoginName", response.data.user.firstName);
-        this.$store.commit("establishUserId", response.data.user.id);
-        this.$store.commit("establishAccessToken", response.data.access_token)
-        this.$store.commit("establishQuery", '?')
+        this.$store.dispatch("loginState")
         this.$v.$reset();
       })
       .catch(error => {
         console.log("GOVNO " + error);
-        this.uniqLogin = false;
+        this.uniqUserLogin = false;
       });
     },
     changePasswrodType () {
@@ -201,6 +205,13 @@ export default {
   width:10px;
   height: 10px;
 
+}
+.title-modal{
+  background: none;
+  padding: 0;
+}
+.password{
+  position: relative;
 }
 @media only screen and (max-width: 1024px) {
   .modal-background{

@@ -1,10 +1,10 @@
 <template>
   <div class="pagination">
     <div class="page-buttons">
-      <button class="btn btn-page btn-prev-page" @click="prevPage()">PREV</button>
-      <button class="btn btn-page btn-next-page" @click="nextPage()">NEXT</button>
+      <button class="btn btn-page btn-prev-page" @click="prevPage()">Дальше</button>
+      <button class="btn btn-page btn-next-page" @click="nextPage()">Назад</button>
     </div>
-    <p>Page: {{ this.$store.state.currentPage }} totalPosts: {{ this.$store.state.totalPosts }}</p>
+    <p>Страница: {{ this.$store.state.currentPage }} Количество клиентов: {{ this.$store.state.totalPosts }}</p>
   </div>
 </template>
 <script>
@@ -12,17 +12,32 @@ import axios from 'axios'
 import api from '../../helpers/api'
 export default {
   name: 'Pagination',
+  computed: {
+    getSearch () {
+      return this.$store.state.search
+    }
+  },
   methods: {
     nextPage () {
       if(this.$store.state.currentPage !== Math.ceil(this.$store.state.totalPosts / this.$store.state.perPage)){
         this.$store.commit("changeCurrentPage", 1);
-        api.refreshPosts(this.$store.state.currentPage);
+        if(!this.getSearch){
+          api.searchClients(this.$store.state.currentPage);
+        }
+        else{
+          api.searchClients(this.$store.state.currentPage +'&'+ this.$store.state.searchQuery);
+        }
       }
     },
     prevPage () {
       if(this.$store.state.currentPage !== 1){
         this.$store.commit("changeCurrentPage", -1);
-        api.refreshPosts(this.$store.state.currentPage);
+        if(!this.getSearch){
+          api.searchClients(this.$store.state.currentPage);
+        }
+        else{
+          api.searchClients(this.$store.state.currentPage +'&'+ this.$store.state.searchQuery);
+        }
       }
     }
   }
@@ -30,14 +45,16 @@ export default {
 </script>
 <style scoped>
 .pagination{
-  width:301px;
+  margin: 0 10px 10px 10px;
   display:grid;
-  border: 2px solid #ccc;
+  border: var(--theme-border-top);
   border-radius:5px;
   grid-gap:1em;
   text-align: center;
   padding: 10px 0;
-  background: #efeeee;
+  background: var(--theme-background);
+  color: var(--theme-color);
+  width: 300px;
 }
 .page-buttons{
   height: 40px;
@@ -58,6 +75,10 @@ export default {
 @media only screen and (max-width: 425px){
   .btn{
     font-size: 20px;
+  }
+  .pagination{
+    margin: 0;
+    width: 100%;
   }
 }
 </style>
