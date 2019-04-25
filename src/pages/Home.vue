@@ -1,70 +1,105 @@
 <template>
-  <div class="about-login">
-    <div>
-      <div v-if="this.$store.state.login" class="home-page">
-        <h1>{{ $t('lastPosts') }}</h1>
-        <Posts :query="'?'" :users="users"/>
+  <div class="home-page">
+    <div class="home-page-block">
+      <h1 class="title">{{ $t('menu') }}</h1>
+      <router-link class="btn link home-page-btn" :to="'/sign-up'">Добавление сотрудника</router-link>
+      <router-link class="btn link home-page-btn" :to="'/list-of-clients'">Список сотрудников</router-link>
+      <div @click="openModal()">
+        <GetTaxes />
       </div>
-      <div v-else class="home-page">
-        <h1>{{ $t('lastPosts') }}</h1>
-        <Posts :query="'?public=true&_embed=comments&_embed=likes&_page=1&_limit=5&_sort=id&_order=desc'" :users="users"/>
-      </div>
+      <router-link class="btn link home-page-btn" :to="'/list-of-taxes'">Отчет по подоходному налогу</router-link>
+      <router-link class="btn link home-page-btn" :to="'/providers'">Расчет с поставщиками</router-link>
+      <router-link class="btn link home-page-btn" :to="'/providers-list'">Отчет по переводам</router-link>
     </div>
-    
+    <SuccessModal :successModalOpened="successModalOpened" @modalClose="closeModal"/>
   </div>
 </template>
 
 <script>
-import Posts from ".././components/posts/Posts";
-import Loader from '.././components/Loader'
-import axios from 'axios';
 import store from '../store'
+import api from '../helpers/api'
+import GetTaxes from '../components/taxes/GetTaxes'
+import SuccessModal from '../components/SuccessModal'
+import scroll from '../helpers/scroll'
+
 export default {
 
   components: {
-    Posts,
-    Loader
+    GetTaxes,
+    SuccessModal
   },
   data () {
     return {
-      users: [],
+      successModalOpened: false,
+
+    }
+  },
+  computed: {
+    getUsers () {
+      return this.$store.state.users
     }
   },
   methods: {
-    searchUsers () {
-      const options = {
-        method: 'GET',
-        headers: {
-          'Authorization': "bearer " + this.$store.state.access_token
-          },
-        url: 'http://localhost:3000/users/',
-      };
-      axios(options)
-      .then(response =>{
-        store.commit("establishUsers", response.data)
-        this.users = response.data;
-      });
+    openModal () {
+      this.successModalOpened = true;
+      scroll.disableScroll();
+    },
+    closeModal () {
+      this.successModalOpened = false;
+      scroll.enableScroll();
     },
   },
   mounted() {
-    this.$store.commit("clearPosts")
-    this.searchUsers()
+    api.searchUsers();
   },
 }
 </script>
 
 <style scoped>
-.about-login{
+.home-page{
   margin-top: 30px;
   display: grid;
   grid-template-columns: 1fr;
   width:100%;
   justify-items: center;
   grid-row-gap:1em;
+  
 }
-.home-page h1{
-  text-align:center;
+.home-page-block{
+  width:400px;
+  justify-items: center;
+  display: grid;
+  box-shadow: var(--theme-box-shadow);
+  padding-bottom: 10px;
+}
+.title{
+  margin-bottom: 20px;
+}
+.home-page-btn{
+  width:280px;
+  margin:10px 0px;
+  padding: 10px 0;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  border: 2px solid #3498db;
+  background: var(--theme-background);
   color: var(--theme-color);
-  transition: 0.25s;
+}
+.home-page-btn:hover{
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+.home-page-btn:focus{
+  background: #2ecc71;
+  color: #fff;
+}
+@media only screen and (max-width: 425px){
+  .home-page-block{
+    width:100%;
+  }
+  .home-page{
+    margin-top: 0;
+  }
 }
 </style>

@@ -36,7 +36,7 @@ export default {
   
     function trackScroll() {
       var scrolled = window.pageYOffset;
-      var coords = document.documentElement.clientHeight;
+      var coords = document.documentElement.clientHeight/2;
       
       if (scrolled > coords) {
         goTopBtn.classList.add('back_to_top-show');

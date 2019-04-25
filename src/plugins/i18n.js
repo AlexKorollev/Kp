@@ -5,6 +5,7 @@ Vue.use(VueI18n);
 
 const messages = {
   'en': {
+    adminPage: 'Admin',
     homePage: 'Home',
     profilePage: 'Profile',
     feedPage: 'Feed',
@@ -53,9 +54,10 @@ const messages = {
     subscriptions: 'Subscriptions',
     noSubscriptions: 'No subscriptions',
     imageError: 'Image too large',
-    
+    menu: 'Menu',
   },
   'ru': {
+    adminPage: 'Админка',
     homePage: 'Главная',
     profilePage: 'Профиль',
     feedPage: 'Новости',
@@ -103,6 +105,7 @@ const messages = {
     subscriptions: 'Подписки',
     noSubscriptions: 'Нет подписок',
     imageError: 'Большое изоображение',
+    menu: 'Меню',
   }
 };
 
