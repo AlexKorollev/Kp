@@ -1,12 +1,11 @@
 import VueRouter from 'vue-router'
 import Home from './pages/Home'
+import LogIn from './pages/LogIn'
 import Admin from './pages/Admin'
 import SignUp from './pages/SignUp'
-import ListOfClients from './pages/ListOfClients'
-import ListOfTaxes from './pages/ListOfTaxes'
-import Providers from './pages/Providers'
-import ProvidersList from './pages/ProvidersList'
-import Test from './pages/Test'
+import Registration from './pages/Registration'
+import ListOfRecords from './pages/ListOfRecords'
+import ListOfCalls from './pages/ListOfCalls'
 import store from './store'
 
 export default new VueRouter({
@@ -19,37 +18,27 @@ export default new VueRouter({
     {
       path: '/admin',
       component: Admin,
-      beforeEnter (to, from, next) {
-      store.dispatch('loginState')
-      console.log('route adm',store.state.admin)
-        if(store.state.admin === true) {
-          next(true);
-        }
-        else {
-          next('/?login=false');
-        }
-      },
+    },
+    {
+      path: '/login', 
+      component: LogIn,
     },
     {
       path: '/sign-up', 
       component: SignUp
     },
     {
-      path: '/list-of-clients',
-      component: ListOfClients
+      path: '/registration', 
+      component: Registration,
     },
     {
-      path: '/list-of-taxes',
-      component: ListOfTaxes
+      path: '/list-of-records', 
+      component: ListOfRecords,
     },
     {
-      path: '/providers',
-      component: Providers
-    },
-    {
-      path: '/providers-list',
-      component: ProvidersList
-    },
+      path: '/list-of-calls', 
+      component: ListOfCalls,
+    }
   ],
   mode: 'history'
 })

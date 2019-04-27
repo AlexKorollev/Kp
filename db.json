@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "nickname": "Korolev",
+      "nickname": "Kaver",
       "password": "qweqwe",
       "id": 1
     },
@@ -9,207 +9,47 @@
       "nickname": "Admin",
       "password": "qweqwe",
       "id": 2
+    }
+  ],
+  "registrations": [
+    {
+      "nickname": "Korolev",
+      "haircut": "Стрижка",
+      "haircutMaster": "Лёха",
+      "price": 35,
+      "date": "Apr 30, 2019",
+      "time": "05:24 AM",
+      "id": 1
     },
     {
-      "nickname": "qwe",
-      "password": "qwe",
+      "nickname": "Korolev",
+      "haircut": "Стрижка",
+      "haircutMaster": "Лёха",
+      "price": 35,
+      "date": "Apr 30, 2019",
+      "time": "05:24 AM",
       "id": 3
     },
     {
-      "nickname": "Alewa123",
-      "password": "qweqwe",
+      "nickname": "qqq",
+      "haircut": "Стрижка",
+      "haircutMaster": "Даник",
+      "price": 35,
+      "date": "Apr 17, 2019",
+      "time": "06:30 PM",
       "id": 4
-    },
-    {
-      "nickname": "qweqwe",
-      "password": "qweqwe",
-      "id": 6
-    },
-    {
-      "nickname": "Test2",
-      "password": "qweqwe",
-      "id": 7
     }
   ],
-  "clients": [
+  "callBacks": [
     {
-      "lastName": "Korolev",
-      "firstName": "Alex",
-      "patronymic": "Urevich",
-      "dateOfBirth": "1998-09-10",
-      "passportSeries": "MP",
-      "passportNumber": "3333333",
-      "authority": "Московское РУВД",
-      "dateOfIssue": "2014-02-20",
-      "indentificationNumber": "12345678901234567890",
-      "birthPlace": "Minsk",
-      "city": "Минск",
-      "residenceCity": "Минск",
-      "address": "Esenina 23-2/70",
-      "mobileNumber": "+375259560523",
-      "homeNumber": "3252424",
-      "email": "xbox360-11@mail.ru",
-      "job": "frontend development",
-      "post": "junior development",
-      "familyStatus": "Не женат",
-      "nationality": "Белорус",
-      "disability": "Нет",
-      "pensioner": "Нет",
-      "mounthlyRevenue": 1000,
+      "nickname": "Korolev",
+      "phone": "+375259999999",
       "id": 1
     },
     {
-      "lastName": "Bukin",
-      "firstName": "Gena",
-      "patronymic": "Andreevich",
-      "dateOfBirth": "2000-10-10",
-      "passportSeries": "GG",
-      "passportNumber": "666666",
-      "authority": "Фрунзенское РУВД",
-      "dateOfIssue": "2011-05-20",
-      "indentificationNumber": "",
-      "birthPlace": "",
-      "city": "Брест",
-      "residenceCity": "Гродно",
-      "address": "Купаловская 3",
-      "mobileNumber": "+375255555555",
-      "homeNumber": "3233443",
-      "email": "q@m.ru",
-      "job": "BE",
-      "post": "Junior",
-      "familyStatus": "Не женат",
-      "nationality": "Белорус",
-      "disability": "Нет",
-      "pensioner": "Нет",
-      "mounthlyRevenue": 2000,
+      "nickname": "qqq",
+      "phone": "+375251111111",
       "id": 2
-    },
-    {
-      "lastName": "Kriwtal",
-      "firstName": "Evgenii",
-      "patronymic": "Olegovich",
-      "dateOfBirth": "1995-02-10",
-      "passportSeries": "MP",
-      "passportNumber": "1231231",
-      "authority": "Советское РУВД",
-      "dateOfIssue": "2015-10-10",
-      "indentificationNumber": "242424242424242424",
-      "birthPlace": "Шапокляк",
-      "city": "Гродно",
-      "residenceCity": "Гомель",
-      "address": "Каролинская 2",
-      "mobileNumber": "+37525252525",
-      "homeNumber": "427426462",
-      "email": "xbox@mail.ru",
-      "job": "FE",
-      "post": "Senior",
-      "familyStatus": "Не женат",
-      "nationality": "Россиянин",
-      "disability": "Нет",
-      "pensioner": "Да",
-      "mounthlyRevenue": 11111,
-      "id": 3
-    },
-    {
-      "lastName": "Gornii",
-      "firstName": "Maga",
-      "patronymic": "Magamedov",
-      "dateOfBirth": "1990-10-30",
-      "passportSeries": "MR",
-      "passportNumber": "3332222",
-      "authority": "Совсковое рувд",
-      "dateOfIssue": "2010-01-01",
-      "indentificationNumber": "333333333333333333333",
-      "birthPlace": "Шапокляк",
-      "city": "Гомель",
-      "residenceCity": "Гомель",
-      "address": "Гора 2",
-      "mobileNumber": "+33355543",
-      "homeNumber": "3755555",
-      "email": "x20@m.ru",
-      "job": "BE",
-      "post": "Senior",
-      "familyStatus": "Женат",
-      "nationality": "Белорус",
-      "disability": "Да",
-      "pensioner": "Да",
-      "mounthlyRevenue": 3000,
-      "id": 4
-    },
-    {
-      "lastName": "Novikov",
-      "firstName": "Pavel",
-      "patronymic": "Ivanovich",
-      "dateOfBirth": "1998-08-21",
-      "passportSeries": "RR",
-      "passportNumber": "1231231",
-      "authority": "Московское РУВД",
-      "dateOfIssue": "2010-10-10",
-      "indentificationNumber": "111122223333",
-      "birthPlace": "Минск",
-      "city": "Минск",
-      "residenceCity": "Минск",
-      "address": "Космонавтов 127",
-      "mobileNumber": "+375259560541",
-      "homeNumber": "3277223",
-      "email": "pasha@mail.ru",
-      "job": "Apple",
-      "post": "Director",
-      "familyStatus": "Женат",
-      "nationality": "Белорус",
-      "disability": "Нет",
-      "pensioner": "Нет",
-      "mounthlyRevenue": 2000,
-      "id": 5
-    },
-    {
-      "lastName": "Test2",
-      "firstName": "Test2",
-      "patronymic": "test2",
-      "dateOfBirth": "2111-01-10",
-      "passportSeries": "QW",
-      "passportNumber": "123122",
-      "authority": "QQQR",
-      "dateOfIssue": "2001-11-11",
-      "indentificationNumber": "qqqqqqqqqqqqqq",
-      "birthPlace": "Гомель",
-      "city": "Гомель",
-      "residenceCity": "Гомель",
-      "address": "Куйбышева 3",
-      "mobileNumber": "+375255545555",
-      "homeNumber": "3255515",
-      "email": "test2@m.ru",
-      "job": "\"ОАО Интеграл\"",
-      "post": "Вахтёр",
-      "familyStatus": "Не женат",
-      "nationality": "Белорус",
-      "disability": "Нет",
-      "pensioner": "Нет",
-      "mounthlyRevenue": 1200,
-      "id": 10
-    }
-  ],
-  "providers": [
-    {
-      "name": "МТБ",
-      "amount": 6000,
-      "id": 1
-    },
-    {
-      "name": "ВТБ",
-      "amount": 3000,
-      "id": 2
-    },
-    {
-      "name": "Беларусь банк",
-      "amount": 3000,
-      "id": 3
-    }
-  ],
-  "tax": [
-    {
-      "value": 11362.13,
-      "id": 1
     }
   ]
 }

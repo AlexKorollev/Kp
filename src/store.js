@@ -10,21 +10,10 @@ export default new Vuex.Store({
     loginName: '',
     STORAGE_KEY: 'login-storage',
     loginId: '',
+    phone: '',
     access_token: '',
-    currentPage: 1,
-    perPage: 3,
-    totalPosts: 0,
-    loading: false,
-    users: [],
-    clients: [],
-    deleteClientsArray: [],
-    deleteIndexes: [],
-    providers: [],
-    taxes: [],
-    search: false,
-    searchQuery: '',
-    mode: 'light',
-    lang: 'ru',
+    records: [],
+    calls: [],
   },
   
   mutations: {
@@ -44,87 +33,18 @@ export default new Vuex.Store({
     establishAdmin(state,bool){
       state.admin = bool;
     },
-    establishUsers(state,users){
-      state.users = users;
+    establishRecords(state,records){
+      state.records = records;
     },
-    addUser(state,user){
-      state.users = user.concat(state.users);
+    establishCalls(state,calls){
+      state.calls = calls;
     },
-    deleteUser(state, index){
-      state.users.splice(index,1);
+    deleteRecords(state, index){
+      state.records.splice(index,1);
     },
-    establishClients(state,clients){
-      state.clients = clients;
+    deleteCalls(state, index){
+      state.calls.splice(index,1);
     },
-    addDeleteClient(state,id){
-      state.deleteClientsArray.push(id)
-    },
-    deleteDeleteClient(state,id){
-      state.deleteClientsArray = state.deleteClientsArray.filter(clientId => clientId !== id)
-    },
-    deleteClients(state){
-      state.deleteIndexes.sort((a,b) => b-a)
-
-      for(let i = 0;i<state.deleteIndexes.length;i++){
-        state.clients.splice(state.deleteIndexes[i],1)
-      }
-    },
-    clearDeleteClient(state){
-      state.deleteClientsArray = [];
-    },
-    addIndexForDeleteClient(state,index){
-      state.deleteIndexes.push(index);
-    },
-    deleteIndexForDeleteClient(state,index){
-      state.deleteIndexes = state.deleteIndexes.filter(deleteIndex => deleteIndex !== index)
-    },
-    clearDeleteClientsArray(state){
-      state.deleteClientsArray = [];
-    },
-    changeTotalClients(state){
-      state.totalPosts -= state.deleteClientsArray.length;
-    },
-    searchClients(state, search) {
-      state.clients = search;
-    },
-    establishProviders(state,providers){
-      state.providers = providers;
-    },
-    establishTaxes(state,taxes){
-      state.taxes = taxes;
-    },
-    changeCurrentPage(state,num){
-      state.currentPage += num;
-    },
-    establishCurrentPage(state,num){
-      state.currentPage = num;
-    },
-    changePerPage(state, num){
-      state.perPage += num;
-    },
-    changeTotalPosts(state,total){
-      state.totalPosts = total;
-    },
-    incrementTotalPosts(state,num){
-      state.totalPosts = num + state.totalPosts*1;
-    },
-    changeSearch(state,search){
-      state.search = search;
-    },
-    changeSearchQuery(state,query){
-      state.searchQuery = query;
-    },
-    changeLoading(state, bool){
-      state.loading = bool;
-    },
-    
-    establishMode(state, mode){
-      state.mode = mode;
-      
-    },
-    establishLanguage(state,lang){
-      state.lang = lang;
-    }
   },
   actions: {
     
